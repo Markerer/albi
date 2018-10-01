@@ -303,8 +303,8 @@
           "Main"
         ],
         "summary": "The main screen after the login",
-        "description": "Random advertisements",
-        "operationId": "getRandomAds",
+        "description": "The latest advertisements",
+        "operationId": "getLatestAds",
         "produces": [
           "application/json"
         ],
