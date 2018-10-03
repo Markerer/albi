@@ -1,0 +1,312 @@
+---
+swagger: "2.0"
+info:
+  description: "Albi flat-sharing web application"
+  version: "1.0"
+  title: "Albi"
+host: "albi.swagger.io"
+tags:
+- name: "User"
+  description: "Everything about the user"
+- name: "Advertisement"
+  description: "Everything about advertisements"
+- name: "Main"
+  description: "Main screen"
+paths:
+  /user:
+    post:
+      tags:
+      - "User"
+      summary: "Create a new user"
+      operationId: "createUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "New user parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/CreateUser"
+      responses:
+        200:
+          description: "User created"
+        400:
+          description: "Username or password is missing"
+      x-swagger-router-controller: "User"
+  /user/{name}:
+    get:
+      tags:
+      - "User"
+      summary: "Find a user by name"
+      operationId: "getUserById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of an user"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/UserInfo"
+        404:
+          $ref: "#/definitions/404"
+      x-swagger-router-controller: "User"
+    put:
+      tags:
+      - "User"
+      summary: "Updates an user"
+      description: "This can be done by the logged in user."
+      operationId: "updateUserInfo"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the user that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/UserInfo"
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          $ref: "#/definitions/403"
+        404:
+          $ref: "#/definitions/404"
+      x-swagger-router-controller: "User"
+  /user/login:
+    get:
+      tags:
+      - "User"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid username/password supplied"
+      x-swagger-router-controller: "User"
+  /user/logout:
+    get:
+      tags:
+      - "User"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "Successful operation"
+      x-swagger-router-controller: "User"
+  /ads:
+    post:
+      tags:
+      - "Advertisement"
+      summary: "Uploading a new ad"
+      operationId: "uploadNewAd"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The datas of the flat/house"
+        required: true
+        schema:
+          $ref: "#/definitions/FlatInfo"
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          $ref: "#/definitions/403"
+      x-swagger-router-controller: "Advertisement"
+  /ads/{id}:
+    get:
+      tags:
+      - "Advertisement"
+      summary: "Get the info of an advertisement"
+      operationId: "getAdvertisementById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id of the ad"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/FlatInfo"
+        404:
+          $ref: "#/definitions/404"
+      x-swagger-router-controller: "Advertisement"
+    put:
+      tags:
+      - "Advertisement"
+      summary: "Updates an advertisement"
+      description: "This can be done by the owner of the advertisement."
+      operationId: "updateFlatInfo"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id of the ad"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "The datas of the flat/house"
+        required: true
+        schema:
+          $ref: "#/definitions/FlatInfo"
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          $ref: "#/definitions/403"
+        404:
+          $ref: "#/definitions/404"
+      x-swagger-router-controller: "Advertisement"
+  /main:
+    get:
+      tags:
+      - "Main"
+      summary: "The main screen after the login"
+      description: "Random advertisements"
+      operationId: "getRandomAds"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/FlatInfoTile"
+        404:
+          $ref: "#/definitions/404"
+      x-swagger-router-controller: "Main"
+definitions:
+  403:
+    description: "Forbidden."
+  404:
+    description: "The specified resource was not found."
+  CreateUser:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      password:
+        type: "string"
+        format: "password"
+    example:
+      password: "password"
+      name: "name"
+  UserInfo:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+      address:
+        type: "string"
+      age:
+        type: "integer"
+        format: "int32"
+    example:
+      address: "address"
+      phone: "phone"
+      name: "name"
+      email: "email"
+      age: 0
+  FlatInfo:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      owner:
+        type: "string"
+      description:
+        type: "string"
+      address:
+        $ref: "#/definitions/FlatInfo_address"
+      flatImage:
+        type: "array"
+        items:
+          type: "string"
+          format: "binary"
+      price:
+        type: "integer"
+        format: "int32"
+    example:
+      owner: "owner"
+      address:
+        city: "city"
+        street: "street"
+      price: 0
+      description: "description"
+      id: "id"
+      flatImage:
+      - ""
+      - ""
+  FlatInfoTile:
+    type: "array"
+    items:
+      $ref: "#/definitions/FlatInfoTile_inner"
+  FlatInfo_address:
+    properties:
+      street:
+        type: "string"
+      city:
+        type: "string"
+    example:
+      city: "city"
+      street: "street"
+  FlatInfoTile_inner:
+    properties:
+      id:
+        type: "string"
+      description:
+        type: "string"
+      flatImage:
+        type: "string"
+        format: "binary"
