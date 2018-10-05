@@ -14,21 +14,25 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    var currentFragment : Fragment? = null
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        removeFragment(currentFragment)
         when (item.itemId) {
             R.id.navigation_house -> {
                 InitializationRecycle()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_add_house -> {
+                supportFragmentManager.popBackStack()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                //startActivity(Intent(this, LoginActivity::class.java))
-                loadFragment(LoginFragment())
+                currentFragment = LoginFragment()
+                loadFragment(currentFragment!!)
                 return@OnNavigationItemSelectedListener true
             }
 
@@ -87,7 +91,8 @@ class MainActivity : AppCompatActivity() {
                 .commit()
     }
 
-    private fun removeFragment(fragment: Fragment){
+    private fun removeFragment(fragment: Fragment?){
+        if (fragment == null) return
         supportFragmentManager.beginTransaction()
                 .remove(fragment)
                 .commit()
