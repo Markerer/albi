@@ -22,14 +22,12 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentFragment : Fragment? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        removeFragment(currentFragment)
         when (item.itemId) {
             R.id.navigation_house -> {
-                currentFragment = HouseDetailFragment()
-                loadFragment(currentFragment!!)
+                replaceFragment(HouseDetailFragment())
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_add_house -> {
@@ -39,8 +37,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                currentFragment = LoginFragment()
-                loadFragment(currentFragment!!)
+                replaceFragment(LoginFragment())
                 return@OnNavigationItemSelectedListener true
             }
 
@@ -54,10 +51,9 @@ class MainActivity : AppCompatActivity() {
                 .commit()
     }
 
-    private fun removeFragment(fragment: Fragment?){
-        if (fragment == null) return
+    private fun replaceFragment(fragment : Fragment){
         supportFragmentManager.beginTransaction()
-                .remove(fragment)
+                .replace(R.id.frame, fragment)
                 .commit()
     }
 
@@ -66,8 +62,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        currentFragment=HouseDetailFragment()
-        loadFragment(currentFragment!!)
+        loadFragment(LoginFragment())
 
         val builder: Retrofit.Builder = Retrofit.Builder()
                 .baseUrl("http://WeNeedThis1235678.com/")
@@ -90,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "error :(", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "error :(", Toast.LENGTH_LONG).show()
             }
         })
 
