@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\login",
+    "\\src\\assets",
+    "\\src\\assets\\css",
+    "\\src\\assets\\sass\\now-ui-kit",
+    "\\src\\environments"
+  ],
+  "SelectedNode": "\\src\\app\\login\\login.component.ts",
+  "PreviewInSolutionExplorer": false
+}
