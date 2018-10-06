@@ -1,14 +1,14 @@
-import { Pk2ProAngularPage } from './app.po';
+import { AppPage } from './app.po';
 
-describe('pk2-pro-angular App', () => {
-  let page: Pk2ProAngularPage;
+describe('albi App', () => {
+  let page: AppPage;
 
   beforeEach(() => {
-    page = new Pk2ProAngularPage();
+    page = new AppPage();
   });
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!!');
+    expect(page.getParagraphText()).toEqual('Welcome to app!');
   });
 });
