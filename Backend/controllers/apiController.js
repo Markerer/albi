@@ -1,4 +1,5 @@
 var Users = require('../models/userModel');
+var Flats = require('../models/flatModel');
 var bodyParser = require('body-parser');
 
 module.exports = function(app) {
@@ -30,7 +31,7 @@ module.exports = function(app) {
         
         if (req.body.id) {
             
-            Users.findByIdAndUpdate(req.body.id, {user: req.body.user, email: req.body.email, phone_number: req.body.phone_number, adress: req.body.adress }, function(err, user){
+            Users.findByIdAndUpdate(req.body.id, {user: req.body.username, email: req.body.email, phone_number: req.body.phone_number, adress: req.body.adress }, function(err, user){
                 if (err) throw err;
                 
                 res.send('Success');
@@ -43,7 +44,7 @@ module.exports = function(app) {
            
         
            var newUser = User({
-               username: req.body.name,
+               username: req.body.username,
                email: req.body.email,
                phone_number: req.body.phone_number,
                adress: req.body.adress
