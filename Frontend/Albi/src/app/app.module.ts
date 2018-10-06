@@ -1,30 +1,21 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from './app.routing';
-import { ComponentsModule } from './components/components.module';
-import { ExamplesModule } from './examples/examples.module';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
+import { LoginComponent } from './login/login.component';
+import { UserService } from './user.service';
+
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        NavbarComponent
-    ],
-    imports: [
-        BrowserAnimationsModule,
-        NgbModule.forRoot(),
-        FormsModule,
-        RouterModule,
-        AppRoutingModule,
-        ComponentsModule,
-        ExamplesModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    LoginComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+  providers: [UserService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

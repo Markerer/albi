@@ -26,41 +26,19 @@ class HouseDetailFragment : Fragment(){
         recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
 
         val usersData = ArrayList<Flat>()
-        usersData.add(Flat("Kiadó 3 ágyas szoba az II. kerületben",
-                "2",
-                "Description1",
-                20000)
-        )
+        usersData.add(Flat(123210, "Pannonia utca", 3))
+        usersData.add(Flat(12232100, "Juharfa utca", 3))
+        usersData.add(Flat(12321200, "Gyöngyvirág utca", 3))
+        usersData.add(Flat(1322200, "Eke utca", 3))
+        usersData.add(Flat(1232200, "Szekér utca", 3))
+        usersData.add(Flat(1223200, "Ló utca", 3))
+        usersData.add(Flat(1233200, "Gomb utca", 3))
+        usersData.add(Flat(1322200, "Kacsa utca", 3))
+        usersData.add(Flat(1223200, "Fa utca", 3))
+        usersData.add(Flat(1232200, "Szamár utca", 3))
+        usersData.add(Flat(1223200, "Kapa utca", 3))
+        usersData.add(Flat(12123200, "Pannonia utca", 3))
 
-        usersData.add(Flat("Kiadó 2 ágyas szoba az I. kerületben",
-                "2",
-                "Description2",
-                10000)
-        )
-
-        usersData.add(Flat("Kiadó 1 ágyas szoba az IV. kerületben",
-                "4",
-                "Description3",
-                12000)
-        )
-
-        usersData.add(Flat("Kiadó 1 ágyas szoba az IV. kerületben",
-                "1",
-                "Description4",
-                21000)
-        )
-
-        usersData.add(Flat("Kiadó 8 ágyas szoba az V. kerületben",
-                "3",
-                "Description5",
-                6700)
-        )
-
-        usersData.add(Flat("Kiadó 6 ágyas szoba az XV. kerületben",
-                "2",
-                "Description6",
-                12000)
-        )
 
         val adapter = RecyclerAdapter(usersData)
         recyclerView.adapter = adapter
