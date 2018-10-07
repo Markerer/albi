@@ -10,13 +10,6 @@ const httpOptions = {
     })
 }
 
-const httpOptionsText = {
-    headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'responseType': 'text'
-    })
-
-}
 
 @Injectable()
 export class UserService {
