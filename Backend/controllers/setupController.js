@@ -11,7 +11,7 @@ module.exports = function(app) {
                username: 'admin',
                email: 'admin@gmail.com',
                phone_number: '000000',
-               adress: 'asd utca'
+               address: 'asd utca'
            }
        ];
 

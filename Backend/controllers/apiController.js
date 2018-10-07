@@ -31,7 +31,7 @@ module.exports = function(app) {
         
         if (req.body.id) {
             
-            Users.findByIdAndUpdate(req.body.id, {user: req.body.username, email: req.body.email, phone_number: req.body.phone_number, adress: req.body.adress }, function(err, user){
+            Users.findByIdAndUpdate(req.body.id, {user: req.body.username, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function(err, user){
                 if (err) throw err;
                 
                 res.send('Success');
@@ -43,16 +43,17 @@ module.exports = function(app) {
         else {
            
         
-           var newUser = User({
+           var newUser = Users({
                username: req.body.username,
                email: req.body.email,
                phone_number: req.body.phone_number,
-               adress: req.body.adress
+               address: req.body.address
            });
            
-           newUser.save(function(err){
-                if(err) throw err;
-                res.send('Success');
+           Users.create(newUser, function(err, results){
+            if(err) throw err;
+                res.send(results, 'Success');
+                
            });
 
             

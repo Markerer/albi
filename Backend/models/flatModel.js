@@ -16,4 +16,4 @@ var flatSchema = new Schema({
 
 var Flats = mongoose.model('Flats', flatSchema);
 
-module.exports = Users;
+module.exports = Flats;
