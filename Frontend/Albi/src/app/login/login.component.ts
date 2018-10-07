@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,11 +18,11 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   createForm: FormGroup;
-
+  
   focus: boolean;
   focus1: boolean;
 
-  constructor(private userService: UserService, fb: FormBuilder) {
+  constructor(private userService: UserService, fb: FormBuilder, private router: Router) {
     this.loginForm = fb.group({
       "usernameLogin": ["", Validators.required],
       "passwordLogin": ["", Validators.required]
@@ -59,19 +60,26 @@ export class LoginComponent implements OnInit {
     
   }
 
-  login(usernameLogin: String, passwordLogin: String): void {
+  userLogger(response: String, usernameLogin: String) {
 
-    var response: String;
-
-    this.userService.loginUser(usernameLogin, passwordLogin).subscribe(data => { console.log(data) });
-
+    console.log(response);
     if (response === "OK") {
       this.correctUser = true;
-      this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
+
+     // this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
+      console.log('oke volt');
+      this.router.navigate(['/main']);      
     }
     else {
       this.correctUser = false;
+      console.log('nem volt oke');
     }
+  }
+
+  login(usernameLogin: String, passwordLogin: String): void {
+  
+    this.userService.loginUser(usernameLogin, passwordLogin)
+      .subscribe(data => { this.userLogger(data, usernameLogin); console.log(data); });
 
 
   }

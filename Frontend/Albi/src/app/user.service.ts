@@ -34,7 +34,7 @@ export class UserService {
     return this.http.get<User>(this.apiRoot + 'user/' + username);
   }
 
-  loginUser(username: String, pw: String): Observable<Object> {
+  loginUser(username: String, pw: String): Observable<String> {
     return this.http.post(this.apiRoot + 'login',
       {
         "username": `${username}`,
