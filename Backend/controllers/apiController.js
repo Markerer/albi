@@ -16,6 +16,35 @@ module.exports = function(app) {
         });
         
     });
+
+    //list all users
+    app.get('/api/users', function(req, res){
+        Users.find({}, function(err, users) {
+           
+            res.send(users);  
+          });
+    });
+    
+    //list all flats
+    app.get('/api/main/', function(req, res){
+        Flats.find({}, function(err, flats){
+            res.send(flats);
+        })
+    });
+    
+    app.post('/api/login', function(req, res){
+        
+        Users.find({ username: req.params.username, password: req.params.password }, function(err, users) {
+            if (err) throw err;
+            if(users.password === req.params.password)
+            res.send("OK");
+            else{
+                res.send("NOT OK");
+            }
+        });
+
+        
+    })
     
     app.get('/api/user/:id', function(req, res) {
        
@@ -26,12 +55,14 @@ module.exports = function(app) {
        });
         
     });
+
+    
     
     app.post('/api/user', function(req, res) {
         
         if (req.body.id) {
             
-            Users.findByIdAndUpdate(req.body.id, {user: req.body.username, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function(err, user){
+            Users.findByIdAndUpdate(req.body.id, {username: req.body.username, password: req.body.password, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function(err, user){
                 if (err) throw err;
                 
                 res.send('Success');
@@ -45,14 +76,16 @@ module.exports = function(app) {
         
            var newUser = Users({
                username: req.body.username,
+               password: req.body.password,
                email: req.body.email,
                phone_number: req.body.phone_number,
                address: req.body.address
            });
            
            Users.create(newUser, function(err, results){
-            if(err) throw err;
-                res.send(results, 'Success');
+                if(err) throw err;
+            
+                res.send(results);
                 
            });
 
