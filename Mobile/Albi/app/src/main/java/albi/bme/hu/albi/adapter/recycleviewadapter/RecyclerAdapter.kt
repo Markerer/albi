@@ -23,13 +23,13 @@ class RecyclerAdapter(val flatList: ArrayList<Flat>) : RecyclerView.Adapter<Recy
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val flat: Flat = flatList[p1]
         p0.textViewPrice.text = flat.price.toString()
-        p0.textViewAddress.text = flat.address.toString()
-        p0.textViewNumberofBeds.text = flat.numberOfBeds.toString()
+        p0.textViewAddress.text = flat.address
+        p0.textViewNumberOfBeds.text = flat.numberOfBeds.toString()
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
         val textViewPrice = itemView.findViewById<TextureView>(R.id.tvPrice) as TextView
         val textViewAddress = itemView.findViewById<TextureView>(R.id.tvAddress) as TextView
-        val textViewNumberofBeds = itemView.findViewById<TextureView>(R.id.tvNumberOfBeds) as TextView
+        val textViewNumberOfBeds = itemView.findViewById<TextureView>(R.id.tvNumberOfBeds) as TextView
     }
 }

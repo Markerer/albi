@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface FlatClient {
 
-    @GET("/main")
+    @GET("/api/main/")
     fun getMainFlats(): Call<List<Flat>>
 
 }

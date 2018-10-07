@@ -14,18 +14,16 @@ import android.widget.LinearLayout
 
 class HouseDetailFragment : Fragment(){
 
+    var usersData = ArrayList<Flat>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return initializationRecycle()
-
-
     }
 
-    private fun initializationRecycle(): RecyclerView {
+    private fun initializationRecycle(): RecyclerView? {
         val recyclerView = RecyclerView(context!!)
         recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
 
-        val usersData = ArrayList<Flat>()
         usersData.add(Flat(123210, "Pannonia utca", 3))
         usersData.add(Flat(12232100, "Juharfa utca", 3))
         usersData.add(Flat(12321200, "Gyöngyvirág utca", 3))
@@ -44,4 +42,10 @@ class HouseDetailFragment : Fragment(){
         recyclerView.adapter = adapter
         return recyclerView
     }
+
+
+    public fun setFlatsData(listOfFlats: List<Flat>){
+        this.usersData = ArrayList(listOfFlats)
+    }
+
 }

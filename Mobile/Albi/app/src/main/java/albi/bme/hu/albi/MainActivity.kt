@@ -18,16 +18,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.widget.Toast
 //import jdk.nashorn.internal.objects.NativeFunction.call
 import retrofit2.Response
+import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
+
+    var login: LoginFragment? = null
+    var houseDetail: HouseDetailFragment? = null
 
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_house -> {
-                replaceFragment(HouseDetailFragment())
-
+                replaceFragment(houseDetail!!)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_add_house -> {
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                replaceFragment(LoginFragment())
+                replaceFragment(login!!)
                 return@OnNavigationItemSelectedListener true
             }
 
@@ -61,11 +64,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        login = LoginFragment()
+        houseDetail = HouseDetailFragment()
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(LoginFragment())
 
         val builder: Retrofit.Builder = Retrofit.Builder()
-                .baseUrl("http://WeNeedThis1235678.com/")
+                //https://stackoverflow.com/questions/40077927/simple-retrofit2-request-to-a-localhost-server
+                .baseUrl("http://10.0.2.2:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
 
         val retrofit: Retrofit = builder.build()
@@ -73,15 +80,12 @@ class MainActivity : AppCompatActivity() {
         val call = client.getMainFlats()
 
 
-
         call.enqueue(object : Callback<List<Flat>> {
             override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
                 val flats: List<Flat>? = response.body()
+                houseDetail?.setFlatsData(flats!!)
 
-                //listView.setAdapter(GitHubRepoAdapter(this@MainActivity, repos))
-
-                val rv = findViewById<RecyclerView>(R.id.rv)
-                rv.adapter = RecyclerAdapter(flats as ArrayList<Flat>)
+                Toast.makeText(this@MainActivity, "no error :)", Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
@@ -90,8 +94,5 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
-
-
-
 
 }
