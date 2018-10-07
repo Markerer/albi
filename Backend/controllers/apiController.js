@@ -34,10 +34,17 @@ module.exports = function(app) {
     
     app.post('/api/login', function(req, res){
         
-        Users.find({ username: req.params.username, password: req.params.password }, function(err, users) {
+        var user = new Users({
+            username: req.body.username,
+            password: req.body.password
+          })
+
+        Users.findOne({ username: user.username }, function(err, tempUser) {
             if (err) throw err;
-            if(users.password === req.params.password)
+            if(user.password === tempUser.password){
+                
             res.send("OK");
+            }
             else{
                 res.send("NOT OK");
             }
