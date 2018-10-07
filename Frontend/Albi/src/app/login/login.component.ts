@@ -23,15 +23,15 @@ export class LoginComponent implements OnInit {
 
   constructor(private userService: UserService, fb: FormBuilder) {
     this.loginForm = fb.group({
-      'usernameLogin': ['', Validators.required],
-      'pwLogin': ['', Validators.required]
+      "username": ["", Validators.required],
+      "password": ["", Validators.required]
     });
     this.createForm = fb.group({
-      'usernameCreate': ['', Validators.required],
-      'email': ['', [Validators.required, Validators.email]],
-      'address': ['', Validators.required],
-      'phone': ['', Validators.required],
-      'pwCreate': ['', Validators.required]
+      "username": ["", Validators.required],
+      "password": ["", Validators.required],
+      "email": ["", [Validators.required, Validators.email]],
+      "phone_number": ["", Validators.required],
+      "address": ["", Validators.required]
     });
     this.correctUser = false;
   }
@@ -46,28 +46,28 @@ export class LoginComponent implements OnInit {
         body.classList.remove('login-page');
   }
 
-  createUser(usernameCreate: string, pwCreate: string, email: string, address: string, phone: string): void {
+  createUser(username: String, password: String, email: String, phone_number: String, address: String): void {
     
-      this.user.username = usernameCreate;
-      this.user.password = pwCreate;
+      this.user.username = username;
+      this.user.password = password;
       this.user.address = address;
       this.user.email = email;
-      this.user.phone = phone;
+      this.user.phone_number = phone_number;
       this.userService.createUser(this.user).subscribe(
         user => { console.log(`User ${user.username} created`) }
       );
     
   }
 
-  login(usernameLogin: string, pwLogin: string): void {
+  login(username: String, password: String): void {
 
-    var response: string;
+    var response: String;
 
-    this.userService.loginUser(usernameLogin, pwLogin).subscribe(data => { console.log(data); response = data; });
+    this.userService.loginUser(username, password).subscribe(data => { console.log(data); response = data; });
 
     if (response === "OK") {
       this.correctUser = true;
-      this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
+      this.userService.getUser(username).subscribe(loggedUser => { this.user = loggedUser });
     }
     else {
       this.correctUser = false;

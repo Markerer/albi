@@ -8,7 +8,7 @@
     <div class="col-md-4 content-center">
       <div class="card card-login card-plain">
         <form [formGroup]="loginForm"
-              (ngSubmit)="login(loginForm.usernameLogin, loginForm.pwLogin)"
+              (ngSubmit)="login(loginForm.get('username').value, loginForm.get('password').value)"
               class="form" method="" action=""
               [class.error]="!loginForm.valid && loginForm.touched">
           <div class="content">
@@ -19,7 +19,7 @@
                      placeholder="Username"
                      (focus)="focus=true" (blur)="focus=false"
                      [(ngModel)]="usernameLogin"
-                     [formControl]="loginForm.get('usernameLogin')">
+                     [formControl]="loginForm.get('username')">
             </div>
 
             <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus1===true}">
@@ -29,7 +29,7 @@
                      class="form-control"
                      (focus)="focus1=true" (blur)="focus1=false"
                      [(ngModel)]="passwordLogin"
-                     [formControl]="loginForm.get('pwLogin')">
+                     [formControl]="loginForm.get('password')">
 
               <button *ngIf="!correctUser" type="submit" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!loginForm.valid">
@@ -42,7 +42,12 @@
         </form>
 
         <form [formGroup]="createForm"
-              (ngSubmit)="createUser(createForm.usernameCreate, createForm.pwCreate, createForm.email, createForm.address, createForm.phone)"
+              (ngSubmit)="createUser(
+              createForm.get('username').value,
+              createForm.get('password').value,
+              createForm.get('email').value,
+              createForm.get('phone_number').value,
+              createForm.get('address').value)"
               class="form" method="" action=""
               [class.error]="!createForm.valid && createForm.touched">
           <div class="content">
@@ -53,8 +58,8 @@
                      placeholder="Username"
                      (focus)="focus=true"
                      (blur)="focus=false"
-                     [(ngModel)]="usernameCreate"
-                     [formControl]="createForm.get('usernameCreate')">
+                     [(ngModel)]="username"
+                     [formControl]="createForm.get('username')">
             </div>
             <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus1===true}">
 
@@ -63,8 +68,8 @@
                      class="form-control"
                      (focus)="focus1=true"
                      (blur)="focus1=false"
-                     [(ngModel)]="passwordCreate"
-                     [formControl]="createForm.get('pwCreate')">
+                     [(ngModel)]="password"
+                     [formControl]="createForm.get('password')">
             </div>
             <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
 
@@ -93,8 +98,8 @@
                      class="form-control"
                      (focus)="focus1=true"
                      (blur)="focus1=false"
-                     [(ngModel)]="phone"
-                     [formControl]="createForm.get('phone')">
+                     [(ngModel)]="phone_number"
+                     [formControl]="createForm.get('phone_number')">
 
               <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
               [disabled]="!createForm.valid">Create user</button>

@@ -18,18 +18,26 @@ export class UserService {
   constructor(private http: HttpClient) { }
   
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiRoot + 'user', user, httpOptions);
+    return this.http.post<User>(this.apiRoot + 'user',
+      {
+        "username": `${user.username}`,
+        "password": `${user.password}`,
+        "email": `${user.email}`,
+        "phone_number": `${user.phone_number}`,
+        "address": `${user.address}`
+      },
+      httpOptions);
   }
 
-  getUser(username: string): Observable<User> {
+  getUser(username: String): Observable<User> {
     return this.http.get<User>(this.apiRoot + 'user/' + username);
   }
 
-  loginUser(username: string, pw: string): Observable<string> {
-    var array: string[];
+  loginUser(username: String, pw: String): Observable<String[]> {
+    var array: String[];
     array = [username, pw];
 
-    return this.http.post<string>(this.apiRoot + 'login', array, httpOptions);
+    return this.http.post<String[]>(this.apiRoot + 'login', array, httpOptions);
   }
 
 
