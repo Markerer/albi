@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private userService: UserService, fb: FormBuilder) {
     this.loginForm = fb.group({
-      "username": ["", Validators.required],
-      "password": ["", Validators.required]
+      "usernameLogin": ["", Validators.required],
+      "passwordLogin": ["", Validators.required]
     });
     this.createForm = fb.group({
       "username": ["", Validators.required],
@@ -59,15 +59,15 @@ export class LoginComponent implements OnInit {
     
   }
 
-  login(username: String, password: String): void {
+  login(usernameLogin: String, passwordLogin: String): void {
 
     var response: String;
 
-    this.userService.loginUser(username, password).subscribe(data => { console.log(data); response = data; });
+    this.userService.loginUser(usernameLogin, passwordLogin).subscribe(data => { console.log(data) });
 
     if (response === "OK") {
       this.correctUser = true;
-      this.userService.getUser(username).subscribe(loggedUser => { this.user = loggedUser });
+      this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
     }
     else {
       this.correctUser = false;

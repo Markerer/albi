@@ -7,8 +7,13 @@
  
     <div class="col-md-4 content-center">
       <div class="card card-login card-plain">
+
+
         <form [formGroup]="loginForm"
-              (ngSubmit)="login(loginForm.get('username').value, loginForm.get('password').value)"
+              (ngSubmit)="login(
+              loginForm.get('usernameLogin').value,
+              loginForm.get('passwordLogin').value)"
+
               class="form" method="" action=""
               [class.error]="!loginForm.valid && loginForm.touched">
           <div class="content">
@@ -19,7 +24,7 @@
                      placeholder="Username"
                      (focus)="focus=true" (blur)="focus=false"
                      [(ngModel)]="usernameLogin"
-                     [formControl]="loginForm.get('username')">
+                     [formControl]="loginForm.get('usernameLogin')">
             </div>
 
             <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus1===true}">
@@ -29,13 +34,12 @@
                      class="form-control"
                      (focus)="focus1=true" (blur)="focus1=false"
                      [(ngModel)]="passwordLogin"
-                     [formControl]="loginForm.get('password')">
+                     [formControl]="loginForm.get('passwordLogin')">
 
               <button *ngIf="!correctUser" type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                      [disabled]="!loginForm.valid">
-                Login
-              </button>
-                 <button *ngIf="correctUser" type="submit" href="main" class="btn btn-primary btn-round btn-lg btn-block"
+                      [disabled]="!loginForm.valid">Login</button>
+
+              <button *ngIf="correctUser" type="submit" href="main" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!loginForm.valid">Login</button>
             </div>
           </div>
