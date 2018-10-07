@@ -4,10 +4,9 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\login",
-    "\\src\\assets",
-    "\\src\\assets\\css",
-    "\\src\\environments"
+    "\\src\\app\\main",
+    "\\src\\assets\\css"
   ],
-  "SelectedNode": "\\src\\app\\user.service.ts",
+  "SelectedNode": "\\src\\app\\main\\main.component.html",
   "PreviewInSolutionExplorer": false
 }

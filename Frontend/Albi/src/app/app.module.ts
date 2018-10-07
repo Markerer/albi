@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './main/main.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { MainService } from './main.service';
 
 
 
@@ -23,7 +24,7 @@ import { AppRoutingModule } from './/app-routing.module';
     ReactiveFormsModule,
     AppRoutingModule,
   ],
-  providers: [UserService],
+  providers: [UserService, MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

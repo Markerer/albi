@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MainService } from '../main.service';
+import { Flat } from '../flat';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  flats: Flat[];
+
+  constructor(private mainService: MainService) { }
 
   ngOnInit() {
   }
+
+  getFlats(): void {
+    this.mainService.getMainScreen().subscribe(data => { this.flats = data; });
+  }
+
 
 }
