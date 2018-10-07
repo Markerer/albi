@@ -41,7 +41,7 @@ module.exports = function(app) {
 
         Users.findOne({ username: user.username }, function(err, tempUser) {
             if (err) throw err;
-            if(user.password === tempUser.password){
+            if(tempUser && user.password === tempUser.password){
                 
             res.send("OK");
             }
