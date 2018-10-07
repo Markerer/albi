@@ -9,6 +9,7 @@ module.exports = function(app) {
        var starterUsers = [
            {
                username: 'admin',
+               password: 'password',
                email: 'admin@gmail.com',
                phone_number: '000000',
                address: 'asd utca'
@@ -31,7 +32,7 @@ module.exports = function(app) {
                 email: 'admin@gmail.com',
                 phone_number: '000000',
                 address: 'asd utca',
-                hasAttachment: Boolean
+                hasAttachment: true
             }
         ];
 

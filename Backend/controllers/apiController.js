@@ -57,7 +57,7 @@ module.exports = function(app) {
     });
 
     
-    
+    //user updater, create user
     app.post('/api/user', function(req, res) {
         
         if (req.body.id) {
@@ -93,6 +93,44 @@ module.exports = function(app) {
         }
         
     });
+
+    //update, create flats
+    app.post('/api/main', function(req, res) {
+        
+        if (req.body.id) {
+            
+            Flats.findByIdAndUpdate(req.body.id, {flatname: req.body.flatname, username: req.body.username, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address, hasAttachment: req.body.hasAttachment }, function(err, user){
+                if (err) throw err;
+                
+                res.send('Success');
+            });
+                
+           
+        }
+        
+        else {
+           
+        
+           var newFlat = Flats({
+            flatname: req.body.flatname,
+            username: req.body.username,
+            email: req.body.email,
+            phone_number: req.body.email,
+            address: req.body.address,
+            hasAttachment: req.body.hasAttachment
+           });
+           
+           Flats.create(newFlat, function(err, results){
+                if(err) throw err;
+            
+                res.send(results);
+                
+           });
+
+            
+        }
+        
+    });   
     
     app.delete('/api/user', function(req, res) {
         
