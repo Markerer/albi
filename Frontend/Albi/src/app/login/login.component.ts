@@ -14,8 +14,6 @@ export class LoginComponent implements OnInit {
 
   user: User = new User();
 
-  correctUser: boolean;
-
   loginForm: FormGroup;
   createForm: FormGroup;
   
@@ -34,7 +32,6 @@ export class LoginComponent implements OnInit {
       "phone_number": ["", Validators.required],
       "address": ["", Validators.required]
     });
-    this.correctUser = false;
   }
 
   ngOnInit() {
@@ -60,18 +57,15 @@ export class LoginComponent implements OnInit {
     
   }
 
-  userLogger(response: String, usernameLogin: String) {
+  userLogger(response: String, usernameLogin: String): void {
 
     console.log(response);
     if (response === "OK") {
-      this.correctUser = true;
-
      // this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
       console.log('oke volt');
       this.router.navigate(['/main']);      
     }
     else {
-      this.correctUser = false;
       console.log('nem volt oke');
     }
   }
@@ -80,8 +74,6 @@ export class LoginComponent implements OnInit {
   
     this.userService.loginUser(usernameLogin, passwordLogin)
       .subscribe(data => { this.userLogger(data, usernameLogin); console.log(data); });
-
-
   }
 	
 
