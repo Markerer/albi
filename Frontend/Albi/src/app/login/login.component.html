@@ -31,7 +31,11 @@
                      [(ngModel)]="passwordLogin"
                      [formControl]="loginForm.get('pwLogin')">
 
-              <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+              <button *ngIf="!correctUser" type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+                      [disabled]="!loginForm.valid">
+                Login
+              </button>
+                 <button *ngIf="correctUser" type="submit" href="main" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!loginForm.valid">Login</button>
             </div>
           </div>

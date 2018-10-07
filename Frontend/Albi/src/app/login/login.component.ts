@@ -11,7 +11,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 export class LoginComponent implements OnInit {
 
-  user: User;
+  user: User = new User();
 
   correctUser: boolean;
 
@@ -46,31 +46,33 @@ export class LoginComponent implements OnInit {
         body.classList.remove('login-page');
   }
 
-  createUser(usernameCreate: HTMLInputElement, pwCreate: HTMLInputElement, email: HTMLInputElement, address: HTMLInputElement, phone: HTMLInputElement): void {
+  createUser(usernameCreate: string, pwCreate: string, email: string, address: string, phone: string): void {
     
-      this.user.username = usernameCreate.value;
-      this.user.password = pwCreate.value;
-      this.user.address = address.value;
-      this.user.email = email.value;
-      this.user.phone = phone.value;
+      this.user.username = usernameCreate;
+      this.user.password = pwCreate;
+      this.user.address = address;
+      this.user.email = email;
+      this.user.phone = phone;
       this.userService.createUser(this.user).subscribe(
         user => { console.log(`User ${user.username} created`) }
       );
     
   }
 
-  login(usernameLogin: HTMLInputElement, pwLogin: HTMLInputElement): void {
+  login(usernameLogin: string, pwLogin: string): void {
 
     var response: string;
 
-    this.userService.loginUser(usernameLogin.value, pwLogin.value).subscribe(data => { console.log(data); response = data; });
+    this.userService.loginUser(usernameLogin, pwLogin).subscribe(data => { console.log(data); response = data; });
 
     if (response === "OK") {
       this.correctUser = true;
+      this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
     }
     else {
       this.correctUser = false;
     }
+
 
   }
 	
