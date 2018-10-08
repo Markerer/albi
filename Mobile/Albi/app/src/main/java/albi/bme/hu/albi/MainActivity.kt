@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "error :(", Toast.LENGTH_LONG).show()
+                t.printStackTrace()
+                Toast.makeText(this@MainActivity, "error :("+t.message, Toast.LENGTH_LONG).show()
             }
         })
 
