@@ -70,29 +70,7 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(LoginFragment())
 
-        val builder: Retrofit.Builder = Retrofit.Builder()
-                //https://stackoverflow.com/questions/40077927/simple-retrofit2-request-to-a-localhost-server
-                .baseUrl("http://10.0.2.2:3000/")
-                .addConverterFactory(GsonConverterFactory.create())
 
-        val retrofit: Retrofit = builder.build()
-        val client: FlatClient = retrofit.create(FlatClient::class.java)
-        val call = client.getMainFlats()
-
-
-        call.enqueue(object : Callback<List<Flat>> {
-            override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
-                val flats: List<Flat>? = response.body()
-                houseDetail?.setFlatsData(flats!!)
-
-                Toast.makeText(this@MainActivity, "no error :)", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@MainActivity, "error :("+t.message, Toast.LENGTH_LONG).show()
-            }
-        })
 
     }
 
