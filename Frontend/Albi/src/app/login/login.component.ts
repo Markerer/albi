@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
 
     console.log(response);
     if (response === "OK") {
-     // this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
+      this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
       console.log('oke volt');
       this.router.navigate(['/main']);      
     }

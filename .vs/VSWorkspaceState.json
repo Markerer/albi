@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Frontend",
+    "\\Frontend\\Albi",
+    "\\Frontend\\Albi\\src",
+    "\\Frontend\\Albi\\src\\app",
+    "\\Frontend\\Albi\\src\\assets",
+    "\\Frontend\\Albi\\src\\assets\\img",
+    "\\Frontend\\Albi\\src\\assets\\sass",
+    "\\Frontend\\Albi\\src\\assets\\sass\\now-ui-kit",
+    "\\Frontend\\Albi\\src\\assets\\sass\\now-ui-kit\\mixins"
+  ],
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main\\main.component.html",
+  "PreviewInSolutionExplorer": false
+}

@@ -17,7 +17,8 @@ export class MainComponent implements OnInit {
   }
 
   getFlats(): void {
-    this.mainService.getMainScreen().subscribe(data => { this.flats = data; });
+    this.mainService.getMainScreen().subscribe(data => { this.flats = data; console.log('lakasok'); });
+
   }
 
 
