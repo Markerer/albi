@@ -1,4 +1,4 @@
-package albi.bme.hu.albi.interfaces
+package albi.bme.hu.albi.interfaces.main
 
 import albi.bme.hu.albi.model.Flat
 import retrofit2.Call

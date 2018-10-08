@@ -1,25 +1,12 @@
 package albi.bme.hu.albi
 
-import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
 import albi.bme.hu.albi.fragments.fragments.profile.LoginFragment
-import albi.bme.hu.albi.interfaces.FlatClient
-import albi.bme.hu.albi.model.Flat
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import android.widget.Toast
-//import jdk.nashorn.internal.objects.NativeFunction.call
-import retrofit2.Response
-import kotlin.math.log
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,8 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(LoginFragment())
-
-
 
     }
 

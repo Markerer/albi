@@ -1,9 +1,7 @@
 package albi.bme.hu.albi.fragments.fragments.mainview
 
-import albi.bme.hu.albi.MainActivity
-import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
-import albi.bme.hu.albi.interfaces.FlatClient
+import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
 import android.os.Bundle
 import android.support.v4.app.Fragment
