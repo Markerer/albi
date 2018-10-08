@@ -46,12 +46,12 @@ class HouseDetailFragment : Fragment(){
                 usersData = flats as ArrayList<Flat>
                 val adapter = RecyclerAdapter(usersData)
                 recyclerView.adapter = adapter
-                Toast.makeText(activity, "no error :)", Toast.LENGTH_LONG)
+                Toast.makeText(activity, "no error :)", Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(activity, "error :("+t.message, Toast.LENGTH_LONG)
+                Toast.makeText(activity, "error :("+t.message, Toast.LENGTH_LONG).show()
             }
         })
 /*
