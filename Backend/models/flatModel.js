@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var Schema = mongoose.Schema;
 
@@ -10,7 +11,8 @@ var flatSchema = new Schema({
     phone_number: String,
     address: String,
     hasAttachment: Boolean
-})
+});
+flatSchema.plugin(mongoosePaginate);
  
 
 

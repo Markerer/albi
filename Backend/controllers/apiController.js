@@ -31,6 +31,24 @@ module.exports = function(app) {
             res.send(flats);
         })
     });
+
+    app.get('/api/main/:pageid', function(req, res){
+        var pageid = req.params.pageid;
+        
+        Flats.paginate({}, { page: pageid, limit: 10 }, function(err, result) {
+            // result.docs
+            // result.total
+            // result.limit - 10
+            // result.offset - 20
+            if(pageid > 0 && result.pages >= pageid){
+                res.send(result);
+            }else{
+                res.send("Invalid page");
+            }
+            
+          });
+         
+    });
     
     app.post('/api/login', function(req, res){
         
@@ -101,7 +119,7 @@ module.exports = function(app) {
         
     });
 
-    //update, create flats
+    //update, add flats
     app.post('/api/main', function(req, res) {
         
         if (req.body.id) {

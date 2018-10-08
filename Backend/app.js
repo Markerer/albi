@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 var config = require('./config');
 var setupController = require('./controllers/setupController');
 var apiController = require('./controllers/apiController');
