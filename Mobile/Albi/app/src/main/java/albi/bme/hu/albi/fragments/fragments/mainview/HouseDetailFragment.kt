@@ -1,5 +1,6 @@
 package albi.bme.hu.albi.fragments.fragments.mainview
 
+import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import kotlinx.android.synthetic.main.house_detail_fragment.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,11 +25,13 @@ class HouseDetailFragment : Fragment(){
     var usersData = ArrayList<Flat>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return initializationRecycle()
+        val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
+        var recyclerView = view.findViewById<RecyclerView>(R.id.rvHouseDetail)
+        initializationRecycle(recyclerView)
+        return view
     }
 
-    private fun initializationRecycle(): RecyclerView? {
-        val recyclerView = RecyclerView(context!!)
+    private fun initializationRecycle(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
 
         val builder: Retrofit.Builder = Retrofit.Builder()
@@ -54,21 +58,6 @@ class HouseDetailFragment : Fragment(){
                 Toast.makeText(activity, "error :("+t.message, Toast.LENGTH_LONG).show()
             }
         })
-/*
-        usersData.add(Flat(123210, "Pannonia utca", 3))
-        usersData.add(Flat(12232100, "Juharfa utca", 3))
-        usersData.add(Flat(12321200, "Gyöngyvirág utca", 3))
-        usersData.add(Flat(1322200, "Eke utca", 3))
-        usersData.add(Flat(1232200, "Szekér utca", 3))
-        usersData.add(Flat(1223200, "Ló utca", 3))
-        usersData.add(Flat(1233200, "Gomb utca", 3))
-        usersData.add(Flat(1322200, "Kacsa utca", 3))
-        usersData.add(Flat(1223200, "Fa utca", 3))
-        usersData.add(Flat(1232200, "Szamár utca", 3))
-        usersData.add(Flat(1223200, "Kapa utca", 3))
-        usersData.add(Flat(12123200, "Pannonia utca", 3))
-*/
-        return recyclerView
     }
 
 

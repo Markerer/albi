@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -55,13 +56,13 @@ class MainActivity : AppCompatActivity() {
         login = LoginFragment()
         houseDetail = HouseDetailFragment()
 
-        val swipeContainer = findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
+        /*val swipeContainer = findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener{
             SwipeRefreshLayout.OnRefreshListener {
                 // TODO onRefresh() --> behúzni az adatokat
                 @Override
                 fun onRefresh() {
-
+                    Toast.makeText(this, "Refreshed", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -69,11 +70,11 @@ class MainActivity : AppCompatActivity() {
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+                android.R.color.holo_red_light)*/
 
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        loadFragment(LoginFragment())
+        loadFragment(login!!)
 
     }
 

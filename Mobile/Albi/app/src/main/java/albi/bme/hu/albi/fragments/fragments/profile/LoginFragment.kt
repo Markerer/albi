@@ -33,7 +33,7 @@ class LoginFragment : Fragment(){
         val btnRegister = view.findViewById<Button>(R.id.btnRegister)
         val etEmailAddress = view.findViewById<EditText>(R.id.etEmailAddress)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
-        val user = User(etEmailAddress.text.toString(), etPassword.text.toString())
+        var user: User?
 
         btnLogin.setOnClickListener {
 
@@ -47,18 +47,18 @@ class LoginFragment : Fragment(){
             }
             if(!etEmailAddress.text.toString().isEmpty() && !etPassword.text.toString().isEmpty() && !logged){
                 // TODO login után ne hozza egyből létre a fragmentet, hanem ellenőrizze h sikeres e a belépés
-                activity!!.supportFragmentManager.beginTransaction()
+                /*activity!!.supportFragmentManager.beginTransaction()
                         .replace(R.id.frame, HouseDetailFragment())
-                        .commit()
-                sendNetworkRequestLogin(user)
+                        .commit()*/
+                user = User(etEmailAddress.text.toString(), etPassword.text.toString())
+                sendNetworkRequestLogin(user!!)
             }
         }
 
         btnRegister.setOnClickListener {
-            //val user1 = User("test", etEmailAddress.text.toString(), etPassword.text.toString(), "+361234567")
-            //user = User(etEmailAddress.text.toString(), etPassword.text.toString())
-//            val user3 = User("test", "123456")
-            sendNetworkRequestRegister(user)
+
+
+            //sendNetworkRequestRegister(user)
 
         }
 
@@ -82,11 +82,7 @@ class LoginFragment : Fragment(){
 
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
-                if(response.body().toString().equals("OK")){
-                    logged = true
-                    Toast.makeText(activity, "login is: " + response.body().toString(), Toast.LENGTH_LONG).show()
-                }
-
+                Toast.makeText(activity, "login is: " + response.body().toString(), Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: retrofit2.Call<String>, t: Throwable) {
