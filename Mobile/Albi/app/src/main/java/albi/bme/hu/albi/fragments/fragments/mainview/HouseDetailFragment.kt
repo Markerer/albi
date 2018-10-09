@@ -76,4 +76,6 @@ class HouseDetailFragment : Fragment(){
         this.usersData = ArrayList(listOfFlats)
     }
 
+
+
 }

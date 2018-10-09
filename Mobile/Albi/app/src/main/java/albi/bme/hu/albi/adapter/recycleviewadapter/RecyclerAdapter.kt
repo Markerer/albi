@@ -32,4 +32,14 @@ class RecyclerAdapter(val flatList: ArrayList<Flat>) : RecyclerView.Adapter<Recy
         val textViewAddress = itemView.findViewById<TextureView>(R.id.tvAddress) as TextView
         val textViewNumberOfBeds = itemView.findViewById<TextureView>(R.id.tvNumberOfBeds) as TextView
     }
+
+    public fun clearData(){
+        flatList.clear()
+        notifyDataSetChanged()
+    }
+
+    public fun addAll(list: ArrayList<Flat>){
+        flatList.addAll(list)
+        notifyDataSetChanged()
+    }
 }
