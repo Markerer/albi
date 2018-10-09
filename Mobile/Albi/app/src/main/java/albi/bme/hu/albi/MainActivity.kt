@@ -1,18 +1,16 @@
 package albi.bme.hu.albi
 
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
-import albi.bme.hu.albi.fragments.fragments.profile.LoginFragment
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+
+var logged = false
 
 class MainActivity : AppCompatActivity() {
 
-    var login: LoginFragment? = null
     var houseDetail: HouseDetailFragment? = null
 
 
@@ -29,7 +27,6 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                replaceFragment(login!!)
                 return@OnNavigationItemSelectedListener true
             }
 
@@ -53,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        login = LoginFragment()
         houseDetail = HouseDetailFragment()
 
         /*val swipeContainer = findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
@@ -74,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        loadFragment(login!!)
+        loadFragment(houseDetail!!)
 
     }
 

@@ -1,38 +1,31 @@
-package albi.bme.hu.albi.fragments.fragments.profile
+package albi.bme.hu.albi
 
-import albi.bme.hu.albi.R
-import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
 import albi.bme.hu.albi.interfaces.user.UserClient
 import albi.bme.hu.albi.model.User
+import android.content.Intent
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.telecom.Call
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.fragment_login.*
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
-var logged = false
+class LoginActivity : AppCompatActivity() {
 
-class LoginFragment : Fragment(){
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_login, null)
-        val btnLogin = view.findViewById<Button>(R.id.btnLogin)
-        val btnRegister = view.findViewById<Button>(R.id.btnRegister)
-        val etEmailAddress = view.findViewById<EditText>(R.id.etEmailAddress)
-        val etPassword = view.findViewById<EditText>(R.id.etPassword)
+
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val etEmailAddress = findViewById<EditText>(R.id.etEmailAddress)
+        val etPassword = findViewById<EditText>(R.id.etPassword)
         var user: User?
 
         btnLogin.setOnClickListener {
@@ -45,11 +38,7 @@ class LoginFragment : Fragment(){
                 etPassword.requestFocus()
                 etPassword.error = "Please enter your password"
             }
-            if(!etEmailAddress.text.toString().isEmpty() && !etPassword.text.toString().isEmpty() && !logged){
-                // TODO login után ne hozza egyből létre a fragmentet, hanem ellenőrizze h sikeres e a belépés
-                /*activity!!.supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame, HouseDetailFragment())
-                        .commit()*/
+            if (!etEmailAddress.text.toString().isEmpty() && !etPassword.text.toString().isEmpty() && !logged) {
                 user = User(etEmailAddress.text.toString(), etPassword.text.toString())
                 sendNetworkRequestLogin(user!!)
             }
@@ -62,10 +51,10 @@ class LoginFragment : Fragment(){
 
         }
 
-        return view
     }
 
-    private fun sendNetworkRequestLogin(user: User){
+
+    private fun sendNetworkRequestLogin(user: User) {
         val gson = GsonBuilder()
                 .setLenient()
                 .setPrettyPrinting()
@@ -82,39 +71,41 @@ class LoginFragment : Fragment(){
 
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
-                Toast.makeText(activity, "login is: " + response.body().toString(), Toast.LENGTH_LONG).show()
+                if (response.body().toString() == "OK") {
+                    //Toast.makeText(this@LoginActivity, "login is: " + response.body().toString(), Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@LoginActivity, "Username or password is wrong!", Toast.LENGTH_SHORT).show()
+                }
+
             }
 
             override fun onFailure(call: retrofit2.Call<String>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(activity, "error in login:("+t.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@LoginActivity, "error in login:(" + t.message, Toast.LENGTH_LONG).show()
             }
         })
     }
 
-
-    private fun sendNetworkRequestRegister(user: User){
+    private fun sendNetworkRequestRegister(user: User) {
         val builder = Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:3000")
                 .addConverterFactory(GsonConverterFactory.create())
 
         val retrofit = builder.build()
         val client = retrofit.create(UserClient::class.java)
-        val call  = client.createNewUser(user)
+        val call = client.createNewUser(user)
 
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: retrofit2.Call<User>, response: Response<User>) {
-                Toast.makeText(activity, "no error in creating new user: " + response.body().toString(), Toast.LENGTH_LONG)
+                Toast.makeText(this@LoginActivity, "no error in creating new user: " + response.body().toString(), Toast.LENGTH_LONG)
             }
 
             override fun onFailure(call: retrofit2.Call<User>?, t: Throwable?) {
                 t?.printStackTrace()
-                Toast.makeText(activity, "error in register :("+t?.message, Toast.LENGTH_LONG)
+                Toast.makeText(this@LoginActivity, "error in register :(" + t?.message, Toast.LENGTH_LONG)
             }
         })
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 }
