@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './main/main.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { MainService } from './main.service';
+import { AddAdvertisementComponent } from './add-advertisement/add-advertisement.component';
+import { DataService } from './data.service';
 
 
 
@@ -15,7 +17,8 @@ import { MainService } from './main.service';
   declarations: [
     AppComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    AddAdvertisementComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,7 @@ import { MainService } from './main.service';
     ReactiveFormsModule,
     AppRoutingModule,
   ],
-  providers: [UserService, MainService],
+  providers: [UserService, MainService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

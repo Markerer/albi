@@ -2,6 +2,7 @@ import { User } from './user';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 
 
 const httpOptions = {
@@ -31,7 +32,7 @@ export class UserService {
   }
 
   getUser(username: String): Observable<User> {
-    return this.http.get<User>(this.apiRoot + 'users/' + username);
+    return this.http.get(this.apiRoot + 'users/' + username).map(data => data['0']);
   }
 
   loginUser(username: String, pw: String): Observable<String> {

@@ -3,6 +3,7 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   focus: boolean;
   focus1: boolean;
 
-  constructor(private userService: UserService, fb: FormBuilder, private router: Router) {
+  constructor(private userService: UserService, fb: FormBuilder, private router: Router, private data: DataService) {
     this.loginForm = fb.group({
       "usernameLogin": ["", Validators.required],
       "passwordLogin": ["", Validators.required]
@@ -61,9 +62,18 @@ export class LoginComponent implements OnInit {
 
     console.log(response);
     if (response === "OK") {
-      this.userService.getUser(usernameLogin).subscribe(loggedUser => { this.user = loggedUser });
-      console.log('oke volt');
-      this.router.navigate(['/main']);      
+      this.userService.getUser(usernameLogin).subscribe(loggedUser => {
+        this.user.username = loggedUser.username;
+        this.user.password = loggedUser.password;
+        this.user.address = loggedUser.address;
+        this.user.email = loggedUser.email;
+        this.user.phone_number = loggedUser.phone_number;
+        console.log(loggedUser);
+        console.log(this.user);
+
+        this.data.changeData(this.user);
+        this.router.navigate(['/main']);      
+      });
     }
     else {
       console.log('nem volt oke');

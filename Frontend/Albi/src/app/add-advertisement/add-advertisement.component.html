@@ -1,0 +1,55 @@
+<div>
+  <div id="bg" style="background-image: url(assets/img/blurred-image-1.jpg)">
+    <div class="container">
+      <div class="col-md-4 content-center" id="centeralign">
+        <div class="card card-login card-plain">
+          <form [formGroup]="createFlatForm"
+                (ngSubmit)="createFlat(
+              createFlatForm.get('flatname').value,
+              createFlatForm.get('address').value,
+              createFlatForm.get('hasAttachment').value)"
+                class="form" method="" action=""
+                [class.error]="!createFlatForm.valid && createFlatForm.touched">
+            <div class="content">
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
+                       placeholder="Flatname"
+                       class="form-control"
+                       [(ngModel)]="flatname"
+                       [formControl]="createFlatForm.get('flatname')">
+              </div>
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
+                       placeholder="Address"
+                       class="form-control"
+                       [(ngModel)]="address"
+                       [formControl]="createFlatForm.get('address')">
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         value=""
+                         [(ngModel)]="hasAttachment"
+                         [formControl]="createFlatForm.get('hasAttachment')">Image
+                  <span class="form-check-sign"></span>
+                </label>
+                <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">{{ successMessage }}</div>
+                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+                        [disabled]="!createFlatForm.valid" *ngIf="!undefinedUser" (click)="changeSuccessMessage()">
+                  Create advertisement
+                </button>
+                <button type="button" class="btn btn-primary btn-round btn-lg btn-block"
+                        *ngIf="undefinedUser" routerLink="">
+                  You are not logged in, click here to log in
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

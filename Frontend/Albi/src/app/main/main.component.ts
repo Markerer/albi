@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MainService } from '../main.service';
 import { Flat } from '../flat';
+import { DataService } from '../data.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-main',
@@ -10,16 +12,26 @@ import { Flat } from '../flat';
 export class MainComponent implements OnInit {
 
   flats: Flat[];
+  user: User;
+  undefinedUser: boolean = false;
 
-  constructor(private mainService: MainService) { }
+  constructor(private data: DataService, private mainService: MainService) { }
 
   ngOnInit() {
+    this.data.currentData.subscribe(data => {
+      this.user = data;
+      console.log(this.user);
+      if (this.user === undefined || this.user === null) {
+        this.undefinedUser = true;
+      }
+    });
   }
 
   getFlats(): void {
-    this.mainService.getMainScreen().subscribe(data => { this.flats = data; console.log('lakasok'); });
-
+    this.mainService.getMainScreen().subscribe(data => { this.flats = data; console.log(this.flats); });
   }
+
+
 
 
 }

@@ -5,12 +5,12 @@
     "\\Frontend\\Albi",
     "\\Frontend\\Albi\\src",
     "\\Frontend\\Albi\\src\\app",
+    "\\Frontend\\Albi\\src\\app\\add-advertisement",
+    "\\Frontend\\Albi\\src\\app\\login",
+    "\\Frontend\\Albi\\src\\app\\main",
     "\\Frontend\\Albi\\src\\assets",
-    "\\Frontend\\Albi\\src\\assets\\img",
-    "\\Frontend\\Albi\\src\\assets\\sass",
-    "\\Frontend\\Albi\\src\\assets\\sass\\now-ui-kit",
-    "\\Frontend\\Albi\\src\\assets\\sass\\now-ui-kit\\mixins"
+    "\\Frontend\\Albi\\src\\assets\\css"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main\\main.component.html",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\app-routing.module.ts",
   "PreviewInSolutionExplorer": false
 }

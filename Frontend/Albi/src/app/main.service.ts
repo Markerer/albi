@@ -19,8 +19,19 @@ export class MainService {
 
 
   getMainScreen(): Observable<Flat[]> {
-    return this.http.get<Flat[]>(this.apiRoot + 'main');
+    return this.http.get<Flat[]>(this.apiRoot + 'main').map(data => data['0']);
   }
 
-
+  addAdvertisement(flat: Flat): Observable<Flat> {
+    return this.http.post<Flat>(this.apiRoot + 'main',
+      {
+        "flatname": `${flat.flatname}`,
+        "username": `${flat.username}`,
+        "email": `${flat.email}`,
+        "phone_number": `${flat.phone_number}`,
+        "address": `${flat.address}`,
+        "hasAttachment": `${flat.hasAttachment}`
+      },
+      httpOptions);
+  }
 }

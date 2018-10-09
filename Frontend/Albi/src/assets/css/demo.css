@@ -40,6 +40,26 @@
     margin-right: 20px;
 }
 
+#centeralign {
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+}
+
 #navbar-full .navbar {
     border-radius: 0 !important;
     margin-bottom: 15px;
