@@ -52,23 +52,6 @@ class MainActivity : AppCompatActivity() {
 
         houseDetail = HouseDetailFragment()
 
-        /*val swipeContainer = findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
-        swipeContainer.setOnRefreshListener{
-            SwipeRefreshLayout.OnRefreshListener {
-                // TODO onRefresh() --> behúzni az adatokat
-                @Override
-                fun onRefresh() {
-                    Toast.makeText(this, "Refreshed", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light)*/
-
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(houseDetail!!)
 
