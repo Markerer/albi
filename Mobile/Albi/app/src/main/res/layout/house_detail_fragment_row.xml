@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <data class="FeedItemBinding" />
+
     <ImageView
         android:id="@+id/ivPriority"
         android:layout_width="150dp"

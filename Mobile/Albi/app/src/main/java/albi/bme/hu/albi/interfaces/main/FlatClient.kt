@@ -10,8 +10,8 @@ interface FlatClient {
     @GET("/api/main/")
     fun getMainFlats(): Call<List<Flat>>
 
-    @GET("/api/main/{id}")
-    fun getMainFlatsByPage(@Path("id")id: Int): Call<List<Flat>>
+    @GET("/api/main/{_id}")
+    fun getMainFlatsByPage(@Path("_id")id: Int): Call<List<Flat>>
 
 
 }

@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-class RecyclerAdapter(val flatList: ArrayList<Flat>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.house_detail_fragment_row, p0, false)
@@ -24,7 +24,7 @@ class RecyclerAdapter(val flatList: ArrayList<Flat>) : RecyclerView.Adapter<Recy
         val flat: Flat = flatList[p1]
         p0.textViewPrice.text = flat.price.toString()
         p0.textViewAddress.text = flat.address
-        p0.textViewNumberOfBeds.text = flat.numberOfBeds.toString()
+        p0.textViewNumberOfBeds.text = flat._id
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
@@ -43,3 +43,4 @@ class RecyclerAdapter(val flatList: ArrayList<Flat>) : RecyclerView.Adapter<Recy
         notifyDataSetChanged()
     }
 }
+

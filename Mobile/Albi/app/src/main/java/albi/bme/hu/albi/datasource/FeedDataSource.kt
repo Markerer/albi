@@ -42,7 +42,7 @@ class FeedDataSource(var appController: AppController) : PageKeyedDataSource<Lon
 
                     override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
                         val errorMessage = if (t == null) "unknown error" else t.message
-                        networkState.postValue(NetworkState(NetworkState.Status.FAILED, errorMessage))
+                        networkState.postValue(NetworkState(NetworkState.Status.FAILED, errorMessage!!))
                     }
                 })
 
@@ -56,7 +56,7 @@ class FeedDataSource(var appController: AppController) : PageKeyedDataSource<Lon
                 ?.enqueue(object: Callback<List<Flat>>{
                     override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
                         val errorMessage = if (t == null) "unknown error" else t.message
-                        networkState.postValue(NetworkState(NetworkState.Status.FAILED, errorMessage))
+                        networkState.postValue(NetworkState(NetworkState.Status.FAILED, errorMessage!!))
                     }
 
                     override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {

@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(houseDetail!!)
 
+
     }
 
 }
