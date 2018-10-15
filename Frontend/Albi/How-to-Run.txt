@@ -1,0 +1,4 @@
+Node.js command line 
+	-> navigate to this folder
+		-> use the following command:
+ng serve --ssl --ssl-cert "ssl/server.crt" --ssl-key "ssl/server.key"

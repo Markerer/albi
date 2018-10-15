@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { AddAdvertisementComponent } from './add-advertisement/add-advertisement.component';
+import { IsSecureGuard } from './issecureguard.service';
 
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'main', component: MainComponent },
-  { path: 'main/addadvertisement', component: AddAdvertisementComponent }
+  { path: '', component: LoginComponent, canActivate: [IsSecureGuard] },
+  { path: 'main', component: MainComponent, canActivate: [IsSecureGuard] },
+  { path: 'main/addadvertisement', component: AddAdvertisementComponent, canActivate: [IsSecureGuard] },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

@@ -54,7 +54,9 @@ export class LoginComponent implements OnInit {
       this.user.phone_number = phone_number;
       this.userService.createUser(this.user).subscribe(
         user => { console.log(`User ${user.username} created`) }
-      );
+    );
+
+    username = "";
     
   }
 

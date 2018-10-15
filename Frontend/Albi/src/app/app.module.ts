@@ -10,6 +10,8 @@ import { AppRoutingModule } from './/app-routing.module';
 import { MainService } from './main.service';
 import { AddAdvertisementComponent } from './add-advertisement/add-advertisement.component';
 import { DataService } from './data.service';
+import { MainModule } from './main/main.module';
+import { IsSecureGuard } from './issecureguard.service';
 
 
 
@@ -26,8 +28,9 @@ import { DataService } from './data.service';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    MainModule,
   ],
-  providers: [UserService, MainService, DataService],
+  providers: [UserService, MainService, DataService, IsSecureGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
