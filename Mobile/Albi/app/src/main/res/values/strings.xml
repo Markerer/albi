@@ -8,7 +8,6 @@
     <string name="str_register">Register</string>
     <string name="please_enter_your_credentials">Please enter your credentials</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="title">Title</string>
@@ -17,4 +16,15 @@
     <string name="description">description</string>
     <string name="price">Price</string>
     <string name="address">Address</string>
+    <string name="create_account">Create Account</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password">Password</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title">Albi user</string>
+    <string name="nav_header_subtitle">TODO</string>
+    <string name="my_advertisements">My advertisements</string>
+    <string name="favourite_advertisements">Favourite advertisements</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

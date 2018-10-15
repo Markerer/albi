@@ -4,15 +4,15 @@ class User {
 
     private var id: Integer? = null
     var username: String = ""
-    var emailAddress: String = ""
+    var email: String = ""
     var password: String = ""
-    var phoneNumber: String = ""
+    var phone_number: String = ""
 
-    constructor(userName: String = "", emailAddress: String, password: String, phoneNumber: String = "") {
+    constructor(userName: String, emailAddress: String, password: String, phoneNumber: String = "") {
         this.username = userName
-      //  this.emailAddress = emailAddress
+        this.email = emailAddress
         this.password = password
-        //this.phoneNumber = phoneNumber
+        this.phone_number = phoneNumber
     }
 
     constructor(userName: String, password: String){

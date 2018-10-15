@@ -3,13 +3,19 @@ package albi.bme.hu.albi
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.view.GravityCompat
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 var logged = false
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var houseDetail: HouseDetailFragment? = null
 
@@ -26,10 +32,6 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_search -> {
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_profile -> {
-                return@OnNavigationItemSelectedListener true
-            }
-
         }
         false
     }
@@ -50,6 +52,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Code from here is copied from the NavigationDrawerTest bullshit
+        setSupportActionBar(toolbar)
+
+        val toggle = ActionBarDrawerToggle(
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        nav_view.setNavigationItemSelectedListener(this)
+
+
+        //From here is our code
         houseDetail = HouseDetailFragment()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -57,5 +71,32 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle navigation view item clicks here.
+        when (item.itemId) {
+            R.id.nav_profile -> {
+                // Handle the camera action
+            }
+            R.id.nav_my_ads -> {
+
+            }
+            R.id.nav_fav_ads -> {
+
+            }
+        }
+
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 
 }

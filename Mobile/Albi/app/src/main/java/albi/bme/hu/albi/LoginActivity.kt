@@ -45,10 +45,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-
-
-            //sendNetworkRequestRegister(user)
-
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
         }
 
     }
@@ -72,9 +70,9 @@ class LoginActivity : AppCompatActivity() {
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
                 if (response.body().toString() == "OK") {
-                    //Toast.makeText(this@LoginActivity, "login is: " + response.body().toString(), Toast.LENGTH_LONG).show()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this@LoginActivity, "Username or password is wrong!", Toast.LENGTH_SHORT).show()
                 }
@@ -88,24 +86,4 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun sendNetworkRequestRegister(user: User) {
-        val builder = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-
-        val retrofit = builder.build()
-        val client = retrofit.create(UserClient::class.java)
-        val call = client.createNewUser(user)
-
-        call.enqueue(object : Callback<User> {
-            override fun onResponse(call: retrofit2.Call<User>, response: Response<User>) {
-                Toast.makeText(this@LoginActivity, "no error in creating new user: " + response.body().toString(), Toast.LENGTH_LONG)
-            }
-
-            override fun onFailure(call: retrofit2.Call<User>?, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(this@LoginActivity, "error in register :(" + t?.message, Toast.LENGTH_LONG)
-            }
-        })
-    }
 }
