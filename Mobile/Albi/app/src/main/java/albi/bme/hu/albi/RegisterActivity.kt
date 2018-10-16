@@ -24,6 +24,9 @@ class RegisterActivity : AppCompatActivity() {
         var emailEmpty = input_email.text.toString().isEmpty()
         var passwordEmpty = input_password.text.toString().isEmpty()
 
+        if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(input_email.text.toString()).matches())){
+            input_email.error = "this is not a valid email format!"
+        }
 
         if(nameEmpty){
             input_name.error = "must be filled"
@@ -62,4 +65,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }
