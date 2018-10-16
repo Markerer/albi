@@ -1,6 +1,8 @@
 package albi.bme.hu.albi
 
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
+import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
+import albi.bme.hu.albi.model.User
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.NavigationView
@@ -18,6 +20,8 @@ var logged = false
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var houseDetail: HouseDetailFragment? = null
+    var profileDetail: ProfileFragment? = null
+    var user : User? = null
 
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -55,6 +59,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Code from here is copied from the NavigationDrawerTest bullshit
         setSupportActionBar(toolbar)
 
+        user = intent.getSerializableExtra("user") as User
+
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -76,7 +82,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-                // Handle the camera action
+                profileDetail = ProfileFragment()
+                profileDetail!!.setUserInProfile(user as User)
+                replaceFragment(profileDetail!!)
             }
             R.id.nav_my_ads -> {
 

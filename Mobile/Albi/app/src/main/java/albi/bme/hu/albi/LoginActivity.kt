@@ -71,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
                 if (response.body().toString() == "OK") {
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("user", user)
                     startActivity(intent)
                     finish()
                 } else {

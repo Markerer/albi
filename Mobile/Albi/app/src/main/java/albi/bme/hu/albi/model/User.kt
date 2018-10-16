@@ -1,6 +1,8 @@
 package albi.bme.hu.albi.model
 
-class User {
+import java.io.Serializable
+
+class User: Serializable {
 
     private var id: Integer? = null
     var username: String = ""
@@ -19,6 +21,11 @@ class User {
         this.username = userName
         this.password = password
     }
+
+   public fun getUserName(): String{
+       return this.username
+   }
+
 
    public fun getId(): Integer? = this.id
 }
