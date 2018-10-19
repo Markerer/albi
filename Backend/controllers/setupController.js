@@ -32,7 +32,8 @@ module.exports = function(app) {
                 email: 'admin@gmail.com',
                 phone_number: '000000',
                 address: 'asd utca',
-                hasAttachment: true
+                hasAttachment: true,
+                url: 'asdfgh'
             }
         ];
 

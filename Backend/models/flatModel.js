@@ -5,12 +5,14 @@ var Schema = mongoose.Schema;
 
 
 var flatSchema = new Schema({
-    flatname: String,
-    username: String,
+    userID: String,
+    price: String,
+    numberOfRooms: String,
+    description: String,
     email: String,
     phone_number: String,
     address: String,
-    hasAttachment: Boolean
+    hasAttachment: Boolean,
 });
 flatSchema.plugin(mongoosePaginate);
  

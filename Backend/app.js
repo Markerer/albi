@@ -1,10 +1,11 @@
 var express = require('express');
 var app = express();
+const ejs = require('ejs');
 var mongoose = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate');
 var config = require('./config');
 var setupController = require('./controllers/setupController');
 var apiController = require('./controllers/apiController');
+
 
 var port = process.env.PORT || 3000;
 
@@ -12,7 +13,7 @@ var port = process.env.PORT || 3000;
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:4200');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -28,9 +29,8 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/assets', express.static(__dirname + '/public'));
-
 app.set('view engine', 'ejs');
+app.use(express.static('./public'));
 
 mongoose.connect(config.getDbConnectionString());
 setupController(app);
