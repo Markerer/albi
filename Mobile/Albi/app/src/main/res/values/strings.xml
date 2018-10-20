@@ -14,8 +14,6 @@
     <string name="duedate">Some description</string>
     <string name="number_of_beds">Number of beds</string>
     <string name="description">description</string>
-    <string name="price">Price</string>
-    <string name="address">Address</string>
     <string name="create_account">Create Account</string>
     <string name="name">Name</string>
     <string name="phone_number">Phone number</string>
@@ -27,4 +25,24 @@
     <string name="favourite_advertisements">Favourite advertisements</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="select_the_price">Price</string>
+    <string name="upload_photo">Upload photo</string>
+    <string name="price">Price</string>
+    <string name="number_of_rooms">Number of rooms</string>
+    <string name="add_description">Add description</string>
+    <string name="address">Address</string>
+    <string-array name="districts_array_name">
+        <item>I. kerület</item>
+        <item>II. kerület</item>
+        <item>III. kerület</item>
+        <item>IV. kerület</item>
+    </string-array>
+
+    <string-array name="districts_array_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 </resources>

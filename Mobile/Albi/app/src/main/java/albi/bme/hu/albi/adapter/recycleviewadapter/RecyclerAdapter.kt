@@ -28,9 +28,9 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
-        val textViewPrice = itemView.findViewById<TextureView>(R.id.tvPrice) as TextView
-        val textViewAddress = itemView.findViewById<TextureView>(R.id.tvAddress) as TextView
-        val textViewNumberOfBeds = itemView.findViewById<TextureView>(R.id.tvNumberOfBeds) as TextView
+        val textViewPrice = itemView.findViewById<TextView>(R.id.tvPrice)
+        val textViewAddress = itemView.findViewById<TextView>(R.id.tvAddress)
+        val textViewNumberOfBeds = itemView.findViewById<TextView>(R.id.tvNumberOfBeds)
     }
 
     public fun clearData(){

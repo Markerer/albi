@@ -2,6 +2,7 @@ package albi.bme.hu.albi
 
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
 import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
+import albi.bme.hu.albi.fragments.fragments.mainview.search.SearchFragment
 import albi.bme.hu.albi.model.User
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -11,6 +12,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import albi.bme.hu.albi.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     var houseDetail: HouseDetailFragment? = null
     var profileDetail: ProfileFragment? = null
+    var searchFragment: SearchFragment? = null
     var user : User? = null
 
 
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {
+                searchFragment = SearchFragment()
+                replaceFragment(searchFragment!!)
                 return@OnNavigationItemSelectedListener true
             }
         }
