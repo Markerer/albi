@@ -38,6 +38,7 @@ export class AddAdvertisementComponent implements OnInit {
     this.data.currentData.subscribe(data => {
       if (data === undefined || data === null) {
         this.undefinedUser = true;
+        this.router.navigate(['']);
       } else {
         this.user._id = data._id;
         this.user.username = data.username;
@@ -59,10 +60,6 @@ export class AddAdvertisementComponent implements OnInit {
     this._success.next(`New advertisement successfully created!`);
   }
 
-  navigateBackToMain() {
-    this.router.navigate(['main']);
-  }
-
   createFlat(price: String, numberOfRooms: String, description: String, address: String, hasAttachment: Boolean): void {
     this.createdFlat.userID = this.user._id;
     this.createdFlat.price = price;
@@ -76,7 +73,7 @@ export class AddAdvertisementComponent implements OnInit {
     this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => { console.log(addedFlat); this.data.changeData(this.user);});
     setTimeout(() => {
       this.router.navigate(['main']);
-    }, 3000);
+    }, 4000);
   }
 
 }

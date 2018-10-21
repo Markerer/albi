@@ -35,6 +35,18 @@ export class UserService {
     return this.http.get(this.apiRoot + 'users/' + username).map(data => data['0']);
   }
 
+  updateUser(user: User): Observable<String> {
+    return this.http.post(this.apiRoot + 'user/',
+      {
+        "id": `${user._id}`,
+        "username": `${user.username}`,
+        "password": `${user.password}`,
+        "email": `${user.email}`,
+        "phone_number": `${user.phone_number}`,
+        "address": `${user.address}`
+      }, { responseType: 'text' });
+  }
+
   loginUser(username: String, pw: String): Observable<String> {
     return this.http.post(this.apiRoot + 'login',
       {

@@ -36,11 +36,6 @@ export class MainComponent implements OnInit {
     this.mainService.getMainScreen().subscribe(data => { this.flats = data; console.log(this.flats); });
   }
 
-  logout(): void {
-    this.user = null;
-    this.router.navigate(['']);
-  }
-
   login(): void {
     this.router.navigate(['']);
   }

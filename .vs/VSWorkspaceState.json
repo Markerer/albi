@@ -5,12 +5,14 @@
     "\\Frontend\\Albi",
     "\\Frontend\\Albi\\src",
     "\\Frontend\\Albi\\src\\app",
-    "\\Frontend\\Albi\\src\\app\\add-advertisement",
-    "\\Frontend\\Albi\\src\\app\\login",
     "\\Frontend\\Albi\\src\\app\\main",
+    "\\Frontend\\Albi\\src\\app\\myads",
+    "\\Frontend\\Albi\\src\\app\\navbar",
+    "\\Frontend\\Albi\\src\\app\\profile",
     "\\Frontend\\Albi\\src\\assets",
-    "\\Frontend\\Albi\\ssl"
+    "\\Frontend\\Albi\\src\\assets\\css",
+    "\\Frontend\\Albi\\src\\environments"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\login\\login.component.ts",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\profile\\profile.component.html",
   "PreviewInSolutionExplorer": false
 }

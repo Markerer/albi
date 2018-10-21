@@ -1,0 +1,82 @@
+<html>
+<body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100% 100%;
+   height: 1000px; background-attachment:fixed">
+
+  <div>
+    <app-navbar *ngIf="!undefinedUser"></app-navbar>
+  </div>
+
+  <div class="container">
+    <div class="col-md-4 content-center" id="centeralign">
+      <div class="card card-login card-plain">
+
+        <form [formGroup]="updateForm"
+              (ngSubmit)="updateUser(
+              updateForm.get('username').value,
+              updateForm.get('password').value,
+              updateForm.get('email').value,
+              updateForm.get('phone_number').value,
+              updateForm.get('address').value)"
+              class="form" method="" action=""
+              [class.error]="!updateForm.valid">
+          <div class="content">
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     class="form-control"
+                     value="{{ user.username }}"
+                     placeholder="Username"
+                     [(ngModel)]="username"
+                     [formControl]="updateForm.get('username')">
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="password"
+                     class="form-control"
+                     value={{user.password}}
+                     placeholder="Password"
+                     [(ngModel)]="password"
+                     [formControl]="updateForm.get('password')">
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     class="form-control"
+                     value={{user.email}}
+                     placeholder="Email"
+                     [(ngModel)]="email"
+                     [formControl]="updateForm.get('email')">
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Address"
+                     value={{user.address}}
+                     class="form-control"
+                     [(ngModel)]="address"
+                     [formControl]="updateForm.get('address')">
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Phone"
+                     value={{user.phone_number}}
+                     class="form-control"
+                     [(ngModel)]="phone_number"
+                     [formControl]="updateForm.get('phone_number')">
+
+              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+                {{ successMessage }}
+              </div>
+              <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block"
+                      [disabled]="!updateForm.valid">
+                Update data
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

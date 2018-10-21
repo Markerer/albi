@@ -11,6 +11,9 @@ import { MainService } from './main.service';
 import { AddAdvertisementComponent } from './add-advertisement/add-advertisement.component';
 import { DataService } from './data.service';
 import { IsSecureGuard } from './issecureguard.service';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ProfileComponent } from './profile/profile.component';
+import { MyadsComponent } from './myads/myads.component';
 
 
 
@@ -19,7 +22,10 @@ import { IsSecureGuard } from './issecureguard.service';
     AppComponent,
     LoginComponent,
     MainComponent,
-    AddAdvertisementComponent
+    AddAdvertisementComponent,
+    NavbarComponent,
+    ProfileComponent,
+    MyadsComponent
   ],
   imports: [
     BrowserModule,

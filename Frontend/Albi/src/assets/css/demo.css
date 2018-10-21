@@ -40,6 +40,10 @@
     margin-right: 20px;
 }
 
+.clickableThing {
+  cursor: pointer;
+}
+
 #centeralign {
   width: 400px;
   height: 400px;
