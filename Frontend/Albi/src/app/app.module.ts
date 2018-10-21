@@ -10,7 +10,6 @@ import { AppRoutingModule } from './/app-routing.module';
 import { MainService } from './main.service';
 import { AddAdvertisementComponent } from './add-advertisement/add-advertisement.component';
 import { DataService } from './data.service';
-import { MainModule } from './main/main.module';
 import { IsSecureGuard } from './issecureguard.service';
 
 
@@ -27,8 +26,7 @@ import { IsSecureGuard } from './issecureguard.service';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,
-    MainModule,
+    AppRoutingModule
   ],
   providers: [UserService, MainService, DataService, IsSecureGuard],
   bootstrap: [AppComponent]

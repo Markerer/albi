@@ -3,6 +3,7 @@ import { MainService } from '../main.service';
 import { Flat } from '../flat';
 import { DataService } from '../data.service';
 import { User } from '../user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -15,7 +16,7 @@ export class MainComponent implements OnInit {
   user: User;
   undefinedUser: boolean = false;
 
-  constructor(private data: DataService, private mainService: MainService) { }
+  constructor(private data: DataService, private mainService: MainService, private router: Router) { }
 
   ngOnInit() {
     this.data.currentData.subscribe(data => {
@@ -27,8 +28,21 @@ export class MainComponent implements OnInit {
     });
   }
 
+  navigateToAdding() {
+    this.router.navigate(['main/addadvertisement']);
+  }
+
   getFlats(): void {
     this.mainService.getMainScreen().subscribe(data => { this.flats = data; console.log(this.flats); });
+  }
+
+  logout(): void {
+    this.user = null;
+    this.router.navigate(['']);
+  }
+
+  login(): void {
+    this.router.navigate(['']);
   }
 
 

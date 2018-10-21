@@ -6,6 +6,7 @@ import { MainService } from '../main.service';
 import { Flat } from '../flat';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-advertisement',
@@ -23,11 +24,13 @@ export class AddAdvertisementComponent implements OnInit {
 
   createFlatForm: FormGroup;
 
-  constructor(private data: DataService, fb: FormBuilder, private mainService: MainService) {
+  constructor(private data: DataService, fb: FormBuilder, private router: Router, private mainService: MainService) {
     this.createFlatForm = fb.group({
-      "flatname": ["", Validators.required],
+      "price": ["", Validators.required],
+      "numberOfRooms": ["", Validators.required],
+      "description": ["", Validators.required],
       "address": ["", Validators.required],
-      "hasAttachment": ["", [Validators.required]]
+      "hasAttachment": [""]
     });
   }
 
@@ -36,6 +39,7 @@ export class AddAdvertisementComponent implements OnInit {
       if (data === undefined || data === null) {
         this.undefinedUser = true;
       } else {
+        this.user._id = data._id;
         this.user.username = data.username;
         this.user.password = data.password;
         this.user.address = data.address;
@@ -44,9 +48,10 @@ export class AddAdvertisementComponent implements OnInit {
         console.log(this.user);
       }
     });
+    //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
-      debounceTime(5000)
+      debounceTime(4000)
     ).subscribe(() => this.successMessage = null);
   }
 
@@ -54,13 +59,24 @@ export class AddAdvertisementComponent implements OnInit {
     this._success.next(`New advertisement successfully created!`);
   }
 
-  createFlat(flatname: String, address: String, hasAttachment: boolean): void {
-    this.createdFlat.username = this.user.username;
-    this.createdFlat.flatname = flatname;
+  navigateBackToMain() {
+    this.router.navigate(['main']);
+  }
+
+  createFlat(price: String, numberOfRooms: String, description: String, address: String, hasAttachment: Boolean): void {
+    this.createdFlat.userID = this.user._id;
+    this.createdFlat.price = price;
+    this.createdFlat.numberOfRooms = numberOfRooms;
+    this.createdFlat.description = description;
     this.createdFlat.email = this.user.email;
+    this.createdFlat.phone_number = this.user.phone_number;
     this.createdFlat.address = address;
     this.createdFlat.hasAttachment = hasAttachment;
-    this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => { console.log(addedFlat); });
+    //A belépett user továbbadása
+    this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => { console.log(addedFlat); this.data.changeData(this.user);});
+    setTimeout(() => {
+      this.router.navigate(['main']);
+    }, 3000);
   }
 
 }

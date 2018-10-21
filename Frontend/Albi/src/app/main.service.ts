@@ -13,7 +13,7 @@ const httpOptions = {
 @Injectable()
 export class MainService {
 
-  apiRoot: string = 'http://localhost:3000/api/';
+  apiRoot: string = 'http://localhost:3000/';
 
   constructor(private http: HttpClient) { }
 
@@ -22,11 +22,21 @@ export class MainService {
     return this.http.get<Flat[]>(this.apiRoot + 'main').map(data => data['0']);
   }
 
+  getFlatByID(flatID: String): Observable<Flat> {
+    return this.http.get<Flat>(this.apiRoot + 'flat' + flatID).map(data => data['0']);
+  }
+
+  getUserFlats(userID: String): Observable<Flat[]> {
+    return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID).map(data => data['0']);
+  }
+
   addAdvertisement(flat: Flat): Observable<Flat> {
-    return this.http.post<Flat>(this.apiRoot + 'main',
+    return this.http.post<Flat>(this.apiRoot + 'addflat/' + flat.userID,
       {
-        "flatname": `${flat.flatname}`,
-        "username": `${flat.username}`,
+        "userID": `${flat.userID}`,
+        "price": `${flat.price}`,
+        "numberOfRooms": `${flat.numberOfRooms}`,
+        "description": `${flat.description}`,
         "email": `${flat.email}`,
         "phone_number": `${flat.phone_number}`,
         "address": `${flat.address}`,

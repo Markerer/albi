@@ -11,6 +11,6 @@
     "\\Frontend\\Albi\\src\\assets",
     "\\Frontend\\Albi\\ssl"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main\\main-routing.module.ts",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\login\\login.component.ts",
   "PreviewInSolutionExplorer": false
 }
