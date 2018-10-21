@@ -207,7 +207,7 @@ module.exports = function(app) {
         
     });
 
-    //update, add flats
+    //update
     app.post('/api/main', function(req, res) {
         
         if (req.body.id) {
@@ -223,6 +223,7 @@ module.exports = function(app) {
         
     });
 
+    //add flats  to user
     app.post('/addflat/:userID', function(req, res) {
         var newFlat = Flats({
             userID: req.params.userID,
@@ -243,7 +244,22 @@ module.exports = function(app) {
                 
            });
     });
-            
+    
+    app.get('/user/flats/:userID', function(req, res){
+        
+        Flats.find({userID: req.params.userID}, function(err, flats){
+            if(err) throw err;
+            res.send(flats);
+        });
+       
+    });
+
+    app.get('/flat/:flatID', function(req, res){
+        Flats.findById({_id: req.params.flatID}, function(err, flat){
+            if(err) throw err;    
+            res.send(flat);
+        });
+    });
     
     app.delete('/api/user', function(req, res) {
         
