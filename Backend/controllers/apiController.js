@@ -191,25 +191,30 @@ module.exports = function(app) {
         }
         
         else {
-           
+            Users.count({username: req.body.username}, function(err, count){
+                if(count>0){
+                    res.send("The username is already taken.");
+                }
+                else{
+                   var newUser = Users({
+                       username: req.body.username,
+                       password: req.body.password,
+                       email: req.body.email,
+                       phone_number: req.body.phone_number,
+                       address: req.body.address
+                   });
+                   
+                   Users.create(newUser, function(err, results){
+                        if(err) throw err;
+                    
+                        res.send(results);
+                        
+                   });
         
-           var newUser = Users({
-               username: req.body.username,
-               password: req.body.password,
-               email: req.body.email,
-               phone_number: req.body.phone_number,
-               address: req.body.address
-           });
-           
-           Users.create(newUser, function(err, results){
-                if(err) throw err;
-            
-                res.send(results);
-                
-           });
-
-            
-        }
+                }
+            });
+          
+            }
         
     });
 
