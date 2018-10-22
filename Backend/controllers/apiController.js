@@ -14,7 +14,9 @@ module.exports = function(app) {
     //list all users
     app.get('/api/users', function(req, res){
         Users.find({}, function(err, users) {
-           
+           if(err){
+               res.send("There are no users");
+           }
             res.send(users);  
           });
     });
@@ -151,7 +153,9 @@ module.exports = function(app) {
     app.get('/api/users/:uname', function(req, res) {
         
         Users.find({ username: req.params.uname }, function(err, users) {
-            if (err) throw err;
+            if(err){
+                res.send("There is no user with this name");
+            }
             
             res.send(users);
         });
@@ -162,7 +166,9 @@ module.exports = function(app) {
     app.get('/api/user/:id', function(req, res) {
        
        Users.findById({ _id: req.params.id }, function(err, user) {
-           if (err) throw err;
+        if(err){
+            res.send("There is no user with this ID");
+        }
            
            res.send(user);
        });
