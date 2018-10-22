@@ -152,12 +152,12 @@ module.exports = function(app) {
     //search by username
     app.get('/api/users/:uname', function(req, res) {
         
-        Users.find({ username: req.params.uname }, function(err, users) {
+        Users.findOne({ username: req.params.uname }, function(err, user) {
             if(err){
                 res.send("There is no user with this name");
             }
             
-            res.send(users);
+            res.send(user);
         });
         
     });
