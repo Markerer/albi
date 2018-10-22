@@ -15,10 +15,12 @@ class ProfileFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.profile_fragment, container, false)
-        var userName = view.findViewById<TextView>(R.id.userName)
+        val userName = view.findViewById<TextView>(R.id.userName)
         val userEmail = view.findViewById<TextView>(R.id.profile_email)
+        val phoneNumber = view.findViewById<TextView>(R.id.tvphone_number)
         userName.text = user?.username
         userEmail.text = user?.email
+        phoneNumber.text = user?.phone_number
         return view
     }
 

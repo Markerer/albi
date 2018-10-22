@@ -4,6 +4,7 @@ import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.network.RestApiFactory
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -27,42 +28,35 @@ class HouseDetailFragment : Fragment(){
     var usersData = ArrayList<Flat>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
-        var recyclerView = view.findViewById<RecyclerView>(R.id.rvHouseDetail)
 
-        var swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
+        val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rvHouseDetail)
+
+        val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
             networkRequestForMainFlats(recyclerView)
             val handler = Handler()
-            handler.postDelayed(object: Runnable {
-                override fun run(){
-                    swipeContainer.isRefreshing = false
-                }
-            }, 1000)
+            handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
         }
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
 
+
+
         initializationRecycle(recyclerView)
+
         return view
     }
 
     private fun initializationRecycle(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
-
         networkRequestForMainFlats(recyclerView)
     }
 
     private fun networkRequestForMainFlats(recyclerView: RecyclerView) {
-        val builder: Retrofit.Builder = Retrofit.Builder()
-                //https://stackoverflow.com/questions/40077927/simple-retrofit2-request-to-a-localhost-server
-                .baseUrl("http://10.0.2.2:3000/")
-                .addConverterFactory(GsonConverterFactory.create())
-
-        val retrofit: Retrofit = builder.build()
-        val client: FlatClient = retrofit.create(FlatClient::class.java)
+        val client = RestApiFactory.createFlatClient()
         val call = client.getMainFlats()
-
 
         call.enqueue(object : Callback<List<Flat>> {
             override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
@@ -81,9 +75,9 @@ class HouseDetailFragment : Fragment(){
     }
 
 
-    fun setFlatsData(listOfFlats: List<Flat>){
+    /*fun setFlatsData(listOfFlats: List<Flat>){
         this.usersData = ArrayList(listOfFlats)
-    }
+    }*/
 
 
 

@@ -13,6 +13,9 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import albi.bme.hu.albi.R
+import android.content.Context
+import android.content.SharedPreferences
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -61,10 +64,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        user = intent.getSerializableExtra("user") as User
+
         //Code from here is copied from the NavigationDrawerTest bullshit
         setSupportActionBar(toolbar)
 
-        user = intent.getSerializableExtra("user") as User
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -75,6 +79,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         //From here is our code
+
+
         houseDetail = HouseDetailFragment()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -88,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_profile -> {
                 profileDetail = ProfileFragment()
-                profileDetail!!.setUserInProfile(user as User)
+                profileDetail!!.setUserInProfile(user!!)
                 replaceFragment(profileDetail!!)
             }
             R.id.nav_my_ads -> {

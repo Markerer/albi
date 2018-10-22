@@ -52,7 +52,7 @@ class AddFlatFragment : Fragment() {
 
         uploadButton!!.setOnClickListener {
             requestNeededPermission()
-            var intent: Intent = Intent()
+            val intent: Intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "select picture"), PICK_IMAGE_FROM_GALERY_REQUEST)
@@ -63,7 +63,7 @@ class AddFlatFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            var uri: Uri = data.data
+            val uri: Uri = data.data
             uploadFile(uri)
         }
     }

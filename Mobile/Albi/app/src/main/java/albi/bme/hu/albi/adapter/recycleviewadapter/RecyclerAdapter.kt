@@ -4,7 +4,6 @@ import albi.bme.hu.albi.R
 import albi.bme.hu.albi.model.Flat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -22,15 +21,15 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val flat: Flat = flatList[p1]
-        p0.textViewPrice.text = flat.price.toString()
-        p0.textViewAddress.text = flat.address
-        p0.textViewNumberOfBeds.text = flat._id
+        p0.tvPrice.text = flat.price.toString()
+        p0.tvAddress.text = flat.address
+        p0.tvNumberOfBeds.text = flat._id
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
-        val textViewPrice = itemView.findViewById<TextView>(R.id.tvPrice)
-        val textViewAddress = itemView.findViewById<TextView>(R.id.tvAddress)
-        val textViewNumberOfBeds = itemView.findViewById<TextView>(R.id.tvNumberOfBeds)
+        val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
+        val tvAddress = itemView.findViewById<TextView>(R.id.tvAddress)
+        val tvNumberOfBeds = itemView.findViewById<TextView>(R.id.tvNumberOfBeds)
     }
 
     public fun clearData(){

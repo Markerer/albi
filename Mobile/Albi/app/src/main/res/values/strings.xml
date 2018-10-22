@@ -13,6 +13,7 @@
     <string name="title">Title</string>
     <string name="duedate">Some description</string>
     <string name="number_of_beds">Number of beds</string>
+    <string name="username">Username</string>
     <string name="description">description</string>
     <string name="create_account">Create Account</string>
     <string name="name">Name</string>
