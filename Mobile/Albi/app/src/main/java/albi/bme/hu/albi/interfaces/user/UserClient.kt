@@ -24,6 +24,10 @@ interface UserClient {
      *  GET: User (Every detail of the user)
      */
     @GET("/api/users/{username}")
-    fun getUserByUserName(@Path("username") username : String ): Call<List<User>>
+    fun getUserByUserName(@Path("username") username : String ): Call<User>
+
+
+    @GET("/api/user/{id}")
+    fun getUserById(@Path("id") id : String): Call<User>
 
 }

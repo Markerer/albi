@@ -20,7 +20,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-var logged = false
+const val PREF_NAME: String = "AlbiSettings"
+const val CURRENT_USER_KEY = "currentUser"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,6 +67,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         user = intent.getSerializableExtra("user") as User
 
+        //  Elmenti az éppen bejelentkezett felhasználó ID-jét, így legközelebb nem kell bejelentkezni
+        //saveUserId(user)
+
         //Code from here is copied from the NavigationDrawerTest bullshit
         setSupportActionBar(toolbar)
 
@@ -79,13 +83,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         //From here is our code
-
-
         houseDetail = HouseDetailFragment()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(houseDetail!!)
 
+
+    }
+
+    private fun saveUserId(user : User?){
+        val sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.putString(CURRENT_USER_KEY, user?._id)
+        editor.apply()
 
     }
 
