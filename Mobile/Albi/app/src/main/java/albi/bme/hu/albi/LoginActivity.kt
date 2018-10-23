@@ -6,9 +6,11 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,35 +50,32 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        checkIfLogged()
+        //checkIfLogged()
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnRegister = findViewById<Button>(R.id.btnRegister)
-        val etUsername = findViewById<EditText>(R.id.etUsername)
-        val etPassword = findViewById<EditText>(R.id.etPassword)
+        btnLogin.setOnClickListener (::loginOnClickListener)
+        btnRegister.setOnClickListener (::registerOnClickListener)
+
+    }
+
+    private fun loginOnClickListener(view: View){
         var user: User?
-
-        btnLogin.setOnClickListener {
-
-            if (etUsername.text.toString().isEmpty()) {
-                etUsername.requestFocus()
-                etUsername.error = "Please enter your email address"
-            }
-            if (etPassword.text.toString().isEmpty()) {
-                etPassword.requestFocus()
-                etPassword.error = "Please enter your password"
-            }
-            if (!etUsername.text.toString().isEmpty() && !etPassword.text.toString().isEmpty()) {
-                user = User(etUsername.text.toString(), etPassword.text.toString())
-                sendNetworkRequestLogin(user!!)
-            }
+        if (etUsername.text.toString().isEmpty()) {
+            etUsername.requestFocus()
+            etUsername.error = "Please enter your email address"
         }
 
-        btnRegister.setOnClickListener {
-            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-            startActivity(intent)
+        if (etPassword.text.toString().isEmpty()) {
+            etPassword.requestFocus()
+            etPassword.error = "Please enter your password"
         }
-
+        if (!etUsername.text.toString().isEmpty() && !etPassword.text.toString().isEmpty()) {
+            user = User(etUsername.text.toString(), etPassword.text.toString())
+            sendNetworkRequestLogin(user!!)
+        }
+    }
+    private fun registerOnClickListener(view: View){
+        val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+        startActivity(intent)
     }
 
     private fun getEveryDetailOfUser(name: String) {

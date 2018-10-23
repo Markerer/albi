@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         user = intent.getSerializableExtra("user") as User
 
         //  Elmenti az éppen bejelentkezett felhasználó ID-jét, így legközelebb nem kell bejelentkezni
-        //saveUserId(user)
+        saveUserId(user)
 
         //Code from here is copied from the NavigationDrawerTest bullshit
         setSupportActionBar(toolbar)
