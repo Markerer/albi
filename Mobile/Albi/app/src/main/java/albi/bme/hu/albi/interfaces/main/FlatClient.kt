@@ -1,6 +1,7 @@
 package albi.bme.hu.albi.interfaces.main
 
 import albi.bme.hu.albi.model.Flat
+import android.media.Image
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -17,11 +18,10 @@ interface FlatClient {
     @POST("flat/upload")
     fun uploadPhoto(@Part photo: MultipartBody.Part) : Call<String>
 
-    @POST("/addflat/")
-    fun uploadFlat(price: Int,
-                   numberOfRooms: Int,
-                   description : String,
-                   email: String,
-                   phone_number: String,
-                   address: String)
+    @POST("/addflat/{usedID}")
+    fun uploadFlat(@Path("userID")usedId: String,
+                   @Body flat: Flat): Call<Flat>
+
+    @GET("/public/uploads/{imageSource}")
+    fun getImage(@Path("imageSource") source: String): Call<Image> //lol?
 }

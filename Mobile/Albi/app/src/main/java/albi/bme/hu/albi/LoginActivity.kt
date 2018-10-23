@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //checkIfLogged()
+        checkIfLogged()
 
         btnLogin.setOnClickListener (::loginOnClickListener)
         btnRegister.setOnClickListener (::registerOnClickListener)

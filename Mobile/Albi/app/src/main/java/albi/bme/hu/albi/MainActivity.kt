@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import albi.bme.hu.albi.R
+import albi.bme.hu.albi.fragments.fragments.mainview.addhouse.AddFlatFragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var houseDetail: HouseDetailFragment? = null
     var profileDetail: ProfileFragment? = null
     var searchFragment: SearchFragment? = null
+    var addFlatFragment: AddFlatFragment? = null
     var user : User? = null
 
 
@@ -38,10 +40,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_add_house -> {
+                replaceFragment(addFlatFragment!!)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {
-                searchFragment = SearchFragment()
                 replaceFragment(searchFragment!!)
                 return@OnNavigationItemSelectedListener true
             }
@@ -84,6 +86,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //From here is our code
         houseDetail = HouseDetailFragment()
+        searchFragment = SearchFragment()
+        addFlatFragment = AddFlatFragment()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(houseDetail!!)

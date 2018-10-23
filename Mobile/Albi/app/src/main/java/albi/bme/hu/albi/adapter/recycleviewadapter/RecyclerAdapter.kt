@@ -10,8 +10,8 @@ import android.widget.TextView
 
 class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(p0.context).inflate(R.layout.house_detail_fragment_row, p0, false)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ViewHolder {
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.house_detail_fragment_row, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -19,17 +19,17 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
         return flatList.size
     }
 
-    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        val flat: Flat = flatList[p1]
-        p0.tvPrice.text = flat.price.toString()
-        p0.tvAddress.text = flat.address
-        p0.tvNumberOfBeds.text = flat._id
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val flat: Flat = flatList[position]
+        viewHolder.tvPrice.text = flat.price.toString()
+        viewHolder.tvAddress.text = flat.address
+        viewHolder.tvNumberOfRooms.text = flat.numberOfRooms.toString()
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
-        val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
-        val tvAddress = itemView.findViewById<TextView>(R.id.tvAddress)
-        val tvNumberOfBeds = itemView.findViewById<TextView>(R.id.tvNumberOfBeds)
+        val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)!!
+        val tvAddress = itemView.findViewById<TextView>(R.id.tvAddress)!!
+        val tvNumberOfRooms = itemView.findViewById<TextView>(R.id.tvNumberOfRooms)!!
     }
 
     public fun clearData(){

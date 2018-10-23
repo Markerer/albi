@@ -1,6 +1,5 @@
 package albi.bme.hu.albi.fragments.fragments.mainview.addhouse
 
-import albi.bme.hu.albi.MainActivity
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.RestApiFactory
@@ -14,16 +13,11 @@ import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.telecom.Call
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import java.net.URI
-import java.util.jar.Manifest
 
 class AddFlatFragment : Fragment() {
 
