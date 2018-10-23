@@ -1,5 +1,17 @@
 package albi.bme.hu.albi
 
+//TODO: 1)fénykép feltöltése
+//TODO: 2)lakás feltöltése
+//TODO: 3)kép megjelenítése mainben
+//TODO: 4)profil szerkesztése
+//TODO: 5)saját lakások megtekintése
+
+
+
+
+
+//TODO: paging (fml)
+
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
 import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
 import albi.bme.hu.albi.fragments.fragments.mainview.search.SearchFragment
