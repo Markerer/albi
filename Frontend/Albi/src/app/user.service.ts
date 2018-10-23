@@ -32,7 +32,7 @@ export class UserService {
   }
 
   getUser(username: String): Observable<User> {
-    return this.http.get(this.apiRoot + 'users/' + username).map(data => data['0']);
+    return this.http.get<User>(this.apiRoot + 'users/' + username);
   }
 
   updateUser(user: User): Observable<String> {

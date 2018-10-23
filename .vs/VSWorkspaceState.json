@@ -9,10 +9,8 @@
     "\\Frontend\\Albi\\src\\app\\myads",
     "\\Frontend\\Albi\\src\\app\\navbar",
     "\\Frontend\\Albi\\src\\app\\profile",
-    "\\Frontend\\Albi\\src\\assets",
-    "\\Frontend\\Albi\\src\\assets\\css",
-    "\\Frontend\\Albi\\src\\environments"
+    "\\Frontend\\Albi\\src\\assets"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\profile\\profile.component.html",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main.service.ts",
   "PreviewInSolutionExplorer": false
 }
