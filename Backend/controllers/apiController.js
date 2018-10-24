@@ -242,7 +242,7 @@ module.exports = function(app) {
             numberOfRooms: req.body.numberOfRooms,
             description: req.body.description,
             email: req.body.email,
-            phone_number: req.body.email,
+            phone_number: req.body.phone_number,
             address: req.body.address,
             hasAttachment: false,
             
