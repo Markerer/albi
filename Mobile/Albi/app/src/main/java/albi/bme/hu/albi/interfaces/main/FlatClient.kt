@@ -18,8 +18,8 @@ interface FlatClient {
     @POST("flat/upload")
     fun uploadPhoto(@Part photo: MultipartBody.Part) : Call<String>
 
-    @POST("/addflat/{usedID}")
-    fun uploadFlat(@Path("userID")usedId: String,
+    @POST("/addflat/{userid}")
+    fun uploadFlat(@Path("userid")usedId: String,
                    @Body flat: Flat): Call<Flat>
 
     @GET("/public/uploads/{imageSource}")

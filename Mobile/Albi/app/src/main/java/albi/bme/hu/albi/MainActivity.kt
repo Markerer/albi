@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.navigation_add_house -> {
                 replaceFragment(addFlatFragment!!)
+                addFlatFragment!!.user = user!!
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {

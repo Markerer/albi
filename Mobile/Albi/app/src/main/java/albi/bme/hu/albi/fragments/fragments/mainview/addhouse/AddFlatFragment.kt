@@ -2,6 +2,7 @@ package albi.bme.hu.albi.fragments.fragments.mainview.addhouse
 
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.RestApiFactory
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -18,10 +19,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import retrofit2.Callback
+import retrofit2.Response
 
-class AddFlatFragment : Fragment() {
+class AddFlatFragment: Fragment() {
 
-    var uploadFlat: Flat? = null
+    var user: User? = null
+
+
+    var uploadFlat = Flat()
     private var images: ArrayList<Image> = ArrayList()
 
     companion object {
@@ -30,11 +36,13 @@ class AddFlatFragment : Fragment() {
 
     private var PICK_IMAGE_FROM_GALERY_REQUEST = 1
     private var PERMISSION_REQUEST_CODE = 200
-    private var uploadButton: Button? = null
-    private var priceLayout: TextInputLayout? = null
-    private var numberOfRoomsLayout: TextInputLayout? = null
-    private var descriptionLayout: TextInputLayout? = null
-    private var addressLayout: TextInputLayout? = null
+    private lateinit var uploadButton: Button
+    private lateinit var priceLayout: TextInputLayout
+    private lateinit var numberOfRoomsLayout: TextInputLayout
+    private lateinit var descriptionLayout: TextInputLayout
+    private lateinit var addressLayout: TextInputLayout
+    private lateinit var uploadButtonAdvert: Button
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.add_house_fragment, container, false)
@@ -43,15 +51,74 @@ class AddFlatFragment : Fragment() {
         numberOfRoomsLayout = view.findViewById(R.id.numberofrooms_upload)
         descriptionLayout = view.findViewById(R.id.description_upload)
         addressLayout = view.findViewById(R.id.address_upload)
+        uploadButtonAdvert = view.findViewById(R.id.addhouse)
 
-        uploadButton!!.setOnClickListener {
+        uploadButton.setOnClickListener {
             requestNeededPermission()
             val intent: Intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "select picture"), PICK_IMAGE_FROM_GALERY_REQUEST)
         }
+
+        // TODO: szebben if-else nélkül!!
+        /**
+         * valamiért ha az egyik üres marad, nem dobja ki
+         * az error-részére a hibát, hanem kilép
+         * TODO--> megoldani
+         */
+        uploadButtonAdvert.setOnClickListener {
+            if(priceLayout.editText!!.text.isEmpty()){
+                priceLayout.editText!!.error = "This field must be filled!"
+            } else {
+                uploadFlat.price = priceLayout.editText!!.text.toString().toInt()
+            }
+
+            if(numberOfRoomsLayout.editText!!.text.isEmpty()){
+                numberOfRoomsLayout.editText!!.error = "This field must be filled!"
+            }else{
+                uploadFlat.numberOfRooms = numberOfRoomsLayout.editText!!.text.toString().toInt()
+            }
+
+            if(descriptionLayout.editText!!.text.isEmpty()){
+                descriptionLayout.editText!!.error = "This field must be filled!"
+            }else{
+                uploadFlat.description = descriptionLayout.editText!!.text.toString()
+            }
+            if(addressLayout.editText!!.text.isEmpty()){
+                addressLayout.editText!!.error = "This field must be filled!"
+            }else{
+                uploadFlat.address = addressLayout.editText!!.text.toString()
+            }
+            uploadFlat.phone_number = user!!.phone_number
+            uploadFlat.email = user!!.email
+
+            if(!priceLayout.editText!!.text.isEmpty() &&
+               !numberOfRoomsLayout.editText!!.text.isEmpty() &&
+               !descriptionLayout.editText!!.text.isEmpty() &&
+               !addressLayout.editText!!.text.isEmpty()){
+                sendNetworkRequestAddvertisement()
+            } else {
+                Toast.makeText(context, "you not filled one of them", Toast.LENGTH_LONG).show()
+            }
+        }
         return view
+    }
+
+    private fun sendNetworkRequestAddvertisement(){
+        val client = RestApiFactory.createFlatClient()
+        val call = client.uploadFlat(user?._id!!, uploadFlat)
+
+        call.enqueue(object : Callback<Flat> {
+            override fun onResponse(call: retrofit2.Call<Flat>, response: Response<Flat>) {
+                Toast.makeText(context, "advertisement upload was successfull", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(call: retrofit2.Call<Flat>?, t: Throwable?) {
+                t?.printStackTrace()
+                Toast.makeText(context, "error in uploading advertisement :(" + t?.message, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,6 +175,8 @@ class AddFlatFragment : Fragment() {
             }
         }
     }
+
+
 }
 
 
