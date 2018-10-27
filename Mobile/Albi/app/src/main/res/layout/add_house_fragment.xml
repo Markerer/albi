@@ -25,7 +25,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:inputType="number"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadimagebutton">
@@ -33,6 +33,7 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="@string/price" />
     </android.support.design.widget.TextInputLayout>
 
@@ -43,7 +44,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price_upload">
@@ -51,6 +52,7 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="@string/number_of_rooms" />
     </android.support.design.widget.TextInputLayout>
 

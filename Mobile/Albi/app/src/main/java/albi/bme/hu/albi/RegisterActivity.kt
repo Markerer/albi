@@ -45,7 +45,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun sendNetworkRequestRegister(user: User) {
         val client = RestApiFactory.createUserClient()
-        val call = client.createNewUser(user)
+        val call = client.createOrUpdateUser(user)
 
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {

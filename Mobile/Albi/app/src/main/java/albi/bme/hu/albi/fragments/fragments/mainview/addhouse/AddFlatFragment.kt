@@ -98,8 +98,6 @@ class AddFlatFragment: Fragment() {
                !descriptionLayout.editText!!.text.isEmpty() &&
                !addressLayout.editText!!.text.isEmpty()){
                 sendNetworkRequestAddvertisement()
-            } else {
-                Toast.makeText(context, "you not filled one of them", Toast.LENGTH_LONG).show()
             }
         }
         return view
@@ -124,7 +122,7 @@ class AddFlatFragment: Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            val uri: Uri = data.data
+            val uri: Uri = data.data!!
             uploadFile(uri)
         }
     }

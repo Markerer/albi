@@ -1,7 +1,7 @@
 package albi.bme.hu.albi
 
 //TODO: 1)fénykép feltöltése
-//TODO: 2)lakás feltöltése
+//TODO: 2)lakás feltöltése (pipa)
 //TODO: 3)kép megjelenítése mainben
 //TODO: 4)profil szerkesztése
 //TODO: 5)saját lakások megtekintése
@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         user = intent.getSerializableExtra("user") as User
 
-        //  Elmenti az éppen bejelentkezett felhasználó ID-jét, így legközelebb nem kell bejelentkezni
         saveUserId(user)
 
         //Code from here is copied from the NavigationDrawerTest bullshit
