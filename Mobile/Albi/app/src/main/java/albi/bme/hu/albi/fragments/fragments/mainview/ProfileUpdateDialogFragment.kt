@@ -11,28 +11,28 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
-import kotlinx.android.synthetic.main.profile_fragment.*
+import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileUpdateDialogFragment : DialogFragment() {
 
-    private lateinit var name : EditText
-    private lateinit var email : EditText
-    private lateinit var phone : EditText
-    var user : User? = null
+    private lateinit var email: EditText
+    private lateinit var phone: EditText
+    var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        Toast.makeText(context, user!!._id, Toast.LENGTH_LONG).show()
         return AlertDialog.Builder(requireContext())
                 .setTitle("Edit Profile")
                 .setView(getContentView())
                 .setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
-                    if (isValid()){
+                    if (isValid()) {
                         updateProfile()
                         networkRequestForProfileUpdate()
                     }
@@ -40,38 +40,38 @@ class ProfileUpdateDialogFragment : DialogFragment() {
                 .create()
     }
 
-    private fun updateProfile(){
-        user!!.username = name.text.toString()
+    private fun updateProfile() {
         user!!.email = email.text.toString()
         user!!.phone_number = phone.text.toString()
     }
 
     private fun networkRequestForProfileUpdate() {
         val client = RestApiFactory.createUserClient()
-        val call = client.createOrUpdateUser(user!!)
+        val call = client.updateUser(user!!)
 
-        call.enqueue(object : Callback<String>{
+        call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-
+                Toast.makeText(context, response.body(), Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-
+                Toast.makeText(context, "Fasom", Toast.LENGTH_LONG).show()
             }
         })
 
     }
-    private fun isValid() : Boolean {
-        return (name.text.isNotEmpty() && email.text.isNotEmpty() && phone.text.isNotEmpty())
+
+    private fun isValid(): Boolean {
+        return ((email.text.toString() != user!!.email ||
+                phone.text.toString() != user!!.phone_number) &&
+                (email.text.isNotEmpty() && phone.text.isNotEmpty()))
     }
 
-    private fun getContentView() : View {
+    private fun getContentView(): View {
         val contentView = LayoutInflater.from(context).inflate(R.layout.profile_update_dialogfragment, null)
-        name = contentView.findViewById(R.id.editName)
         email = contentView.findViewById(R.id.editEmail)
         phone = contentView.findViewById(R.id.editPhone)
 
-        name.setText(user!!.username)
         email.setText(user!!.email)
         phone.setText(user!!.phone_number)
 

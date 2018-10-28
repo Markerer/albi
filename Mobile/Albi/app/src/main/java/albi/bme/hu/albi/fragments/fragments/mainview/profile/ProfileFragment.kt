@@ -28,10 +28,9 @@ class ProfileFragment: Fragment() {
 
 
         editButton.setOnClickListener {
-           val dialog = ProfileUpdateDialogFragment()
-
-            //TODO: elcrachel a gecibe (valami más kéne a childos helyett (sima activity.fragmentManager sem jó)
-            dialog.show(childFragmentManager, "")
+            val dialog = ProfileUpdateDialogFragment()
+            dialog.user = user!!
+            dialog.show(activity?.supportFragmentManager, "")
 
         }
 

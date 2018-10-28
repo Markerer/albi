@@ -10,7 +10,11 @@ import retrofit2.http.Path
 interface UserClient {
 
     @POST("/api/user/")
-    fun createOrUpdateUser(@Body user: User): Call<String>
+    fun createUser(@Body user: User): Call<String>
+
+    @POST("/api/user/")
+    fun updateUser(@Body user: User): Call<String>
+
 
     /**
      * Send: JSON
@@ -27,8 +31,8 @@ interface UserClient {
     fun getUserByUserName(@Path("username") username : String ): Call<User>
 
 
-    @GET("/api/user/{id}")
-    fun getUserById(@Path("id") id : String): Call<User>
+    @GET("/api/user/{_id}")
+    fun getUserById(@Path("_id") id : String): Call<User>
 
 
 

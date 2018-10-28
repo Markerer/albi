@@ -1,17 +1,21 @@
 package albi.bme.hu.albi
 
+
 //TODO: 1)fénykép feltöltése
 //TODO: 2)lakás feltöltése (pipa)
 //TODO: 3)kép megjelenítése mainben
-//TODO: 4)profil szerkesztése
-//TODO: 5)saját lakások megtekintése
+//TODO: 4)profil szerkesztése (pipa)
+//TODO: 5)saját lakások megtekintése  -- profilban lehetne egy recycler, ahol szerepel az összes, ott lehet egyesével megnézni
 
-
-
+//Kérdések:
+//Auto bejelentkeztetés jó-e simán id-vel?
+//Fénykép feltöltése hogyan?
+//Fénykép megjelenítése?
 
 
 //TODO: paging (fml)
 
+import android.support.v7.app.AppCompatActivity
 import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
 import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
 import albi.bme.hu.albi.fragments.fragments.mainview.search.SearchFragment
@@ -22,13 +26,8 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import albi.bme.hu.albi.R
 import albi.bme.hu.albi.fragments.fragments.mainview.addhouse.AddFlatFragment
-import android.content.Context
-import android.content.SharedPreferences
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var profileDetail: ProfileFragment? = null
     var searchFragment: SearchFragment? = null
     var addFlatFragment: AddFlatFragment? = null
-    var user : User? = null
+    var user: User? = null
 
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .commit()
     }
 
-    private fun replaceFragment(fragment : Fragment){
+    private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, fragment)
                 .commit()
@@ -82,7 +81,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         user = intent.getSerializableExtra("user") as User
 
-        saveUserId(user)
 
         //Code from here is copied from the NavigationDrawerTest bullshit
         setSupportActionBar(toolbar)
@@ -100,6 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         houseDetail = HouseDetailFragment()
         searchFragment = SearchFragment()
         addFlatFragment = AddFlatFragment()
+        profileDetail = ProfileFragment()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(houseDetail!!)
@@ -107,7 +106,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun saveUserId(user : User?){
+    private fun saveUserId(user: User?) {
         val sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val editor = sp.edit()
         editor.putString(CURRENT_USER_KEY, user?._id)
@@ -119,7 +118,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-                profileDetail = ProfileFragment()
                 profileDetail!!.setUserInProfile(user!!)
                 replaceFragment(profileDetail!!)
             }
