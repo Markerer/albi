@@ -267,7 +267,7 @@ module.exports = function(app) {
 
     app.get('/flats/rooms/:numberOfRooms', function(req, res){
         
-        Flats.find({numberOfRooms: { $lt: req.params.numberOfRooms}}, function(err, flats){
+        Flats.find({numberOfRooms: { $lte: req.params.numberOfRooms}}, function(err, flats){
             if(err) throw err;
             res.send(flats);
         });
@@ -276,7 +276,7 @@ module.exports = function(app) {
 
     app.get('/flats/price/:price', function(req, res){
         
-        Flats.find({price: {$lt: req.params.price}}, function(err, flats){
+        Flats.find({price: {$lte: req.params.price}}, function(err, flats){
             if(err) throw err;
             res.send(flats);
         });
