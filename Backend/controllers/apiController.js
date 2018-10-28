@@ -265,6 +265,24 @@ module.exports = function(app) {
        
     });
 
+    app.get('/flats/rooms/:numberOfRooms', function(req, res){
+        
+        Flats.find({numberOfRooms: { $lt: req.params.numberOfRooms}}, function(err, flats){
+            if(err) throw err;
+            res.send(flats);
+        });
+       
+    });
+
+    app.get('/flats/price/:price', function(req, res){
+        
+        Flats.find({price: {$lt: req.params.price}}, function(err, flats){
+            if(err) throw err;
+            res.send(flats);
+        });
+       
+    });
+
     app.get('/flat/:flatID', function(req, res){
         Flats.findById({_id: req.params.flatID}, function(err, flat){
             if(err) throw err;    
