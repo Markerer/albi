@@ -179,9 +179,9 @@ module.exports = function(app) {
     //user updater, create user
     app.post('/api/user', function(req, res) {
         
-        if (req.body.id) {
+        if (req.body._id) {
             
-            Users.findByIdAndUpdate(req.body.id, {username: req.body.username, password: req.body.password, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function(err, user){
+            Users.findByIdAndUpdate(req.body._id, {username: req.body.username, password: req.body.password, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function(err, user){
                 if (err) throw err;
                 
                 res.send('Success');
