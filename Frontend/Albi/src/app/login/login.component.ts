@@ -23,12 +23,16 @@ export class LoginComponent implements OnInit {
   private _alert = new Subject<string>();
   alertMessage: string;
 
+  private _alertTaken = new Subject<string>();
+  alertTakenMessage: string;
+
   loginForm: FormGroup;
   createForm: FormGroup;
   
   focus: boolean;
   focus1: boolean;
   correctDatas: boolean = true;
+  isTaken = false;
 
   constructor(private userService: UserService, fb: FormBuilder, private router: Router, private data: DataService) {
     this.loginForm = fb.group({
@@ -58,6 +62,12 @@ export class LoginComponent implements OnInit {
       debounceTime(5000)
     ).subscribe(() => this.alertMessage = null);
 
+    //A már létező username esetén kiírandó üzenet
+    this._alertTaken.subscribe((message) => this.alertTakenMessage = message);
+    this._alertTaken.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.alertTakenMessage = null);
+
     var body = document.getElementsByTagName('body')[0];
     body.classList.add('login-page');
   }
@@ -77,6 +87,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  public changeAlertTakenMessage(): void {
+    if (this.isTaken) {
+      this._alertTaken.next(`The given username is already taken. \n Please choose an another username.`);
+    }
+  }
+
 
   createUser(username: String, password: String, email: String, phone_number: String, address: String): void {
     
@@ -85,16 +101,22 @@ export class LoginComponent implements OnInit {
       this.user.address = address;
       this.user.email = email;
       this.user.phone_number = phone_number;
-      this.userService.createUser(this.user).subscribe(
-        user => {
-          console.log(`User ${user.username} created`);
-      });
-
-    // 5 sec múlva belépés ezzel az accounttal
-      setTimeout(() => {
-         this.login(username, password);
-      }, 5000);
-
+    this.userService.createUser(this.user).subscribe(
+      response => {
+        if (response == 'The username is already taken.') {
+          this.isTaken = true;
+          this.changeAlertTakenMessage();
+        }
+        else {
+          // 5 sec múlva belépés ezzel az accounttal
+          this.changeSuccessMessage();
+          this.isTaken = false;
+        setTimeout(() => {
+           this.login(username, password);
+        }, 5000);
+        }
+      }
+      );
   }
 
   userLogger(response: String, usernameLogin: String): void {

@@ -19,8 +19,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
   
-  createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiRoot + 'user',
+  createUser(user: User): Observable<String> {
+    return this.http.post(this.apiRoot + 'user',
       {
         "username": `${user.username}`,
         "password": `${user.password}`,
@@ -28,7 +28,7 @@ export class UserService {
         "phone_number": `${user.phone_number}`,
         "address": `${user.address}`
       },
-      httpOptions);
+      { responseType: 'text' });
   }
 
   getUser(username: String): Observable<User> {
@@ -38,7 +38,7 @@ export class UserService {
   updateUser(user: User): Observable<String> {
     return this.http.post(this.apiRoot + 'user/',
       {
-        "id": `${user._id}`,
+        "_id": `${user._id}`,
         "username": `${user.username}`,
         "password": `${user.password}`,
         "email": `${user.email}`,

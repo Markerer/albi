@@ -8,6 +8,8 @@ export class Flat {
   phone_number: String;
   address: String;
   hasAttachment: Boolean;
+  imgPath: String[];
+
 
   static fromJSON(data: any) {
     return Object.assign(new this, data);

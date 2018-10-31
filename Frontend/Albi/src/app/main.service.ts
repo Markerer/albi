@@ -18,16 +18,16 @@ export class MainService {
   constructor(private http: HttpClient) { }
 
 
-  getMainScreen(): Observable<Flat[]> {
-    return this.http.get<Flat[]>(this.apiRoot + 'main').map(data => data['0']);
+  getMainScreen(page: number): Observable<Object[]> {
+    return this.http.get<Object[]>(this.apiRoot + 'api/' + 'main/' + page);
   }
 
   getFlatByID(flatID: String): Observable<Flat> {
-    return this.http.get<Flat>(this.apiRoot + 'flat' + flatID).map(data => data['0']);
+    return this.http.get<Flat>(this.apiRoot + 'flat' + flatID);
   }
 
   getUserFlats(userID: String): Observable<Flat[]> {
-    return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID).map(data => data['0']);
+    return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID);
   }
 
   addAdvertisement(flat: Flat): Observable<Flat> {

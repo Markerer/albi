@@ -5,12 +5,15 @@
     "\\Frontend\\Albi",
     "\\Frontend\\Albi\\src",
     "\\Frontend\\Albi\\src\\app",
-    "\\Frontend\\Albi\\src\\app\\main",
-    "\\Frontend\\Albi\\src\\app\\myads",
-    "\\Frontend\\Albi\\src\\app\\navbar",
+    "\\Frontend\\Albi\\src\\app\\login",
     "\\Frontend\\Albi\\src\\app\\profile",
-    "\\Frontend\\Albi\\src\\assets"
+    "\\Frontend\\Albi\\src\\assets",
+    "\\Frontend\\Albi\\src\\assets\\css",
+    "\\Frontend\\Albi\\src\\assets\\sass",
+    "\\Frontend\\Albi\\src\\assets\\sass\\now-ui-kit",
+    "\\Frontend\\Albi\\src\\assets\\sass\\now-ui-kit\\mixins",
+    "\\Frontend\\Albi\\src\\environments"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main.service.ts",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main\\main.component.html",
   "PreviewInSolutionExplorer": false
 }

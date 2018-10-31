@@ -64,15 +64,6 @@
   padding: 0;
 }
 
-#navbar-full .navbar {
-    border-radius: 0 !important;
-    margin-bottom: 15px;
-    z-index: 2;
-}
-
-#menu-dropdown .navbar {
-    border-radius: 3px;
-}
 
 #pagination-row .pagination-container {
     height: 100%;
@@ -192,10 +183,6 @@
 
 .logo-container .logo img {
     width: 100%;
-}
-
-.navbar-small .logo-container .brand {
-    color: #333333;
 }
 
 .fixed-section {
@@ -372,17 +359,6 @@
     -webkit-transition: 1.5s ease-in-out;
 }
 
-.navbar-default.navbar-small .logo-container .brand {
-    color: #333333;
-}
-
-.navbar-transparent.navbar-small .logo-container .brand {
-    color: #FFFFFF;
-}
-
-.navbar-default.navbar-small .logo-container .brand {
-    color: #333333;
-}
 
 .sharing-area {
     margin-top: 80px;
@@ -399,15 +375,6 @@
 
 .section-navbars {
     padding-top: 0;
-}
-
-#navbar .navbar {
-    margin-bottom: 20px;
-}
-
-#navbar .navbar-toggler,
-#menu-dropdown .navbar-toggler {
-    pointer-events: none;
 }
 
 .section-tabs {
@@ -482,14 +449,6 @@
     margin-bottom: 0;
 }
 
-.navbar .switch-background {
-    display: block;
-}
-
-.navbar-transparent .switch-background {
-    display: none;
-}
-
 .section-signup .col .btn {
     margin-top: 30px;
 }
@@ -504,10 +463,4 @@
 
 .section-images {
     padding-bottom: 0;
-}
-
-@media screen and (max-width: 991px) {
-    .section-navbars .navbar-collapse {
-        display: none !important;
-    }
 }

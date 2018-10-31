@@ -14,6 +14,7 @@ import { IsSecureGuard } from './issecureguard.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MyadsComponent } from './myads/myads.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -28,6 +29,7 @@ import { MyadsComponent } from './myads/myads.component';
     MyadsComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule,
     HttpClientModule,
     FormsModule,
