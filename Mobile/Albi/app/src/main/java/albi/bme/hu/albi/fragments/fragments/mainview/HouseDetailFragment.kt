@@ -42,8 +42,6 @@ class HouseDetailFragment : Fragment(){
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
 
-
-
         initializationRecycle(recyclerView)
 
         return view
@@ -73,12 +71,4 @@ class HouseDetailFragment : Fragment(){
             }
         })
     }
-
-
-    /*fun setFlatsData(listOfFlats: List<Flat>){
-        this.usersData = ArrayList(listOfFlats)
-    }*/
-
-
-
 }

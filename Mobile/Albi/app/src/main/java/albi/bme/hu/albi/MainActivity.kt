@@ -6,6 +6,7 @@ package albi.bme.hu.albi
 //TODO: 3)kép megjelenítése mainben
 //TODO: 4)profil szerkesztése (pipa)
 //TODO: 5)saját lakások megtekintése  -- profilban lehetne egy recycler, ahol szerepel az összes, ott lehet egyesével megnézni
+//TODO: layout mappa szelektálása--> https://stackoverflow.com/questions/4930398/can-the-android-layout-folder-contain-subfolders
 
 //Kérdések:
 //Auto bejelentkeztetés jó-e simán id-vel?
@@ -28,6 +29,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import albi.bme.hu.albi.fragments.fragments.mainview.addhouse.AddFlatFragment
+import albi.bme.hu.albi.fragments.fragments.mainview.profile.MyAdvertisementsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var profileDetail: ProfileFragment? = null
     var searchFragment: SearchFragment? = null
     var addFlatFragment: AddFlatFragment? = null
+    var myAdvertisementsFragment: MyAdvertisementsFragment? = null
     var user: User? = null
 
 
@@ -79,7 +82,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        user = intent.getSerializableExtra("user") as User
+        // java.lang.RuntimeException: Unable to start activity ComponentInfo{albi.bme.hu.albi/albi.bme.hu.albi.MainActivity}: kotlin.TypeCastException: null cannot be cast to non-null type albi.bme.hu.albi.model.User
+        // https://stackoverflow.com/questions/37949024/kotlin-typecastexception-null-cannot-be-cast-to-non-null-type-com-midsizemango
+        user = intent.getSerializableExtra("user") as? User
 
 
         //Code from here is copied from the NavigationDrawerTest bullshit
@@ -99,6 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchFragment = SearchFragment()
         addFlatFragment = AddFlatFragment()
         profileDetail = ProfileFragment()
+        myAdvertisementsFragment = MyAdvertisementsFragment()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         loadFragment(houseDetail!!)
@@ -122,7 +128,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 replaceFragment(profileDetail!!)
             }
             R.id.nav_my_ads -> {
-
+                myAdvertisementsFragment!!.user = user
+                replaceFragment(myAdvertisementsFragment!!)
             }
             R.id.nav_fav_ads -> {
 

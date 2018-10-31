@@ -55,7 +55,8 @@ class ProfileUpdateDialogFragment : DialogFragment() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(context, "Fasom", Toast.LENGTH_LONG).show()
+                t.printStackTrace()
+                Toast.makeText(context, "error", Toast.LENGTH_LONG).show()
             }
         })
 
