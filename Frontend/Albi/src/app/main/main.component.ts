@@ -4,7 +4,7 @@ import { Flat } from '../flat';
 import { DataService } from '../data.service';
 import { User } from '../user';
 import { Router } from '@angular/router';
-import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
+import { isNull, isUndefined } from 'util';
 
 @Component({
   selector: 'app-main',
@@ -15,7 +15,8 @@ export class MainComponent implements OnInit {
 
   flats: Flat[];
   collectionSize: number;
-  page: number;
+  page: number = 1;
+  previousPage: number;
   user: User;
   undefinedUser: boolean = false;
 
@@ -30,17 +31,34 @@ export class MainComponent implements OnInit {
         this.router.navigate(['']);
       } else {
         this.flats = [];
-        for (let i = 0; i < 10; i++) this.flats.push(new Flat());
         this.page = 1;
         this.getFlatsByPage(this.page);
       }
     });
   }
 
+  loadPage(page: number): void {
+    if (page !== this.page) {
+      this.page = page;
+      this.removeItemsFromFlats();
+      this.getFlatsByPage(this.page);
+    }
+  }
+
+  removeItemsFromFlats(): void {
+    if (!isUndefined(this.flats)) {
+    this.flats.splice(0);
+  }
+  }
+   
+
   navigateToAdding() {
     this.router.navigate(['main/addadvertisement']);
   }
 
+  // A lekérdezés visszaad egy "docs" tömböt, amiben vannak a lakások
+  // Amellett még visszaad "total" számot (összes rekord száma), illetve az aktuális oldal számát,
+  // illetve még az összes oldal számát is
   getFlatsByPage(page: number): void {
     this.mainService.getMainScreen(page).subscribe(data => {
       var i: number = 0;
@@ -50,15 +68,17 @@ export class MainComponent implements OnInit {
       num = data["total"];
       this.collectionSize = num;
       for (i = 0; i < objects.length; i++) {
-        this.flats[i].address = objects[i].address;
-        this.flats[i].description = objects[i].description;
-        this.flats[i].email = objects[i].email;
-        this.flats[i].hasAttachment = objects[i].hasAttachment;
-        this.flats[i].numberOfRooms = objects[i].numberOfRooms;
-        this.flats[i].phone_number = objects[i].phone_number;
-        this.flats[i].price = objects[i].price;
-        this.flats[i].userID = objects[i].userID;
-        this.flats[i]._id = objects[i]._id;
+        var temp: Flat = new Flat();
+        temp.address = objects[i].address;
+        temp.description = objects[i].description;
+        temp.email = objects[i].email;
+        temp.hasAttachment = objects[i].hasAttachment;
+        temp.numberOfRooms = objects[i].numberOfRooms;
+        temp.phone_number = objects[i].phone_number;
+        temp.price = objects[i].price;
+        temp.userID = objects[i].userID;
+        temp._id = objects[i]._id;
+        this.flats.push(temp);
 
       }
       console.log(this.flats);

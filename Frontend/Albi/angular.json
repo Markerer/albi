@@ -31,9 +31,12 @@
               "src/styles.scss",
               "src/assets/sass/now-ui-kit.scss",
               "src/assets/css/demo.css"
+              
             ],
             "scripts": [
               "node_modules/rellax/rellax.min.js"
+              
+              
             ]
           },
           "configurations": {

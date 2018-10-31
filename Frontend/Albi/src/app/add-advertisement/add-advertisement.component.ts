@@ -57,7 +57,7 @@ export class AddAdvertisementComponent implements OnInit {
   }
 
   public changeSuccessMessage(): void {
-    this._success.next(`New advertisement successfully created!`);
+    this._success.next(`New advertisement successfully created! \n You will be redirected to the main page in a few seconds.`);
   }
 
   createFlat(price: String, numberOfRooms: String, description: String, address: String, hasAttachment: Boolean): void {

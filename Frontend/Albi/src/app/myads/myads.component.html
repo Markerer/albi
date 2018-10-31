@@ -1,3 +1,24 @@
-<p>
-  myads works!
-</p>
+<html>
+<body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100% 100%;
+   height: 100%; background-attachment:fixed">
+  <div>
+    <app-navbar *ngIf="!undefinedUser"></app-navbar>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4" *ngFor="let myflat of flats;">
+        <div class="card">
+          <img class="card-img-top" src="assets/img/download.png" alt="" />
+          <div class="card-body">
+            <h5 class="card-title">Price: {{myflat.price}}</h5>
+            <p class="card-text">Description:<br />{{myflat.description}}</p>
+            <div class="text-center">
+              <button class="btn btn-primary btn-round btn-lg center">Go to advertisement</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

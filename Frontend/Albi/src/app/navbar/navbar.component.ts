@@ -8,11 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  private toggleButton: any;
-  private sidebarVisible: boolean;
+
 
   constructor(public location: Location, private element: ElementRef, private router: Router) {
-    this.sidebarVisible = false;
   }
 
   navigateToMain(): void {
@@ -24,7 +22,7 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToMyAds(): void {
-    this.router.navigate(['myads']);
+    this.router.navigate(['main/myadvertisements']);
   }
 
   navigateToAddAd(): void {
@@ -37,9 +35,9 @@ export class NavbarComponent implements OnInit {
 
 
   ngOnInit() {
-    const navbar: HTMLElement = this.element.nativeElement;
-    this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
+    
   }
+  /*
   sidebarOpen() {
     const toggleButton = this.toggleButton;
     const html = document.getElementsByTagName('html')[0];
@@ -75,6 +73,6 @@ export class NavbarComponent implements OnInit {
     else {
       return false;
     }
-  }
+  }*/
 }
 
