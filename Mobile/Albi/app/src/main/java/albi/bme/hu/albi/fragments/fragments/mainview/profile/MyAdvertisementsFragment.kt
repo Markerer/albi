@@ -53,18 +53,18 @@ class MyAdvertisementsFragment : Fragment() {
 
         call.enqueue(object : Callback<List<Flat>> {
             override fun onResponse(call: Call<List<Flat>>?, response: Response<List<Flat>>?) {
-                if(response?.body().toString() == "OK"){
+                if (response?.body().toString() == "OK") {
                     val flats: List<Flat>? = response!!.body()
-                    myFlats = flats as ArrayList<Flat>
+                    myFlats = flats as? ArrayList<Flat>
                     val adapter = RecyclerAdapter(myFlats!!)
                     recyclerView.adapter = adapter
-                    Toast.makeText(context, "no error :)", Toast.LENGTH_LONG).show()
-                }else{
+                    Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
+                } else {
                     /**
                      * igazából ehhez az id-hez 5bcce492c331c43abc135ac3 van,
                      * csak valamiért null-t kapunk vissza de így legalább nem crashel :D
                      */
-                    Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, response?.raw().toString(), Toast.LENGTH_LONG).show()
                 }
             }
 

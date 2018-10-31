@@ -33,7 +33,7 @@ interface UserClient {
     @GET("/api/user/{_id}")
     fun getUserById(@Path("_id") id : String): Call<User>
 
-    @GET("api/user/flats/{userID}")
+    @GET("/api/user/flats/{userID}")
     fun getMyFlats(@Path("userID")userId: String): Call<List<Flat>>
 
 }
