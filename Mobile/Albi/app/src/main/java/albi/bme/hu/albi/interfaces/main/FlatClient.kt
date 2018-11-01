@@ -55,7 +55,7 @@ interface FlatClient {
       * REQUEST: http://localhost:3000/flat/images/5bca576143bc752f807e9094
       * RESPONSE: [
                      {"_id": "5bdb50b04b1aaa3c94285c92"},
-                     {"_id": "5bdb61dec893fe2a00cb4fc6"},
+                     {"_id": "5bdb61dec893fe2a00cb4fc6"}, ---> "filename":"image-1541104094255.jpg"
                      {"_id": "5bdb6aa7c893fe2a00cb4fc7"},
                      {"_id": "5bdb6abec893fe2a00cb4fc8"},
                      {"_id": "5bdb6afac893fe2a00cb4fc9"}
@@ -78,7 +78,7 @@ interface FlatClient {
      *  az ID-hez tartozó filename-t
      */
     @GET("/image/{imageID}")
-    fun getImageByImageID(@Path("imageID") imageID: String): Call<ImageDataResponse>
+    fun getImageNameByImageID(@Path("imageID") imageID: String): Call<ImageDataResponse>
 
     /**
      * így már nézhető a kép

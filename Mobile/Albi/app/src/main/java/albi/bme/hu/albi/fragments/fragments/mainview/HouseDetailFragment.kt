@@ -4,7 +4,9 @@ import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -23,9 +25,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.os.Handler
 
 
-class HouseDetailFragment : Fragment(){
+class HouseDetailFragment : Fragment() {
 
     var usersData = ArrayList<Flat>()
+    private var flatsImageIDs: ArrayList<String>? = ArrayList()
+    private var actualImageData: ImageDataResponse? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -49,6 +53,17 @@ class HouseDetailFragment : Fragment(){
 
     private fun initializationRecycle(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
+        /**
+         * szerintem ide kellene meghívni a többi hívást, előbb leszedni a képeket
+         * hogy a recycelView adapterének már a képekkel feltöltött házak menjenek
+         * viszont akkor meg nem lesz "_id"-nk.....
+         *
+         * szóval lehet át kellene tenni a:
+         * val adapter = RecyclerAdapter(usersData)
+         *  recyclerView.adapter = adapter
+         *
+         *  részt a network hívások után, h már minden adattal hívódjon meg
+         */
         networkRequestForMainFlats(recyclerView)
     }
 
@@ -67,14 +82,68 @@ class HouseDetailFragment : Fragment(){
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(activity, "error :(" + t.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "error in: networkRequestForMainFlats()" + t.message, Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    private fun networkRequestFor
+    private fun networkRequestForImagesIDs(flatID: String) {
+        val client = RestApiFactory.createFlatClient()
+        val call = client.getImagesIDForFlatID(flatID)
 
-    private fun networkRequestForMainFlatsImagesView(){
+        call.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>?, response: Response<List<String>>?) {
+                val imageIDs: List<String>? = response?.body()
+                flatsImageIDs = imageIDs as? ArrayList<String>
+                Toast.makeText(activity, "succesfully get Image IDs!! :)", Toast.LENGTH_LONG).show()
+            }
 
+            override fun onFailure(call: Call<List<String>>?, t: Throwable?) {
+                t?.printStackTrace()
+                Toast.makeText(activity, "error in: networkRequestForImagesIDs()" + t?.message, Toast.LENGTH_LONG).show()
+            }
+        })
     }
+
+    private fun networkRequestForImageName(imageID: String) {
+        val client = RestApiFactory.createFlatClient()
+        val call = client.getImageNameByImageID(imageID)
+
+        call.enqueue(object : Callback<ImageDataResponse> {
+            override fun onResponse(call: Call<ImageDataResponse>?, response: Response<ImageDataResponse>?) {
+                val imageNames: ImageDataResponse? = response?.body()
+                actualImageData = imageNames
+                Toast.makeText(activity, "succesfully get Image Datas!! :)", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(call: Call<ImageDataResponse>?, t: Throwable?) {
+                t?.printStackTrace()
+                Toast.makeText(activity, "error in: networkRequestForImageName()" + t?.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun networkRequestForImageView(filename: String) {
+        val client = RestApiFactory.createFlatClient()
+        val call = client.getImageFileByName(filename)
+
+        call.enqueue(object : Callback<Image> {
+            override fun onResponse(call: Call<Image>?, response: Response<Image>?) {
+                val image: Image? = response?.body()
+                // TODO!!!!!! https://stackoverflow.com/questions/41311179/how-do-i-set-an-image-in-recyclerview-in-a-fragment-from-the-drawable-folder
+                /**
+                 * bekellene állítani a recycleViewbem az adott sor image-ját
+                 * lehet kell a flatba egy megfelelő attribútum...
+                 */
+
+            }
+
+            override fun onFailure(call: Call<Image>?, t: Throwable?) {
+                t?.printStackTrace()
+                Toast.makeText(activity, "error in: networkRequestForImageView()" + t?.message, Toast.LENGTH_LONG).show()
+            }
+
+        })
+    }
+
 }
