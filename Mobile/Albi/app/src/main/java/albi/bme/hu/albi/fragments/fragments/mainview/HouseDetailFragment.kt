@@ -71,4 +71,10 @@ class HouseDetailFragment : Fragment(){
             }
         })
     }
+
+    private fun networkRequestFor
+
+    private fun networkRequestForMainFlatsImagesView(){
+
+    }
 }

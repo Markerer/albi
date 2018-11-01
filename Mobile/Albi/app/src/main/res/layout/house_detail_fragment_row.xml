@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/ivPriority"
+        android:id="@+id/ivFlatImagePreview"
         android:layout_width="187dp"
         android:layout_height="150dp"
         android:padding="5dp"

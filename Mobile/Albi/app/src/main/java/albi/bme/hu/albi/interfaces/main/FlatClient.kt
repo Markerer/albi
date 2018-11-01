@@ -35,12 +35,31 @@ interface FlatClient {
      * és ezzel a névvel a ---> getImageFileByName(..) már megjeleníti
      */
 
+    /**
+     * "_id":"5bb9defc3df96e14b077f500",
+     * "username":"test",
+     * "password":"123456"
+     *
+     * ehhez az user-hez tartozó flatIDs:
+     * "_id":"5bcf6282035f980c4017a59b"
+     * "_id":"5bcf6298035f980c4017a59c"
+     * "_id":"5bcf62a1035f980c4017a59d"
+     * "_id":"5bd09d777ec02a16e899e216"
+     */
+
      /**
      * get images ID
      * http://localhost:3000/flat/images/:flatID (get images id)
       *
       * pl:
       * REQUEST: http://localhost:3000/flat/images/5bca576143bc752f807e9094
+      * RESPONSE: [
+                     {"_id": "5bdb50b04b1aaa3c94285c92"},
+                     {"_id": "5bdb61dec893fe2a00cb4fc6"},
+                     {"_id": "5bdb6aa7c893fe2a00cb4fc7"},
+                     {"_id": "5bdb6abec893fe2a00cb4fc8"},
+                     {"_id": "5bdb6afac893fe2a00cb4fc9"}
+                  ]
      */
     @GET("/flat/images/{flatID}")
     fun getImagesIDForFlatID(@Path("flatID") flatID: String): Call<List<String>>
