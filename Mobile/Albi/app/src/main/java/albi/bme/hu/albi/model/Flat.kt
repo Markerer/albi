@@ -11,8 +11,6 @@ class Flat(var _id: String = "",
            var email: String = "",
            var phone_number: String = "",
            var address: String = "") {
-    var image: String = ""
-
 
 }
 
