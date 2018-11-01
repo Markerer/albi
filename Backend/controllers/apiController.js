@@ -141,13 +141,22 @@ module.exports = function(app) {
 
     //Load Image
     app.get('/flat/images/:flatId', function(req, res){
-            Images.find({flatID: req.params.flatId }, function(err, images){
-                if(err) throw err;
-                console.log(images);
-                console.log(images.path);  
-                res.send(images);
-            }).select('path');
-    })
+        Images.find({flatID: req.params.flatId }, function(err, images){
+            if(err) throw err;
+            res.send(images);
+        }).select('_id');
+    });
+
+    app.get('/image/:imageID', function(req, res){
+        Images.findById({ _id: req.params.imageID }, function(err, image) {
+            if(err){
+                res.send("There is no image with this ID");
+            }
+               
+               res.send(image);
+           }).select('filename');
+
+    });
 
     //search by username
     app.get('/api/users/:uname', function(req, res) {
