@@ -31,7 +31,7 @@ module.exports = function(app) {
     //update flats
     app.put('/flats', function(req, res) {
                 
-        Flats.findByIdAndUpdate(req.body._id, {userID: req.params.userID,
+        Flats.findByIdAndUpdate(req.body._id, {userID: req.body.userID,
             price: req.body.price,
             numberOfRooms: req.body.numberOfRooms,
             description: req.body.description,
