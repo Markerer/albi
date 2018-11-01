@@ -37,43 +37,25 @@ class MyAdvertisementsFragment : Fragment() {
         networkRequestForMyFlats(recyclerView)
     }
 
-    // TODO DEBUG
-    /**
-     * az a helyzet, hogy valamiért nem kapjuk meg a házakat amiket elkérünk az onResponse(..)-ban
-     * id alapján....ezért null-t kapunk vissza, ami dob egy:
-     * kotlin.TypeCastException: null cannot be cast to non-null
-     * Request{method=GET, url=http://10.0.2.2:3000/api/user/flats/5bcce492c331c43abc135ac3, tag=null}
-     * Response{protocol=http/1.1, code=404, message=Not Found, url=http://10.0.2.2:3000/api/user/flats/5bcce492c331c43abc135ac3}
-     * én már kipróbáltam ezer egymillió kis megoldást.....
-     */
     private fun networkRequestForMyFlats(recyclerView: RecyclerView) {
         val client = RestApiFactory.createUserClient()
-        //val string = user!!._id
-        val call = client.getMyFlats("5bcce492c331c43abc135ac3")
+        val call = client.getMyFlats(user!!._id!!)
 
         call.enqueue(object : Callback<List<Flat>> {
-            override fun onResponse(call: Call<List<Flat>>?, response: Response<List<Flat>>?) {
-                if (response?.body().toString() == "OK") {
-                    val flats: List<Flat>? = response!!.body()
-                    myFlats = flats as? ArrayList<Flat>
-                    val adapter = RecyclerAdapter(myFlats!!)
-                    recyclerView.adapter = adapter
-                    Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
-                } else {
-                    /**
-                     * igazából ehhez az id-hez 5bcce492c331c43abc135ac3 van,
-                     * csak valamiért null-t kapunk vissza de így legalább nem crashel :D
-                     */
-                    Toast.makeText(context, response?.raw().toString(), Toast.LENGTH_LONG).show()
-                }
+            override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
+                val flats: List<Flat>? = response.body()
+                myFlats = flats as ArrayList<Flat>
+                val adapter = RecyclerAdapter(myFlats!!)
+                recyclerView.adapter = adapter
+                Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
+
             }
 
-            override fun onFailure(call: Call<List<Flat>>?, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(context, "error :(" + t?.message, Toast.LENGTH_LONG).show()
+            override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
+                t.printStackTrace()
+                Toast.makeText(context, "error :(" + t.message, Toast.LENGTH_LONG).show()
             }
 
         })
     }
-
 }
