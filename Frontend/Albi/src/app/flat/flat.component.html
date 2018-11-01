@@ -1,7 +1,5 @@
 <html>
-<body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100% 100%;
-   height: 100%; background-attachment:fixed">
-
+<body>
   <div>
     <app-navbar></app-navbar>
   </div>
@@ -108,43 +106,42 @@
     </div>
   </div>
   <!--Amennyiben nem a hirdetés tulajdonosa vagyunk-->
-  <div class="container" *ngIf="!owner">
-
-    <div class="section" id="carousel">
-      <div class="container">
-        <div class="title">
-          <h4>Carousel</h4>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-8">
-            <ngb-carousel>
-              <ng-template ngbSlide>
-                <img class="d-block" src="assets/img/bg1.jpg" alt="First slide">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Nature, United States</h5>
-                </div>
-              </ng-template>
-              <ng-template ngbSlide>
-                <img class="d-block" src="assets/img/bg3.jpg" alt="Second slide">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Somewhere Beyond, United States</h5>
-                </div>
-              </ng-template>
-              <ng-template ngbSlide>
-                <img class="d-block" src="assets/img/bg4.jpg" alt="Third slide">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Yellowstone National Park, United States</h5>
-                </div>
-              </ng-template>
-            </ngb-carousel>
+  <div class="container-fluid" *ngIf="!owner">
+      <div class="section" id="carousel">
+        <div class="container">
+          <div class="title">
+            <h4>Images:</h4>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <ngb-carousel>
+                <ng-template ngbSlide>
+                  <img class="d-block" src="assets/img/bg1.jpg" alt="First slide">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Nature, United States</h5>
+                  </div>
+                </ng-template>
+                <ng-template ngbSlide>
+                  <img class="d-block" src="assets/img/bg3.jpg" alt="Second slide">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Somewhere Beyond, United States</h5>
+                  </div>
+                </ng-template>
+                <ng-template ngbSlide>
+                  <img class="d-block" src="assets/img/bg4.jpg" alt="Third slide">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Yellowstone National Park, United States</h5>
+                  </div>
+                </ng-template>
+              </ngb-carousel>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
 
 
   </div>
-
 
 
 </body>

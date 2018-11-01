@@ -5,6 +5,8 @@ import { Flat } from '../flat';
 import { User } from '../user';
 import { DataService } from '../data.service';
 import { isNull, isUndefined } from 'util';
+import { ImageService } from '../image.service';
+import { Image } from '../image';
 
 @Component({
   selector: 'app-myads',
@@ -18,7 +20,7 @@ export class MyadsComponent implements OnInit {
   undefinedUser: boolean = false;
 
 
-  constructor(private data: DataService, private mainService: MainService, private router: Router) { }
+  constructor(private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) { }
 
 
   ngOnInit() {
@@ -52,6 +54,8 @@ export class MyadsComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         var temp: Flat = new Flat();
         temp = data[i];
+        temp.firstImage = new Image();
+        this.getImageUrls(temp._id, temp);
         this.flats.push(temp);
 
       }
@@ -59,6 +63,28 @@ export class MyadsComponent implements OnInit {
     });
   }
 
+
+  // A lakás képeinek (ID és fájlnév) beállítása
+  getImageUrls(flatID: String, flat: Flat) {
+    this.imageService.getFlatImageIDs(flatID).subscribe(data => {
+      flat.images = [];
+      for (let i = 0; i < data.length; i++) {
+        var temp = new Image();
+        temp = data[i];
+        temp.filename = "http://localhost:3000/" + data[i].filename;
+        flat.images.push(temp);
+      }
+      flat.firstImage = new Image();
+      if (flat.images[0] === undefined) {
+        flat.noImageFound = true;
+        flat.firstImage.filename = "assets/img/download.png";
+      }
+      else {
+        flat.noImageFound = false;
+        flat.firstImage.filename = flat.images[0].filename;
+      }
+    });
+  }
 
 
 }

@@ -17,19 +17,22 @@ export class MainService {
 
   constructor(private http: HttpClient) { }
 
-
+  // Fő oldalon megjelenő hirdetések lekérése
   getMainScreen(page: number): Observable<Object[]> {
     return this.http.get<Object[]>(this.apiRoot + 'api/' + 'main/' + page);
   }
 
+  // Egy lakás lekérése
   getFlatByID(flatID: String): Observable<Flat> {
     return this.http.get<Flat>(this.apiRoot + 'flat/' + flatID);
   }
 
+  // Egy felhasználó minden lakásának lekérése
   getUserFlats(userID: String): Observable<Flat[]> {
     return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID);
   }
 
+  // Új hirdetés feladása
   addAdvertisement(flat: Flat): Observable<Flat> {
     return this.http.post<Flat>(this.apiRoot + 'addflat/' + flat.userID,
       {
@@ -44,10 +47,12 @@ export class MainService {
       },
       httpOptions);
   }
-  /*
-  updateFlat(flat: Flat): Observable<Flat> {
-    return this.http.post<Flat>(this.apiRoot + 'flat/' + flat._id,
+
+  // Lakás adatainak módosítása
+  updateFlat(flat: Flat): Observable<String> {
+    return this.http.put(this.apiRoot + 'flats/',
       {
+        "_id": `${flat._id}`,
         "userID": `${flat.userID}`,
         "price": `${flat.price}`,
         "numberOfRooms": `${flat.numberOfRooms}`,
@@ -57,7 +62,7 @@ export class MainService {
         "address": `${flat.address}`,
         "hasAttachment": `${flat.hasAttachment}`
       },
-      httpOptions);
-  }*/
+      { responseType: 'text' });
+  }
 
 }

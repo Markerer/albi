@@ -36,7 +36,7 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<String> {
-    return this.http.post(this.apiRoot + 'user/',
+    return this.http.put(this.apiRoot + 'user/',
       {
         "_id": `${user._id}`,
         "username": `${user.username}`,

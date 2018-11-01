@@ -16,6 +16,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MyadsComponent } from './myads/myads.component';
 import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FlatComponent } from './flat/flat.component';
+import { ImageService } from './image.service';
 
 
 
@@ -39,7 +40,7 @@ import { FlatComponent } from './flat/flat.component';
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [UserService, MainService, DataService, IsSecureGuard],
+  providers: [UserService, MainService, DataService, ImageService, IsSecureGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

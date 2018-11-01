@@ -6,7 +6,4 @@ export class User {
   address: String;
   email: String;
 
-  static fromJSON(data: any) {
-    return Object.assign(new this, data);
-  }
 }

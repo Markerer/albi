@@ -8,7 +8,8 @@
     <div class="row">
       <div class="col-lg-4" *ngFor="let myflat of flats;">
         <div class="card">
-          <img class="card-img-top" src="assets/img/download.png" alt="" />
+          <img class="card-img-top" *ngIf="!myflat.noImageFound" src="{{myflat.firstImage.filename}}" alt="firstPicture">
+          <img class="card-img-top" *ngIf="myflat.noImageFound" src="assets/img/download.png" alt="basicIMG">
           <div class="card-body">
             <h5 class="card-title">Price: {{myflat.price}}</h5>
             <p class="card-text">Description:<br />{{myflat.description}}</p>
