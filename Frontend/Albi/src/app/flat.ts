@@ -1,3 +1,5 @@
+import { Image } from "./image";
+
 export class Flat {
   _id: String;
   userID: String;
@@ -8,10 +10,13 @@ export class Flat {
   phone_number: String;
   address: String;
   hasAttachment: Boolean;
+  images: Image[];
+  firstImage: Image;
+  noImageFound: boolean = true;
 
 
-
-  static fromJSON(data: any) {
-    return Object.assign(new this, data);
+  constructor() {
+    this.images = [];
+    this.firstImage = new Image();
   }
 }

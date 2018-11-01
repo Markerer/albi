@@ -59,7 +59,6 @@ export class FlatComponent implements OnInit {
   getFlat(): void {
     //Az id kinyerése az URL címből.
     var id: String = this.activatedRoute.snapshot.paramMap.get('_id');
-    console.log(id);
     this.mainService.getFlatByID(id).subscribe(data => {
       this.flat = data;
       console.log(this.flat);
@@ -101,12 +100,16 @@ export class FlatComponent implements OnInit {
       this.flat.address = address;
     }
     this.flat.hasAttachment = hasAttachment;
-    /*
+
+
+    console.log(this.flat);
+
+
     this.mainService.updateFlat(this.flat).subscribe(
-      flat => {
-        console.log(flat);
+      msg => {
+        console.log(msg);
       });
-    */
+    
     // 5 sec múlva main oldalra átírányítás
     setTimeout(() => {
       this.router.navigate(['main']);
