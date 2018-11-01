@@ -158,6 +158,20 @@ module.exports = function(app) {
 
     });
 
+    //delete image
+
+    app.delete('/image/:imageID', function(req, res) {
+        
+        Images.findByIdAndRemove(req.params.imageID, function(err) {
+            if (err){
+                res.send('Unsuccessful');
+            }
+            
+            res.send('Success');
+        })
+        
+    });
+
     //search by username
     app.get('/api/users/:uname', function(req, res) {
         
