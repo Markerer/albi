@@ -23,25 +23,6 @@ export class ProfileComponent implements OnInit {
   successMessage: string;
 
 
-  changeDatasInForm() {
-    this.updateForm.controls['username'].setValue(this.user.username);
-    this.updateForm.controls['username'].updateValueAndValidity();
-    this.updateForm.controls['username'].markAsDirty();
-    this.updateForm.controls['password'].setValue(this.user.password);
-    this.updateForm.controls['password'].updateValueAndValidity();
-    this.updateForm.controls['password'].markAsDirty();
-    this.updateForm.controls['email'].setValue(this.user.email);
-    this.updateForm.controls['email'].updateValueAndValidity();
-    this.updateForm.controls['email'].markAsDirty();
-    this.updateForm.controls['phone_number'].setValue(this.user.phone_number);
-    this.updateForm.controls['phone_number'].updateValueAndValidity();
-    this.updateForm.controls['phone_number'].markAsDirty();
-    this.updateForm.controls['address'].setValue(this.user.address);
-    this.updateForm.controls['address'].updateValueAndValidity();
-    this.updateForm.controls['address'].markAsDirty();
-  }
-
-
   constructor(private data: DataService, fb: FormBuilder, private router: Router, private userService: UserService) {
    
     if (!this.undefinedUser) {
@@ -62,18 +43,10 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
-        this.user._id = data._id;
-        this.user.username = data.username;
-        this.user.password = data.password;
-        this.user.address = data.address;
-        this.user.email = data.email;
-        this.user.phone_number = data.phone_number;
-        this.changeDatasInForm();
+        this.user = data;
         console.log(this.user);
       }
     });
-    
-
 
     //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
@@ -83,7 +56,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public changeSuccessMessage(): void {
-    this._success.next(`Your informations have been successfully updated, you will be redirected to the main page in 5 seconds!`);
+    this._success.next(`Your informations have been successfully updated, you will be redirected to the main page in a few seconds!`);
   }
 
 

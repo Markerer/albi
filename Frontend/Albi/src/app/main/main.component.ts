@@ -24,12 +24,11 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.data.currentData.subscribe(data => {
-      this.user = data;
-      console.log(this.user);
-      if (this.user === undefined || this.user === null) {
+      if (data === undefined || data === null) {
         this.undefinedUser = true;
         this.router.navigate(['']);
       } else {
+        this.user = data;
         this.flats = [];
         this.page = 1;
         this.getFlatsByPage(this.page);
@@ -40,20 +39,15 @@ export class MainComponent implements OnInit {
   loadPage(page: number): void {
     if (page !== this.page) {
       this.page = page;
-      this.removeItemsFromFlats();
+      this.removeItems();
       this.getFlatsByPage(this.page);
     }
   }
 
-  removeItemsFromFlats(): void {
+  removeItems(): void {
     if (!isUndefined(this.flats)) {
     this.flats.splice(0);
   }
-  }
-   
-
-  navigateToAdding() {
-    this.router.navigate(['main/addadvertisement']);
   }
 
   // A lekérdezés visszaad egy "docs" tömböt, amiben vannak a lakások
@@ -69,27 +63,11 @@ export class MainComponent implements OnInit {
       this.collectionSize = num;
       for (i = 0; i < objects.length; i++) {
         var temp: Flat = new Flat();
-        temp.address = objects[i].address;
-        temp.description = objects[i].description;
-        temp.email = objects[i].email;
-        temp.hasAttachment = objects[i].hasAttachment;
-        temp.numberOfRooms = objects[i].numberOfRooms;
-        temp.phone_number = objects[i].phone_number;
-        temp.price = objects[i].price;
-        temp.userID = objects[i].userID;
-        temp._id = objects[i]._id;
+        temp = objects[i];
         this.flats.push(temp);
-
       }
       console.log(this.flats);
     });
   }
-
-  login(): void {
-    this.router.navigate(['']);
-  }
-
-
-
 
 }

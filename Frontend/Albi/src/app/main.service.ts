@@ -23,7 +23,7 @@ export class MainService {
   }
 
   getFlatByID(flatID: String): Observable<Flat> {
-    return this.http.get<Flat>(this.apiRoot + 'flat' + flatID);
+    return this.http.get<Flat>(this.apiRoot + 'flat/' + flatID);
   }
 
   getUserFlats(userID: String): Observable<Flat[]> {
@@ -44,4 +44,20 @@ export class MainService {
       },
       httpOptions);
   }
+  /*
+  updateFlat(flat: Flat): Observable<Flat> {
+    return this.http.post<Flat>(this.apiRoot + 'flat/' + flat._id,
+      {
+        "userID": `${flat.userID}`,
+        "price": `${flat.price}`,
+        "numberOfRooms": `${flat.numberOfRooms}`,
+        "description": `${flat.description}`,
+        "email": `${flat.email}`,
+        "phone_number": `${flat.phone_number}`,
+        "address": `${flat.address}`,
+        "hasAttachment": `${flat.hasAttachment}`
+      },
+      httpOptions);
+  }*/
+
 }

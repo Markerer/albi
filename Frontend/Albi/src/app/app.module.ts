@@ -15,6 +15,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MyadsComponent } from './myads/myads.component';
 import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlatComponent } from './flat/flat.component';
 
 
 
@@ -26,7 +27,8 @@ import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
     AddAdvertisementComponent,
     NavbarComponent,
     ProfileComponent,
-    MyadsComponent
+    MyadsComponent,
+    FlatComponent
   ],
   imports: [
     NgbModule.forRoot(),

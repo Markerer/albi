@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
   }
   //Az üzenetek
   public changeSuccessMessage(): void {
-    this._success.next(`New user successfully created, you will be redirected to the main page in 5 seconds!`);
+    this._success.next(`New user successfully created, you will be redirected to the main page in a few seconds!`);
   }
 
   public changeAlertMessage(): void {
@@ -124,13 +124,7 @@ export class LoginComponent implements OnInit {
     console.log(response);
     if (response === "OK") {
       this.userService.getUser(usernameLogin).subscribe(loggedUser => {
-        this.user._id = loggedUser._id;
-        this.user.username = loggedUser.username;
-        this.user.password = loggedUser.password;
-        this.user.address = loggedUser.address;
-        this.user.email = loggedUser.email;
-        this.user.phone_number = loggedUser.phone_number;
-        console.log(loggedUser);
+        this.user = loggedUser;
         console.log(this.user);
 
         this.data.changeData(this.user);

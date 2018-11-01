@@ -3,7 +3,7 @@
    height: 100%; background-attachment:fixed">
 
   <div>
-    <app-navbar *ngIf="!undefinedUser"></app-navbar>
+    <app-navbar></app-navbar>
   </div>
 
   <div class="container">
@@ -71,12 +71,8 @@
 
               </div>
               <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                      [disabled]="!createFlatForm.valid" *ngIf="!undefinedUser" (click)="changeSuccessMessage()">
+                      [disabled]="!createFlatForm.valid" (click)="changeSuccessMessage()">
                 Create advertisement
-              </button>
-              <button type="button" class="btn btn-primary btn-round btn-lg btn-block"
-                      *ngIf="undefinedUser" routerLink="">
-                You are not logged in<br /> Click here to log in or create a new account
               </button>
             </div>
           </div>

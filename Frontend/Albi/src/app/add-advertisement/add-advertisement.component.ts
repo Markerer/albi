@@ -40,19 +40,14 @@ export class AddAdvertisementComponent implements OnInit {
         this.undefinedUser = true;
         this.router.navigate(['']);
       } else {
-        this.user._id = data._id;
-        this.user.username = data.username;
-        this.user.password = data.password;
-        this.user.address = data.address;
-        this.user.email = data.email;
-        this.user.phone_number = data.phone_number;
+        this.user = data;
         console.log(this.user);
       }
     });
     //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
-      debounceTime(4000)
+      debounceTime(5000)
     ).subscribe(() => this.successMessage = null);
   }
 
@@ -70,10 +65,10 @@ export class AddAdvertisementComponent implements OnInit {
     this.createdFlat.address = address;
     this.createdFlat.hasAttachment = hasAttachment;
     //A belépett user továbbadása
-    this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => { console.log(addedFlat); this.data.changeData(this.user);});
+    this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => { console.log(addedFlat);});
     setTimeout(() => {
       this.router.navigate(['main']);
-    }, 4000);
+    }, 5000);
   }
 
 }

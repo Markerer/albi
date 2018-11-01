@@ -51,15 +51,7 @@ export class MyadsComponent implements OnInit {
 
       for (let i = 0; i < data.length; i++) {
         var temp: Flat = new Flat();
-        temp.address = data[i].address;
-        temp.description = data[i].description;
-        temp.email = data[i].email;
-        temp.hasAttachment = data[i].hasAttachment;
-        temp.numberOfRooms = data[i].numberOfRooms;
-        temp.phone_number = data[i].phone_number;
-        temp.price = data[i].price;
-        temp.userID = data[i].userID;
-        temp._id = data[i]._id;
+        temp = data[i];
         this.flats.push(temp);
 
       }

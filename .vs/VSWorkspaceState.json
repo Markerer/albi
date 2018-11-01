@@ -6,12 +6,11 @@
     "\\Frontend\\Albi\\src",
     "\\Frontend\\Albi\\src\\app",
     "\\Frontend\\Albi\\src\\app\\add-advertisement",
-    "\\Frontend\\Albi\\src\\app\\login",
-    "\\Frontend\\Albi\\src\\app\\main",
-    "\\Frontend\\Albi\\src\\app\\main\\flat",
+    "\\Frontend\\Albi\\src\\app\\flat",
     "\\Frontend\\Albi\\src\\app\\myads",
-    "\\Frontend\\Albi\\src\\app\\navbar"
+    "\\Frontend\\Albi\\src\\app\\navbar",
+    "\\Frontend\\Albi\\src\\app\\profile"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\add-advertisement\\add-advertisement.component.ts",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\profile\\profile.component.ts",
   "PreviewInSolutionExplorer": false
 }

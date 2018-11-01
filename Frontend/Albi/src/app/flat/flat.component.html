@@ -1,0 +1,151 @@
+<html>
+<body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100% 100%;
+   height: 100%; background-attachment:fixed">
+
+  <div>
+    <app-navbar></app-navbar>
+  </div>
+  <!--Amennyiben a hirdetés tulajdonosaként tekintjük meg a hirdetést, akkor szerkeszthetjük. -->
+  <div class="container" *ngIf="owner">
+    <div class="col-md-4 content-center" id="centeralign">
+      <div class="card card-login card-plain">
+        <form [formGroup]="updateFlatForm"
+              (ngSubmit)="updateFlat(
+              updateFlatForm.get('price').value,
+              updateFlatForm.get('numberOfRooms').value,
+              updateFlatForm.get('description').value,
+              updateFlatForm.get('email').value,
+              updateFlatForm.get('phone_number').value,
+              updateFlatForm.get('address').value,
+              updateFlatForm.get('hasAttachment').value)"
+              class="form" method="" action=""
+              [class.error]="!updateFlatForm.valid && updateFlatForm.touched">
+          <div class="content">
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Price"
+                     value={{flat.price}}
+                     class="form-control"
+                     [(ngModel)]="price"
+                     [formControl]="updateFlatForm.get('price')">
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Number of Rooms"
+                     value={{flat.numberOfRooms}}
+                     class="form-control"
+                     [(ngModel)]="numberOfRooms"
+                     [formControl]="updateFlatForm.get('numberOfRooms')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <textarea type="text"
+                        placeholder="Description of the flat"
+                        value={{flat.description}}
+                        rows="4"
+                        cols="80"
+                        class="form-control"
+                        [(ngModel)]="description"
+                        [formControl]="updateFlatForm.get('description')">
+                </textarea>
+
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Email"
+                     value={{flat.email}}
+                     class="form-control"
+                     [(ngModel)]="email"
+                     [formControl]="updateFlatForm.get('email')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Phone number"
+                     value={{flat.phone_number}}
+                     class="form-control"
+                     [(ngModel)]="phone_number"
+                     [formControl]="updateFlatForm.get('phone_number')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Address"
+                     value={{flat.address}}
+                     class="form-control"
+                     [(ngModel)]="address"
+                     [formControl]="updateFlatForm.get('address')">
+            </div>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input"
+                       type="checkbox"
+                       value={{flat.hasAttachment}}
+                       [(ngModel)]="hasAttachment"
+                       [formControl]="updateFlatForm.get('hasAttachment')">Image
+                <span class="form-check-sign"></span>
+              </label>
+              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+                {{ successMessage }}
+
+              </div>
+              <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+                      [disabled]="!updateFlatForm.valid" (click)="changeSuccessMessage()">
+                Update advertisement
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Amennyiben nem a hirdetés tulajdonosa vagyunk-->
+  <div class="container" *ngIf="!owner">
+
+    <div class="section" id="carousel">
+      <div class="container">
+        <div class="title">
+          <h4>Carousel</h4>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <ngb-carousel>
+              <ng-template ngbSlide>
+                <img class="d-block" src="assets/img/bg1.jpg" alt="First slide">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Nature, United States</h5>
+                </div>
+              </ng-template>
+              <ng-template ngbSlide>
+                <img class="d-block" src="assets/img/bg3.jpg" alt="Second slide">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Somewhere Beyond, United States</h5>
+                </div>
+              </ng-template>
+              <ng-template ngbSlide>
+                <img class="d-block" src="assets/img/bg4.jpg" alt="Third slide">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Yellowstone National Park, United States</h5>
+                </div>
+              </ng-template>
+            </ngb-carousel>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</body>
+</html>
