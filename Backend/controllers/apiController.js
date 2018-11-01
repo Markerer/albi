@@ -163,7 +163,7 @@ module.exports = function(app) {
         Images.find({flatID: req.params.flatId }, function(err, images){
             if(err) throw err;
             res.send(images);
-        }).select('_id');
+        }).select('_id filename');
     });
 
     app.get('/image/:imageID', function(req, res){
