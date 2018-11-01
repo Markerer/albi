@@ -2,6 +2,7 @@ package albi.bme.hu.albi.interfaces.main
 
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.ImageDataResponse
+import android.graphics.drawable.BitmapDrawable
 import android.media.Image
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -85,5 +86,5 @@ interface FlatClient {
      * http://localhost:3000/image-1541104094255.jpg
      */
     @GET("/{filename}")
-    fun getImageFileByName(@Path("filename") fileName: String): Call<Image>
+    fun getImageFileByName(@Path("filename") fileName: String): Call<BitmapDrawable>
 }

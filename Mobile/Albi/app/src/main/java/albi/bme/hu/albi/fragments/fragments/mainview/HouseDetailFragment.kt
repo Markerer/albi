@@ -6,6 +6,7 @@ import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
+import android.graphics.drawable.BitmapDrawable
 import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -30,29 +31,30 @@ class HouseDetailFragment : Fragment() {
     var usersData = ArrayList<Flat>()
     private var flatsImageIDs: ArrayList<String>? = ArrayList()
     private var actualImageData: ImageDataResponse? = null
+    private var recyclerView: RecyclerView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rvHouseDetail)
+        recyclerView = view.findViewById<RecyclerView>(R.id.rvHouseDetail)
 
         val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
-            networkRequestForMainFlats(recyclerView)
+            networkRequestForMainFlats()
             val handler = Handler()
             handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
         }
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
 
-        initializationRecycle(recyclerView)
+        initializationRecycle()
 
         return view
     }
 
-    private fun initializationRecycle(recyclerView: RecyclerView) {
-        recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
+    private fun initializationRecycle() {
+        recyclerView?.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
         /**
          * szerintem ide kellene meghívni a többi hívást, előbb leszedni a képeket
          * hogy a recycelView adapterének már a képekkel feltöltött házak menjenek
@@ -64,10 +66,14 @@ class HouseDetailFragment : Fragment() {
          *
          *  részt a network hívások után, h már minden adattal hívódjon meg
          */
-        networkRequestForMainFlats(recyclerView)
+       // networkRequestForImagesIDs(usersData.get(0)._id) // 5bca576143bc752f807e9094
+       // networkRequestForImageName(flatsImageIDs?.get(0)!!)
+        networkRequestForImageView("image-1541115065336.jpeg")
+        networkRequestForMainFlats()
     }
 
-    private fun networkRequestForMainFlats(recyclerView: RecyclerView) {
+    // networkRequestForMainFlats(recyclerView: RecyclerView)
+    private fun networkRequestForMainFlats() {
         val client = RestApiFactory.createFlatClient()
         val call = client.getMainFlats()
 
@@ -75,8 +81,10 @@ class HouseDetailFragment : Fragment() {
             override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
                 val flats: List<Flat>? = response.body()
                 usersData = flats as ArrayList<Flat>
+                //val adapter = RecyclerAdapter(usersData)
+                //recyclerView.adapter = adapter
                 val adapter = RecyclerAdapter(usersData)
-                recyclerView.adapter = adapter
+                recyclerView?.adapter = adapter
                 Toast.makeText(activity, "no error :)", Toast.LENGTH_LONG).show()
             }
 
@@ -123,13 +131,19 @@ class HouseDetailFragment : Fragment() {
         })
     }
 
-    private fun networkRequestForImageView(filename: String) {
+    private fun networkRequestForImageView(imagename: String) {
         val client = RestApiFactory.createFlatClient()
-        val call = client.getImageFileByName(filename)
+        val call = client.getImageFileByName(imagename)
 
-        call.enqueue(object : Callback<Image> {
-            override fun onResponse(call: Call<Image>?, response: Response<Image>?) {
-                val image: Image? = response?.body()
+        call.enqueue(object : Callback<BitmapDrawable> {
+            override fun onResponse(call: Call<BitmapDrawable>?, response: Response<BitmapDrawable>?) {
+                val image: BitmapDrawable? = response?.body()
+                // PROBA, mindegyiknek ugyan azt, megnézni,
+                // hogy legalább működik e
+                for (i in usersData.indices){
+                    usersData[i].image = image
+                }
+
                 // TODO!!!!!! https://stackoverflow.com/questions/41311179/how-do-i-set-an-image-in-recyclerview-in-a-fragment-from-the-drawable-folder
                 /**
                  * bekellene állítani a recycleViewbem az adott sor image-ját
@@ -138,7 +152,7 @@ class HouseDetailFragment : Fragment() {
 
             }
 
-            override fun onFailure(call: Call<Image>?, t: Throwable?) {
+            override fun onFailure(call: Call<BitmapDrawable>?, t: Throwable?) {
                 t?.printStackTrace()
                 Toast.makeText(activity, "error in: networkRequestForImageView()" + t?.message, Toast.LENGTH_LONG).show()
             }
