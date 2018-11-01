@@ -28,6 +28,25 @@ module.exports = function(app) {
         })
     });
 
+    //update flats
+    app.put('/flats', function(req, res) {
+                
+        Flats.findByIdAndUpdate(req.body._id, {userID: req.params.userID,
+            price: req.body.price,
+            numberOfRooms: req.body.numberOfRooms,
+            description: req.body.description,
+            email: req.body.email,
+            phone_number: req.body.phone_number,
+            address: req.body.address,
+            hasAttachment: false}, function(err, user){
+            if (err) throw err;
+            
+            res.send('Success');
+        });
+            
+       
+    });
+
     //paging 10 record/page
     app.get('/api/main/:pageid', function(req, res){
         var pageid = req.params.pageid;
@@ -158,6 +177,7 @@ module.exports = function(app) {
 
     });
 
+
     //delete image
 
     app.delete('/image/:imageID', function(req, res) {
@@ -200,10 +220,8 @@ module.exports = function(app) {
 
     
     //user updater, create user
-    app.post('/api/user', function(req, res) {
-        
-        if (req.body._id) {
-            
+    app.put('/api/user', function(req, res) {
+                
             Users.findByIdAndUpdate(req.body._id, {username: req.body.username, password: req.body.password, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function(err, user){
                 if (err) throw err;
                 
@@ -211,9 +229,9 @@ module.exports = function(app) {
             });
                 
            
-        }
+        });
         
-        else {
+    app.post('/api/user', function(req, res) {
             Users.count({username: req.body.username}, function(err, count){
                 if(count>0){
                     res.send("The username is already taken.");
@@ -237,7 +255,7 @@ module.exports = function(app) {
                 }
             });
           
-            }
+            
         
     });
 
@@ -267,8 +285,7 @@ module.exports = function(app) {
             email: req.body.email,
             phone_number: req.body.phone_number,
             address: req.body.address,
-            hasAttachment: false,
-            
+            hasAttachment: false          
            });
            
            Flats.create(newFlat, function(err, results){
