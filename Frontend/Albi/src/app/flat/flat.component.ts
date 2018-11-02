@@ -18,6 +18,7 @@ import { Image } from '../image';
 export class FlatComponent implements OnInit {
 
   undefinedUser: boolean = false;
+  visitorMode: boolean = false;
   owner: boolean;
 
   flat: Flat = new Flat();
@@ -162,7 +163,20 @@ export class FlatComponent implements OnInit {
     {
       console.log(object);
       this.changeSuccessUploadMsg();
+      this.getFlat();
     });
+  }
+
+  deleteImage(imageID: String): void {
+    this.imageService.deleteImage(imageID).subscribe(response =>
+    {
+      console.log(response);
+      this.getFlat();
+    });
+  }
+
+  visitMode(): void {
+    this.visitorMode = !this.visitorMode;
   }
 
 }

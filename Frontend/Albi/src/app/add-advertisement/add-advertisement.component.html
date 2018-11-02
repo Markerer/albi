@@ -1,12 +1,48 @@
 <html>
-<body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100% 100%;
-   height: 100%; background-attachment:fixed">
+<body>
 
   <div>
     <app-navbar></app-navbar>
   </div>
 
-  <div class="container">
+
+  <div class="container toppadding" *ngIf="advertisementCreated">
+    <div class="row">
+      <div class="col-lg-4" *ngFor="let myimage of createdFlat.images;">
+        <div class="card" *ngIf="!createdFlat.noImageFound">
+          <img class="card-img-top" src="{{myimage.filename}}" alt="firstPicture">
+          <!--d-flex kell, mert akkor lesz flexbox, aztán a justify horizontálisan középre, align pedig vertikálisan-->
+          <div class="card-body align-items-center d-flex justify-content-center">
+            <div class="text-center">
+              <a class="btn btn-primary btn-round btn-lg center justify-content-center" style="color:white" (click)="deleteImage(myimage._id)">Delete image</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="input-group form-group-no-border input-lg align-items-center justify-content-center d-flex" *ngIf="advertisementCreated">
+
+    <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+      {{ successMessage }}
+    </div>
+    <input type="file"
+           (change)="onFileChanged($event)"
+           accept="image/*">
+    <button class="btn btn-primary btn-round btn-lg"
+            (click)="uploadImage()">
+      Upload picture
+    </button>
+    <button class="btn btn-primary btn-round btn-lg"
+            (click)="navigateToMain()">
+      Done
+    </button>
+  </div>
+
+
+  <div class="container" *ngIf="!advertisementCreated">
     <div class="col-md-4 content-center" id="centeralign">
       <div class="card card-login card-plain">
         <form [formGroup]="createFlatForm"
@@ -19,6 +55,7 @@
               class="form" method="" action=""
               [class.error]="!createFlatForm.valid && createFlatForm.touched">
           <div class="content">
+
             <div class="input-group form-group-no-border input-lg">
 
               <input type="text"
@@ -66,12 +103,9 @@
                        [formControl]="createFlatForm.get('hasAttachment')">Image
                 <span class="form-check-sign"></span>
               </label>
-              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
-                {{ successMessage }}
 
-              </div>
               <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                      [disabled]="!createFlatForm.valid" (click)="changeSuccessMessage()">
+                      [disabled]="!createFlatForm.valid">
                 Create advertisement
               </button>
             </div>

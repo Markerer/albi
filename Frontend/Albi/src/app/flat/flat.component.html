@@ -4,22 +4,46 @@
     <app-navbar></app-navbar>
   </div>
   <!--Amennyiben a hirdetés tulajdonosaként tekintjük meg a hirdetést, akkor szerkeszthetjük. -->
-  <div class="container" *ngIf="owner">
-    <div class="col-md-4 content-center" id="centeralign">
-      <div class="card card-login card-plain">
-        
+  <div class="toppadding align-items-center justify-content-center d-flex" *ngIf="owner">
+    <button class="btn btn-primary btn-round btn-lg" (click)="visitMode()" *ngIf="owner && !visitorMode">
+      Watch your advertisements as a visitor
+    </button>
+    <button class="btn btn-primary btn-round btn-lg" (click)="visitMode()" *ngIf="owner && visitorMode">
+      Back to editing your advertisement
+    </button>
+  </div>
+  <div class="container toppadding" *ngIf="owner && !visitorMode">
+    <div class="row">
+      <div class="col-lg-4" *ngFor="let myimage of flat.images;">
+        <div class="card" *ngIf="!flat.noImageFound">
+          <img class="card-img-top" src="{{myimage.filename}}" alt="firstPicture">
+          <!--d-flex kell, mert akkor lesz flexbox, aztán a justify horizontálisan középre, align pedig vertikálisan-->
+          <div class="card-body align-items-center d-flex justify-content-center">
+            <div class="text-center">
+              <a class="btn btn-primary btn-round btn-lg center justify-content-center" style="color:white" (click)="deleteImage(myimage._id)">Delete image</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="owner && !visitorMode">
+    <div class="row">
+      <div class="col-md-4 content-center centering">
+        <div class="card card-login card-plain">
+
           <div class="input-group form-group-no-border input-lg">
             <input type="file"
                    (change)="onFileChanged($event)"
                    accept="image/*">
             <button class="btn btn-primary btn-round btn-lg btn-block"
-                    [disabled]="!updateFlatForm.valid" (click)="uploadImage()">
+                     (click)="uploadImage()">
               Upload picture
             </button>
           </div>
-        
-        <form [formGroup]="updateFlatForm"
-              (ngSubmit)="updateFlat(
+
+          <form [formGroup]="updateFlatForm"
+                (ngSubmit)="updateFlat(
               updateFlatForm.get('price').value,
               updateFlatForm.get('numberOfRooms').value,
               updateFlatForm.get('description').value,
@@ -27,108 +51,106 @@
               updateFlatForm.get('phone_number').value,
               updateFlatForm.get('address').value,
               updateFlatForm.get('hasAttachment').value)"
-              class="form" method="" action=""
-              [class.error]="!updateFlatForm.valid && updateFlatForm.touched">
-          <div class="content">
+                class="form" method="" action=""
+                [class.error]="!updateFlatForm.valid && updateFlatForm.touched">
+            <div class="content">
 
-            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group form-group-no-border input-lg">
 
-              <input type="text"
-                     placeholder="Price"
-                     value={{flat.price}}
-                     class="form-control"
-                     [(ngModel)]="price"
-                     [formControl]="updateFlatForm.get('price')">
-            </div>
-            <div class="input-group form-group-no-border input-lg">
+                <input type="text"
+                       placeholder="Price"
+                       value={{flat.price}}
+                       class="form-control"
+                       [(ngModel)]="price"
+                       [formControl]="updateFlatForm.get('price')">
+              </div>
+              <div class="input-group form-group-no-border input-lg">
 
-              <input type="text"
-                     placeholder="Number of Rooms"
-                     value={{flat.numberOfRooms}}
-                     class="form-control"
-                     [(ngModel)]="numberOfRooms"
-                     [formControl]="updateFlatForm.get('numberOfRooms')">
-            </div>
+                <input type="text"
+                       placeholder="Number of Rooms"
+                       value={{flat.numberOfRooms}}
+                       class="form-control"
+                       [(ngModel)]="numberOfRooms"
+                       [formControl]="updateFlatForm.get('numberOfRooms')">
+              </div>
 
-            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group form-group-no-border input-lg">
 
-              <textarea type="text"
-                        placeholder="Description of the flat"
-                        value={{flat.description}}
-                        rows="4"
-                        cols="80"
-                        class="form-control"
-                        [(ngModel)]="description"
-                        [formControl]="updateFlatForm.get('description')">
+                <textarea type="text"
+                          placeholder="Description of the flat"
+                          value={{flat.description}}
+                          rows="4"
+                          cols="80"
+                          class="form-control"
+                          [(ngModel)]="description"
+                          [formControl]="updateFlatForm.get('description')">
                 </textarea>
 
-            </div>
-
-            <div class="input-group form-group-no-border input-lg">
-
-              <input type="text"
-                     placeholder="Email"
-                     value={{flat.email}}
-                     class="form-control"
-                     [(ngModel)]="email"
-                     [formControl]="updateFlatForm.get('email')">
-            </div>
-
-            <div class="input-group form-group-no-border input-lg">
-
-              <input type="text"
-                     placeholder="Phone number"
-                     value={{flat.phone_number}}
-                     class="form-control"
-                     [(ngModel)]="phone_number"
-                     [formControl]="updateFlatForm.get('phone_number')">
-            </div>
-
-            <div class="input-group form-group-no-border input-lg">
-
-              <input type="text"
-                     placeholder="Address"
-                     value={{flat.address}}
-                     class="form-control"
-                     [(ngModel)]="address"
-                     [formControl]="updateFlatForm.get('address')">
-            </div>
-
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input"
-                       type="checkbox"
-                       value={{flat.hasAttachment}}
-                       [(ngModel)]="hasAttachment"
-                       [formControl]="updateFlatForm.get('hasAttachment')">Image
-                <span class="form-check-sign"></span>
-              </label>
-              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
-                {{ successMessage }}
-
               </div>
-              <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                      [disabled]="!updateFlatForm.valid" (click)="changeSuccessMessage()">
-                Update advertisement
-              </button>
+
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
+                       placeholder="Email"
+                       value={{flat.email}}
+                       class="form-control"
+                       [(ngModel)]="email"
+                       [formControl]="updateFlatForm.get('email')">
+              </div>
+
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
+                       placeholder="Phone number"
+                       value={{flat.phone_number}}
+                       class="form-control"
+                       [(ngModel)]="phone_number"
+                       [formControl]="updateFlatForm.get('phone_number')">
+              </div>
+
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
+                       placeholder="Address"
+                       value={{flat.address}}
+                       class="form-control"
+                       [(ngModel)]="address"
+                       [formControl]="updateFlatForm.get('address')">
+              </div>
+
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         value={{flat.hasAttachment}}
+                         [(ngModel)]="hasAttachment"
+                         [formControl]="updateFlatForm.get('hasAttachment')">Image
+                  <span class="form-check-sign"></span>
+                </label>
+                <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+                  {{ successMessage }}
+
+                </div>
+                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+                        [disabled]="!updateFlatForm.valid" (click)="changeSuccessMessage()">
+                  Update advertisement
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
   <!--Amennyiben nem a hirdetés tulajdonosa vagyunk-->
-  <div class="container-fluid" *ngIf="!owner">
+  <div class="container-fluid" *ngIf="!owner || visitorMode">
     <div class="section" id="carousel">
       <div class="container">
-        <div class="title">
-          <h4>Images:</h4>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-6">
-            <ngb-carousel>
+        <div class="row justify-content-center text-center">
+          <div class="col-10">
+            <ngb-carousel class="carousel centering" *ngIf="!flat.noImageFound">
               <ng-template ngbSlide *ngFor="let myimage of flat.images;">
-                <img class="d-block" src="{{myimage.filename}}" alt="First slide">
+                <img class="d-block item" src="{{myimage.filename}}" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
               </ng-template>
@@ -137,7 +159,49 @@
         </div>
       </div>
     </div>
-
+    <div class="col-md-10 ml-auto col-xl-6 mr-auto">
+      <p class="category">Details of the advertisement</p>
+      <!-- Tabs with Background on Card -->
+      <div class="card">
+        <div class="nav-tabs-navigation" data-tabs-color="orange">
+          <div class="nav-tabs-wrapper">
+            <ngb-tabset [justify]="'center'" class="text-center">
+              <ngb-tab title="Description">
+                <ng-template ngbTabContent>
+                  <p>{{flat.description}}</p>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Number of Rooms">
+                <ng-template ngbTabContent>
+                  <p>{{flat.numberOfRooms}}</p>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Price">
+                <ng-template ngbTabContent>
+                  <i class="now-ui-icons business_money-coins"></i>
+                  <p>{{flat.price}}</p>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Contact">
+                <ng-template ngbTabContent>
+                  <i class="now-ui-icons ui-1_email-85"></i>
+                  <p>{{flat.email}}</p>
+                  <i class="now-ui-icons tech_mobile"></i>
+                  <p>{{flat.phone_number}}</p>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Address">
+                <ng-template ngbTabContent>
+                  <i class="now-ui-icons location_pin"></i>
+                  <p>{{flat.address}}</p>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+          </div>
+        </div>
+      </div>
+      <!-- End Tabs on plain Card -->
+    </div>
 
 
   </div>
