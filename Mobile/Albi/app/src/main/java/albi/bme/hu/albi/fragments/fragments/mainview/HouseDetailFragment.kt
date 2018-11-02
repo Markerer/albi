@@ -6,6 +6,7 @@ import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.media.Image
 import android.os.Bundle
@@ -24,7 +25,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.os.Handler
-
+import android.os.StrictMode
+import com.google.gson.internal.bind.TypeAdapters.URL
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.house_detail_fragment_row.*
+import java.io.IOException
+import java.io.InputStream
+import java.net.URL
 
 class HouseDetailFragment : Fragment() {
 
@@ -68,7 +75,8 @@ class HouseDetailFragment : Fragment() {
          */
        // networkRequestForImagesIDs(usersData.get(0)._id) // 5bca576143bc752f807e9094
        // networkRequestForImageName(flatsImageIDs?.get(0)!!)
-        networkRequestForImageView("image-1541115065336.jpeg")
+        val requestNameID:String = "image-1541115065336.jpeg"
+        //networkRequestForImageView(requestNameID)
         networkRequestForMainFlats()
     }
 
@@ -83,6 +91,10 @@ class HouseDetailFragment : Fragment() {
                 usersData = flats as ArrayList<Flat>
                 //val adapter = RecyclerAdapter(usersData)
                 //recyclerView.adapter = adapter
+                // TODO PICASSO --> http://square.github.io/picasso/
+                for (i in usersData.indices){
+                    usersData[i].imageURL = "https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg" //http://localhost:3000/image-1541115065336.jpeg
+                }
                 val adapter = RecyclerAdapter(usersData)
                 recyclerView?.adapter = adapter
                 Toast.makeText(activity, "no error :)", Toast.LENGTH_LONG).show()
@@ -135,11 +147,12 @@ class HouseDetailFragment : Fragment() {
         val client = RestApiFactory.createFlatClient()
         val call = client.getImageFileByName(imagename)
 
-        call.enqueue(object : Callback<BitmapDrawable> {
-            override fun onResponse(call: Call<BitmapDrawable>?, response: Response<BitmapDrawable>?) {
-                val image: BitmapDrawable? = response?.body()
+        call.enqueue(object : Callback<Image> {
+            override fun onResponse(call: Call<Image>?, response: Response<Image>?) {
+                val image: Image? = response?.body()
                 // PROBA, mindegyiknek ugyan azt, megnézni,
                 // hogy legalább működik e
+
                 for (i in usersData.indices){
                     usersData[i].image = image
                 }
@@ -152,7 +165,7 @@ class HouseDetailFragment : Fragment() {
 
             }
 
-            override fun onFailure(call: Call<BitmapDrawable>?, t: Throwable?) {
+            override fun onFailure(call: Call<Image>?, t: Throwable?) {
                 t?.printStackTrace()
                 Toast.makeText(activity, "error in: networkRequestForImageView()" + t?.message, Toast.LENGTH_LONG).show()
             }
@@ -160,4 +173,12 @@ class HouseDetailFragment : Fragment() {
         })
     }
 
+    // https://stackoverflow.com/questions/45830529/how-to-convert-image-url-into-drawable-int
+    // https://www.youtube.com/watch?v=japhFMXAJZw
+    private fun convertServerImageURLintoBitmap(){
+        Picasso.get().load("http://localhost:3000/image-1541115065336.jpeg").into(ivFlatImagePreview)
+    }
+
+
 }
+

@@ -86,5 +86,5 @@ interface FlatClient {
      * http://localhost:3000/image-1541104094255.jpg
      */
     @GET("/{filename}")
-    fun getImageFileByName(@Path("filename") fileName: String): Call<BitmapDrawable>
+    fun getImageFileByName(@Path("filename") fileName: String): Call<Image>
 }

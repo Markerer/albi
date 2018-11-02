@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
@@ -30,10 +31,13 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]
         // TODO ötletelni --> https://developer.android.com/guide/topics/resources/drawable-resource
-        viewHolder.ivHousePicture.setImageDrawable(flat.image) // nem biztos!
-        viewHolder.tvPrice.text = flat.price.toString()
+        //viewHolder.ivHousePicture.setImageBitmap(flat.bitmapImage) // nem biztos!
+        // https://www.youtube.com/watch?v=japhFMXAJZw
+        // http://square.github.io/picasso/
+        Picasso.get().load(flat.imageURL).into(viewHolder.ivHousePicture)
+        viewHolder.tvPrice.text = flat.price
         viewHolder.tvAddress.text = flat.address
-        viewHolder.tvNumberOfRooms.text = flat.numberOfRooms.toString()
+        viewHolder.tvNumberOfRooms.text = flat.numberOfRooms
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){

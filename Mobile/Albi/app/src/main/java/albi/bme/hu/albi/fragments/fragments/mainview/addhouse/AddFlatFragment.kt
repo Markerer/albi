@@ -71,13 +71,13 @@ class AddFlatFragment: Fragment() {
             if(priceLayout.editText!!.text.isEmpty()){
                 priceLayout.editText!!.error = "This field must be filled!"
             } else {
-                uploadFlat.price = priceLayout.editText!!.text.toString().toInt()
+                uploadFlat.price = priceLayout.editText!!.text.toString()
             }
 
             if(numberOfRoomsLayout.editText!!.text.isEmpty()){
                 numberOfRoomsLayout.editText!!.error = "This field must be filled!"
             }else{
-                uploadFlat.numberOfRooms = numberOfRoomsLayout.editText!!.text.toString().toInt()
+                uploadFlat.numberOfRooms = numberOfRoomsLayout.editText!!.text.toString()//.toInt()
             }
 
             if(descriptionLayout.editText!!.text.isEmpty()){

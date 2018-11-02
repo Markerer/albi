@@ -65,4 +65,7 @@ dependencies {
     // https://github.com/permissions-dispatcher/PermissionsDispatcher
     //implementation "com.github.hotchemi:permissionsdispatcher:4.0.0"
     //annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:4.0.0"
+
+    // http://square.github.io/picasso/
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

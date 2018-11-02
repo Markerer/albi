@@ -1,6 +1,7 @@
 package albi.bme.hu.albi.model
 
 import albi.bme.hu.albi.network.ImageDataResponse
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.Image
@@ -9,8 +10,8 @@ import android.widget.ImageView
 
 class Flat(var _id: String = "",
            var userID: String = "",
-           var price: Int = -1 ,
-           var numberOfRooms: Int = -1,
+           var price: String = "" ,
+           var numberOfRooms: String = "",
            var description: String = "",
            var email: String = "",
            var phone_number: String = "",
@@ -18,7 +19,12 @@ class Flat(var _id: String = "",
 
     var imageData: ArrayList<ImageDataResponse> = ArrayList()
     // https://developer.android.com/guide/topics/resources/drawable-resource
-    var image: BitmapDrawable? = null
+    var image: Image? = null
+    //https://stackoverflow.com/questions/8937036/what-is-the-difference-between-bitmap-and-drawable-in-android
+    //https://corochann.com/convert-between-bitmap-and-drawable-313.html
+    var bitmapImage: Bitmap? = null // BitmapDrawable ???
+
+    var imageURL: String? = "http://localhost:3000/image-1541115065336.jpeg"
 
 }
 
