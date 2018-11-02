@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Image } from './image';
+import { Binary } from '@angular/compiler';
 
 
 
@@ -37,8 +38,8 @@ export class ImageService {
   }
 
   // Kép feltöltése az adott hirdetéshez
-  uploadImage() {
-
+  uploadImage(uploadData: FormData, flatID: String): Observable<Object> {
+    return this.http.post(this.apiRoot + 'flat/upload/' + flatID, uploadData);
   }
 
   // Adott kép törlése

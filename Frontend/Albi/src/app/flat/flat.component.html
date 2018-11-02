@@ -7,6 +7,17 @@
   <div class="container" *ngIf="owner">
     <div class="col-md-4 content-center" id="centeralign">
       <div class="card card-login card-plain">
+        
+          <div class="input-group form-group-no-border input-lg">
+            <input type="file"
+                   (change)="onFileChanged($event)"
+                   accept="image/*">
+            <button class="btn btn-primary btn-round btn-lg btn-block"
+                    [disabled]="!updateFlatForm.valid" (click)="uploadImage()">
+              Upload picture
+            </button>
+          </div>
+        
         <form [formGroup]="updateFlatForm"
               (ngSubmit)="updateFlat(
               updateFlatForm.get('price').value,
@@ -19,6 +30,7 @@
               class="form" method="" action=""
               [class.error]="!updateFlatForm.valid && updateFlatForm.touched">
           <div class="content">
+
             <div class="input-group form-group-no-border input-lg">
 
               <input type="text"
@@ -107,37 +119,24 @@
   </div>
   <!--Amennyiben nem a hirdetés tulajdonosa vagyunk-->
   <div class="container-fluid" *ngIf="!owner">
-      <div class="section" id="carousel">
-        <div class="container">
-          <div class="title">
-            <h4>Images:</h4>
-          </div>
-          <div class="row justify-content-center">
-            <div class="col-6">
-              <ngb-carousel>
-                <ng-template ngbSlide>
-                  <img class="d-block" src="assets/img/bg1.jpg" alt="First slide">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Nature, United States</h5>
-                  </div>
-                </ng-template>
-                <ng-template ngbSlide>
-                  <img class="d-block" src="assets/img/bg3.jpg" alt="Second slide">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Somewhere Beyond, United States</h5>
-                  </div>
-                </ng-template>
-                <ng-template ngbSlide>
-                  <img class="d-block" src="assets/img/bg4.jpg" alt="Third slide">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Yellowstone National Park, United States</h5>
-                  </div>
-                </ng-template>
-              </ngb-carousel>
-            </div>
+    <div class="section" id="carousel">
+      <div class="container">
+        <div class="title">
+          <h4>Images:</h4>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-6">
+            <ngb-carousel>
+              <ng-template ngbSlide *ngFor="let myimage of flat.images;">
+                <img class="d-block" src="{{myimage.filename}}" alt="First slide">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+              </ng-template>
+            </ngb-carousel>
           </div>
         </div>
       </div>
+    </div>
 
 
 
