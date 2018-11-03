@@ -29,6 +29,8 @@ export class FlatComponent implements OnInit {
   updateFlatForm: FormGroup;
 
   private _success = new Subject<string>();
+  private _successUpload = new Subject<string>();
+  successUpload: string;
   successMessage: string;
 
   constructor(
@@ -56,14 +58,24 @@ export class FlatComponent implements OnInit {
     this._success.pipe(
       debounceTime(5000)
     ).subscribe(() => this.successMessage = null);
+
+    //A sikeres üzenet
+    this._successUpload.subscribe((message) => this.successUpload = message);
+    this._successUpload.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.successUpload = null);
   }
 
   public changeSuccessMessage(): void {
-    this._success.next(`Your advertisement have been successfully updated, you will be redirected to the main page in a few seconds!`);
+    this._success.next(`Your advertisement have been successfully updated.`);
   }
 
   public changeSuccessUploadMsg(): void {
-    this._success.next(`Your picture is being uploaded. Wait a few seconds, please.`);
+    this._successUpload.next(`Your picture is being uploaded. Wait a few seconds, please.`);
+  }
+
+  navigateToMain(): void {
+    this.router.navigate(['main']);
   }
 
   getFlat(): void {
@@ -122,12 +134,6 @@ export class FlatComponent implements OnInit {
       msg => {
         console.log(msg);
       });
-    
-    // 5 sec múlva main oldalra átírányítás
-    setTimeout(() => {
-      this.router.navigate(['main']);
-    }, 5000);
-
   }
 
   // A lakás képeinek (ID és fájlnév) beállítása

@@ -33,11 +33,16 @@
         <div class="card card-login card-plain">
 
           <div class="input-group form-group-no-border input-lg">
+            <div *ngIf="successUpload" type="success" class="alert alert-success" (close)="successUpload = null">
+              {{ successUpload }}
+
+            </div>
+
             <input type="file"
                    (change)="onFileChanged($event)"
                    accept="image/*">
             <button class="btn btn-primary btn-round btn-lg btn-block"
-                     (click)="uploadImage()">
+                    (click)="uploadImage()">
               Upload picture
             </button>
           </div>
@@ -135,6 +140,8 @@
                         [disabled]="!updateFlatForm.valid" (click)="changeSuccessMessage()">
                   Update advertisement
                 </button>
+                <button class="btn btn-primary btn-round btn-lg btn-block" (click)="navigateToMain()">
+                Back to the main screen</button>
               </div>
             </div>
           </form>
