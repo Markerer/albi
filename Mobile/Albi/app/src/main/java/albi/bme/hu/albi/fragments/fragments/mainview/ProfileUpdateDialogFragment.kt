@@ -1,6 +1,7 @@
 package albi.bme.hu.albi.fragments.fragments.mainview
 
 import albi.bme.hu.albi.R
+import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
 import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.RestApiFactory
 import android.app.Dialog
@@ -22,16 +23,15 @@ class ProfileUpdateDialogFragment : DialogFragment() {
     private lateinit var phone: EditText
     var user: User? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    var profileFragment: ProfileFragment? = null
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         Toast.makeText(context, user!!._id, Toast.LENGTH_LONG).show()
         return AlertDialog.Builder(requireContext())
                 .setTitle("Edit Profile")
                 .setView(getContentView())
-                .setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
+                .setPositiveButton("OK") { _: DialogInterface, i: Int ->
                     if (isValid()) {
                         updateProfile()
                         networkRequestForProfileUpdate()
@@ -51,15 +51,19 @@ class ProfileUpdateDialogFragment : DialogFragment() {
 
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                Toast.makeText(context, response.body(), Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(context, "error", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Error: " + t.message, Toast.LENGTH_LONG).show()
             }
         })
 
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        profileFragment?.setView()
     }
 
     private fun isValid(): Boolean {

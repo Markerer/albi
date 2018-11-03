@@ -3,17 +3,14 @@ package albi.bme.hu.albi.interfaces.user
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface UserClient {
 
     @POST("/api/user/")
     fun createUser(@Body user: User): Call<String>
 
-    @POST("/api/user/")
+    @PUT("/api/user/")
     fun updateUser(@Body user: User): Call<String>
 
     /**
