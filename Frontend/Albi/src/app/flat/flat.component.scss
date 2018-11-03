@@ -12,6 +12,10 @@
   padding-top: 100px;
 }
 
+.marginbottom{
+  margin-bottom: 50px;
+}
+
 .item {
   background-size: cover;
   background-position: 50% 50%;
@@ -24,4 +28,13 @@
   margin-right: auto;
   margin-bottom: 0;
   margin-left: auto;
+}
+
+.deletebutton{
+  background-color:red;
+  margin-top: 50px;
+}
+
+.hidden{
+  visibility: hidden;
 }

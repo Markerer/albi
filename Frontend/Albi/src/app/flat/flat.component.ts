@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImageService } from '../image.service';
 import { Image } from '../image';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-flat',
@@ -32,6 +33,7 @@ export class FlatComponent implements OnInit {
   private _successUpload = new Subject<string>();
   successUpload: string;
   successMessage: string;
+  closeResult: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,7 +41,8 @@ export class FlatComponent implements OnInit {
     private data: DataService,
     private mainService: MainService,
     private fb: FormBuilder,
-    private imageService: ImageService)
+    private imageService: ImageService,
+    private modalService: NgbModal)
   {}
 
   ngOnInit() {
@@ -183,6 +186,47 @@ export class FlatComponent implements OnInit {
 
   visitMode(): void {
     this.visitorMode = !this.visitorMode;
+  } 
+
+  deleteAdvertisement(): void {
+   /* for (let i of this.flat.images) {
+      this.imageService.deleteImage(i._id).subscribe(response => console.log(response));
+    }
+    this.mainService.deleteFlat(this.flat._id).subscribe(response => console.log(response));
+    navigateToMain();*/
   }
 
+  // A modal ablak kódja
+  open(content, type) {
+    if (type === 'sm') {
+      
+      this.modalService.open(content, { size: 'sm' }).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    } else {
+      this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+        if (`${result}` === 'Delete') {
+          console.log('delete');
+          this.deleteAdvertisement();
+        }
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+}
+  
 }

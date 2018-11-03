@@ -64,5 +64,9 @@ export class MainService {
       },
       { responseType: 'text' });
   }
+  /*
+  deleteFlat(flatID: String): Observable<String> {
+    return this.http.delete(this.apiRoot + 'flats/' + flatID, { responseType: 'text' });
+  }*/
 
 }

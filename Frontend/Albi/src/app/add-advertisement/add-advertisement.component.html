@@ -94,7 +94,7 @@
                      [(ngModel)]="address"
                      [formControl]="createFlatForm.get('address')">
             </div>
-            <div class="form-check">
+            <div class="form-check hidden">
               <label class="form-check-label">
                 <input class="form-check-input"
                        type="checkbox"
@@ -103,13 +103,14 @@
                        [formControl]="createFlatForm.get('hasAttachment')">Image
                 <span class="form-check-sign"></span>
               </label>
-
-              <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                      [disabled]="!createFlatForm.valid">
-                Create advertisement
-              </button>
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+                        [disabled]="!createFlatForm.valid">
+                  Create advertisement
+                </button>
+              </div>
             </div>
-          </div>
         </form>
       </div>
     </div>

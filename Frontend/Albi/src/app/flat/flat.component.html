@@ -123,7 +123,7 @@
                        [formControl]="updateFlatForm.get('address')">
               </div>
 
-              <div class="form-check">
+              <div class="form-check hidden">
                 <label class="form-check-label">
                   <input class="form-check-input"
                          type="checkbox"
@@ -132,19 +132,47 @@
                          [formControl]="updateFlatForm.get('hasAttachment')">Image
                   <span class="form-check-sign"></span>
                 </label>
-                <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
-                  {{ successMessage }}
+              </div>
+              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+                {{ successMessage }}
 
-                </div>
-                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                        [disabled]="!updateFlatForm.valid" (click)="changeSuccessMessage()">
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block marginbottom"
+                        (click)="changeSuccessMessage()">
                   Update advertisement
                 </button>
-                <button class="btn btn-primary btn-round btn-lg btn-block" (click)="navigateToMain()">
-                Back to the main screen</button>
               </div>
             </div>
           </form>
+          <div>
+            <button class="btn btn-primary btn-round btn-lg btn-block" (click)="navigateToMain()">
+              Back to the main screen
+            </button>
+            <ng-template #classic let-c="close" let-d="dismiss">
+              <div class="modal-header">
+                <h5 class="modal-title text-center">Are you sure, you want to delete this advertisement?</h5>
+                <button type="button" class="close" (click)="d('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                If you press yes, you can not get back your advertisement.
+              </div>
+              <div class="modal-footer">
+                <div class="left-side">
+                  <button type="button" class="btn btn-danger btn-link" (click)="c('Delete')">Yes, delete it</button>
+                </div>
+                <div class="divider"></div>
+                <div class="right-side">
+                  <button type="button" class="btn btn-default btn-link" (click)="c('Close click')">No</button>
+                </div>
+              </div>
+            </ng-template>
+            <button class="btn btn-primary btn-round btn-lg btn-block deletebutton" (click)="open(classic)">
+              Delete this advertisement
+            </button>
+          </div>
         </div>
       </div>
     </div>
