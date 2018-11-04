@@ -3,6 +3,7 @@ package albi.bme.hu.albi.fragments.fragments.mainview.addhouse
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
+import albi.bme.hu.albi.network.ImageUploadResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -14,7 +15,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -23,10 +23,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.add_house_fragment.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
@@ -141,6 +141,30 @@ class AddFlatFragment : Fragment() {
             }
         }
         iv.setImageBitmap(bitmap)
+        sendNetworkUploadPhoto("5bdf6a1d5a02c64820888fd5")
+    }
+
+    private fun sendNetworkUploadPhoto(flatID: String){
+        val client = RestApiFactory.createFlatClient()
+
+        val file = File(bitmapUri?.path)
+
+        val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
+        val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
+
+        val call = client.uploadPhoto(flatID, body)
+
+        call.enqueue(object: Callback<ImageUploadResponse>{
+            override fun onFailure(call: Call<ImageUploadResponse>, t: Throwable) {
+                //Toast.makeText(context, "Upload failed " + t.message, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<ImageUploadResponse>, response: Response<ImageUploadResponse>) {
+
+                Toast.makeText(context, "Upload done lol", Toast.LENGTH_LONG).show()
+            }
+        })
+
     }
 
     private fun sendNetworkRequestAdvertisement() {
@@ -149,6 +173,7 @@ class AddFlatFragment : Fragment() {
 
         call.enqueue(object : Callback<Flat> {
             override fun onResponse(call: retrofit2.Call<Flat>, response: Response<Flat>) {
+                sendNetworkUploadPhoto(response.body()!!._id)
                 Toast.makeText(context, "advertisement upload was successfull", Toast.LENGTH_LONG).show()
             }
 
