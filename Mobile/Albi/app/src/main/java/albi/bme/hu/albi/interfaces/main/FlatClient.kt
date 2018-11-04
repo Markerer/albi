@@ -2,6 +2,7 @@ package albi.bme.hu.albi.interfaces.main
 
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.ImageDataResponse
+import albi.bme.hu.albi.network.ImageUploadResponse
 import android.graphics.drawable.BitmapDrawable
 import android.media.Image
 import okhttp3.MultipartBody
@@ -17,8 +18,8 @@ interface FlatClient {
     fun getMainFlatsByPage(@Path("_id")id: Int): Call<List<Flat>>
 
     @Multipart
-    @POST("flat/upload")
-    fun uploadPhoto(@Part photo: MultipartBody.Part) : Call<String>
+    @POST("flat/upload/{flatID}")
+    fun uploadPhoto(@Path("flatID") flatID: String, @Part photo: MultipartBody.Part) : Call<ImageUploadResponse>
 
     @POST("/addflat/{userid}")
     fun uploadFlat(@Path("userid")userId: String,
