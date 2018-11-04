@@ -27,7 +27,6 @@ class HouseDetailFragment : Fragment() {
 
     var usersData = ArrayList<Flat>()
     // egy db flat-hez tartozó ID-k, mindig az aktuális
-    private var actualFlatImageData: ArrayList<ImageDataResponse>? = ArrayList()
     private var actualImageData: ImageDataResponse? = null
     private var recyclerView: RecyclerView? = null
 
@@ -63,8 +62,8 @@ class HouseDetailFragment : Fragment() {
          *
          *  részt a network hívások után, h már minden adattal hívódjon meg
          */
-        Thread(Runnable { networkRequestForMainFlats() }).start()
-        //networkRequestForMainFlats()
+        //Thread(Runnable { networkRequestForMainFlats() }).start()
+        networkRequestForMainFlats()
     }
 
     // networkRequestForMainFlats(recyclerView: RecyclerView)
@@ -86,16 +85,14 @@ class HouseDetailFragment : Fragment() {
                      * "_id": "5bdb61dec893fe2a00cb4fc6",
                      * "filename": "image-1541104094255.jpg"
                      */
-                    networkRequestForImagesIDs(usersData[i]._id)
+                    networkRequestForImagesIDs(usersData[i])
                     //Toast.makeText(activity, "actualFlatImageData.filename: " + actualFlatImageData?.get(0)!!.filename, Toast.LENGTH_LONG).show()
                     // TODO: Error Array "java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0"
                     /**
                      * ezzel error: actualFlatImageData?.get(0)!!.filename
                      * így jó:.... image-1541115065336.jpeg
                      */
-                    if(actualFlatImageData != null){
-                        usersData[i].imageNames!!.add("image-1541115065336.jpeg") //actualFlatImageData?.get(i)!!.filename "image-1541115065336.jpeg"
-                    }
+
                     //"https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg"
                     // http://localhost:3000/image-1541115065336.jpeg
                 }
@@ -111,14 +108,21 @@ class HouseDetailFragment : Fragment() {
         })
     }
 
-    private fun networkRequestForImagesIDs(flatID: String) {
+    private fun networkRequestForImagesIDs(flat: Flat) {
         val client = RestApiFactory.createFlatClient()
-        val call = client.getImagesIDForFlatID(flatID)
+        val call = client.getImagesIDForFlatID(flat._id)
 
         call.enqueue(object : Callback<List<ImageDataResponse>> {
             override fun onResponse(call: Call<List<ImageDataResponse>>, response: Response<List<ImageDataResponse>>) {
                 val imageIDs: List<ImageDataResponse>? = response.body()
-                actualFlatImageData = imageIDs as? ArrayList<ImageDataResponse>
+                val actualFlatImageData = imageIDs as ArrayList<ImageDataResponse>
+
+                if(actualFlatImageData.size != 0) {
+                    for (j in actualFlatImageData.indices) {
+                        flat.imageNames!!.add(actualFlatImageData[j].filename) //actualFlatImageData?.get(i)!!.filename "image-1541115065336.jpeg"
+                    }
+                    actualFlatImageData.clear()
+                }
                 Toast.makeText(activity, "succesfully get Image IDs!! :)", Toast.LENGTH_LONG).show()
             }
 
