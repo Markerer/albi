@@ -84,6 +84,7 @@ export class MainComponent implements OnInit {
         var temp = new Image();
         temp = data[i];
         temp.filename = "http://localhost:3000/" + data[i].filename;
+        //console.log(temp);
         flat.images.push(temp);
       }
       flat.firstImage = new Image();

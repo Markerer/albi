@@ -189,11 +189,11 @@ export class FlatComponent implements OnInit {
   } 
 
   deleteAdvertisement(): void {
-   /* for (let i of this.flat.images) {
+    for (let i of this.flat.images) {
       this.imageService.deleteImage(i._id).subscribe(response => console.log(response));
     }
     this.mainService.deleteFlat(this.flat._id).subscribe(response => console.log(response));
-    navigateToMain();*/
+    this.navigateToMain();
   }
 
   // A modal ablak kódja
@@ -227,6 +227,4 @@ export class FlatComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-}
-  
 }

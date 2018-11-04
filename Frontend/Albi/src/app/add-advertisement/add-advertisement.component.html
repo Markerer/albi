@@ -5,8 +5,10 @@
     <app-navbar></app-navbar>
   </div>
 
-
-  <div class="container toppadding" *ngIf="advertisementCreated">
+  <div class="toppadding align-items-center justify-content-center d-flex" *ngIf="advertisementCreated">
+    <p>Upload your images now or later at the my advertisements page.</p>
+  </div>
+  <div class="container d-flex" *ngIf="advertisementCreated">
     <div class="row">
       <div class="col-lg-4" *ngFor="let myimage of createdFlat.images;">
         <div class="card" *ngIf="!createdFlat.noImageFound">
@@ -41,10 +43,9 @@
     </button>
   </div>
 
-
-  <div class="container" *ngIf="!advertisementCreated">
+  <div class="container toppadding align-items-center justify-content-center d-flex" *ngIf="!advertisementCreated">
     <div class="col-md-4 content-center" id="centeralign">
-      <div class="card card-login card-plain">
+      <div class="card card-login card-plain toppadding">
         <form [formGroup]="createFlatForm"
               (ngSubmit)="createFlat(
               createFlatForm.get('price').value,
@@ -103,14 +104,14 @@
                        [formControl]="createFlatForm.get('hasAttachment')">Image
                 <span class="form-check-sign"></span>
               </label>
-              </div>
-              <div>
-                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
-                        [disabled]="!createFlatForm.valid">
-                  Create advertisement
-                </button>
-              </div>
             </div>
+            <div>
+              <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
+                      [disabled]="!createFlatForm.valid">
+                Create advertisement
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
