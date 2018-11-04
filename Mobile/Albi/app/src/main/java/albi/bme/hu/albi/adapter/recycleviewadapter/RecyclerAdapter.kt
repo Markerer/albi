@@ -1,6 +1,7 @@
 package albi.bme.hu.albi.adapter.recycleviewadapter
 
 import albi.bme.hu.albi.R
+import albi.bme.hu.albi.R.drawable.ic_no_image_512
 import albi.bme.hu.albi.model.Flat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -35,14 +36,18 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
         // TODO ötletelni --> https://developer.android.com/guide/topics/resources/drawable-resource
         // https://www.youtube.com/watch?v=japhFMXAJZw
         // http://square.github.io/picasso/
-        Picasso.get().load(BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
+        if(! (flat.imageNames!!.isEmpty())){
+            Picasso.get().load(BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
+        } else {
+            viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
+        }
         viewHolder.tvPrice.text = flat.price
         viewHolder.tvAddress.text = flat.address
         viewHolder.tvNumberOfRooms.text = flat.numberOfRooms
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
-        val ivHousePicture = itemView.findViewById<ImageView>(R.id.ivFlatImagePreview)
+        var ivHousePicture = itemView.findViewById<ImageView>(R.id.ivFlatImagePreview)
         val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)!!
         val tvAddress = itemView.findViewById<TextView>(R.id.tvAddress)!!
         val tvNumberOfRooms = itemView.findViewById<TextView>(R.id.tvNumberOfRooms)!!

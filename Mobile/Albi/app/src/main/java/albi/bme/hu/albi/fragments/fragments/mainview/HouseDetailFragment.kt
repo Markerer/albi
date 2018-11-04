@@ -27,7 +27,7 @@ class HouseDetailFragment : Fragment() {
 
     var usersData = ArrayList<Flat>()
     // egy db flat-hez tartozó ID-k, mindig az aktuális
-    private var actualFlatImageData: ArrayList<ImageDataResponse>? = null
+    private var actualFlatImageData: ArrayList<ImageDataResponse>? = ArrayList()
     private var actualImageData: ImageDataResponse? = null
     private var recyclerView: RecyclerView? = null
 
@@ -45,7 +45,6 @@ class HouseDetailFragment : Fragment() {
         }
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
-        actualFlatImageData = ArrayList()
         initializationRecycle()
 
         return view
@@ -64,8 +63,8 @@ class HouseDetailFragment : Fragment() {
          *
          *  részt a network hívások után, h már minden adattal hívódjon meg
          */
-        //Thread(Runnable { networkRequestForMainFlats() }).start()
-        networkRequestForMainFlats()
+        Thread(Runnable { networkRequestForMainFlats() }).start()
+        //networkRequestForMainFlats()
     }
 
     // networkRequestForMainFlats(recyclerView: RecyclerView)
@@ -82,6 +81,11 @@ class HouseDetailFragment : Fragment() {
                  * flatID --> imageID --> imageName
                  */
                 for (i in usersData.indices){
+                    /**
+                     * nevet és id-t is visszaadja egy képhez
+                     * "_id": "5bdb61dec893fe2a00cb4fc6",
+                     * "filename": "image-1541104094255.jpg"
+                     */
                     networkRequestForImagesIDs(usersData[i]._id)
                     //Toast.makeText(activity, "actualFlatImageData.filename: " + actualFlatImageData?.get(0)!!.filename, Toast.LENGTH_LONG).show()
                     // TODO: Error Array "java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0"
@@ -89,7 +93,9 @@ class HouseDetailFragment : Fragment() {
                      * ezzel error: actualFlatImageData?.get(0)!!.filename
                      * így jó:.... image-1541115065336.jpeg
                      */
-                    usersData[i].imageNames!!.add("image-1541115065336.jpeg") //actualFlatImageData?.get(0)!!.filename "image-1541115065336.jpeg"
+                    if(actualFlatImageData != null){
+                        usersData[i].imageNames!!.add("image-1541115065336.jpeg") //actualFlatImageData?.get(i)!!.filename "image-1541115065336.jpeg"
+                    }
                     //"https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg"
                     // http://localhost:3000/image-1541115065336.jpeg
                 }
