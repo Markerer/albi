@@ -55,15 +55,18 @@ interface FlatClient {
       * pl:
       * REQUEST: http://localhost:3000/flat/images/5bca576143bc752f807e9094
       * RESPONSE: [
-                     {"_id": "5bdb50b04b1aaa3c94285c92"},
-                     {"_id": "5bdb61dec893fe2a00cb4fc6"}, ---> "filename":"image-1541104094255.jpg"
-                     {"_id": "5bdb6aa7c893fe2a00cb4fc7"},
-                     {"_id": "5bdb6abec893fe2a00cb4fc8"},
-                     {"_id": "5bdb6afac893fe2a00cb4fc9"}
-                  ]
+                     {
+                     "_id": "5bdb50b04b1aaa3c94285c92",
+                     "filename": "image-1541099696012.jpg"
+                    },
+                     {
+                     "_id": "5bdb8cb9c893fe2a00cb4fcc",
+                     "filename": "image-1541115065336.jpeg"
+                     }
+                 ]
      */
     @GET("/flat/images/{flatID}")
-    fun getImagesIDForFlatID(@Path("flatID") flatID: String): Call<List<String>>
+    fun getImagesIDForFlatID(@Path("flatID") flatID: String): Call<List<ImageDataResponse>>
 
     /**
      * get image name and ID

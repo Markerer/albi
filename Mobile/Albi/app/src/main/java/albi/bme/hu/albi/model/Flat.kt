@@ -24,7 +24,9 @@ class Flat(var _id: String = "",
     //https://corochann.com/convert-between-bitmap-and-drawable-313.html
     var bitmapImage: Bitmap? = null // BitmapDrawable ???
 
-    var imageURL: String? = "http://localhost:3000/image-1541115065336.jpeg"
+    var imageURLs: ArrayList<String>? = ArrayList()
+    var imageIDs: ArrayList<String>? = ArrayList()
+    var imageNames: ArrayList<String>? = ArrayList()
 
 }
 

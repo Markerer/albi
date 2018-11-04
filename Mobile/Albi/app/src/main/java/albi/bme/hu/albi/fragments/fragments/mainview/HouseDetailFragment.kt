@@ -2,12 +2,9 @@ package albi.bme.hu.albi.fragments.fragments.mainview
 
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
-import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -22,21 +19,15 @@ import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import android.os.Handler
-import android.os.StrictMode
-import com.google.gson.internal.bind.TypeAdapters.URL
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.house_detail_fragment_row.*
-import java.io.IOException
-import java.io.InputStream
-import java.net.URL
 
 class HouseDetailFragment : Fragment() {
 
     var usersData = ArrayList<Flat>()
-    private var flatsImageIDs: ArrayList<String>? = ArrayList()
+    // egy db flat-hez tartozó ID-k, mindig az aktuális
+    private var actualFlatImageData: ArrayList<ImageDataResponse>? = null
     private var actualImageData: ImageDataResponse? = null
     private var recyclerView: RecyclerView? = null
 
@@ -44,7 +35,7 @@ class HouseDetailFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.rvHouseDetail)
+        recyclerView = view.findViewById(R.id.rvHouseDetail)
 
         val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
@@ -54,7 +45,7 @@ class HouseDetailFragment : Fragment() {
         }
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
-
+        actualFlatImageData = ArrayList()
         initializationRecycle()
 
         return view
@@ -73,10 +64,7 @@ class HouseDetailFragment : Fragment() {
          *
          *  részt a network hívások után, h már minden adattal hívódjon meg
          */
-       // networkRequestForImagesIDs(usersData.get(0)._id) // 5bca576143bc752f807e9094
-       // networkRequestForImageName(flatsImageIDs?.get(0)!!)
-        val requestNameID:String = "image-1541115065336.jpeg"
-        //networkRequestForImageView(requestNameID)
+        //Thread(Runnable { networkRequestForMainFlats() }).start()
         networkRequestForMainFlats()
     }
 
@@ -89,11 +77,21 @@ class HouseDetailFragment : Fragment() {
             override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
                 val flats: List<Flat>? = response.body()
                 usersData = flats as ArrayList<Flat>
-                //val adapter = RecyclerAdapter(usersData)
-                //recyclerView.adapter = adapter
                 // TODO PICASSO --> http://square.github.io/picasso/
+                /**
+                 * flatID --> imageID --> imageName
+                 */
                 for (i in usersData.indices){
-                    usersData[i].imageURL = "https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg" //http://localhost:3000/image-1541115065336.jpeg
+                    networkRequestForImagesIDs(usersData[i]._id)
+                    //Toast.makeText(activity, "actualFlatImageData.filename: " + actualFlatImageData?.get(0)!!.filename, Toast.LENGTH_LONG).show()
+                    // TODO: Error Array "java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0"
+                    /**
+                     * ezzel error: actualFlatImageData?.get(0)!!.filename
+                     * így jó:.... image-1541115065336.jpeg
+                     */
+                    usersData[i].imageNames!!.add("image-1541115065336.jpeg") //actualFlatImageData?.get(0)!!.filename "image-1541115065336.jpeg"
+                    //"https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg"
+                    // http://localhost:3000/image-1541115065336.jpeg
                 }
                 val adapter = RecyclerAdapter(usersData)
                 recyclerView?.adapter = adapter
@@ -111,14 +109,14 @@ class HouseDetailFragment : Fragment() {
         val client = RestApiFactory.createFlatClient()
         val call = client.getImagesIDForFlatID(flatID)
 
-        call.enqueue(object : Callback<List<String>> {
-            override fun onResponse(call: Call<List<String>>?, response: Response<List<String>>?) {
-                val imageIDs: List<String>? = response?.body()
-                flatsImageIDs = imageIDs as? ArrayList<String>
+        call.enqueue(object : Callback<List<ImageDataResponse>> {
+            override fun onResponse(call: Call<List<ImageDataResponse>>, response: Response<List<ImageDataResponse>>) {
+                val imageIDs: List<ImageDataResponse>? = response.body()
+                actualFlatImageData = imageIDs as? ArrayList<ImageDataResponse>
                 Toast.makeText(activity, "succesfully get Image IDs!! :)", Toast.LENGTH_LONG).show()
             }
 
-            override fun onFailure(call: Call<List<String>>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<ImageDataResponse>>, t: Throwable?) {
                 t?.printStackTrace()
                 Toast.makeText(activity, "error in: networkRequestForImagesIDs()" + t?.message, Toast.LENGTH_LONG).show()
             }
@@ -175,7 +173,7 @@ class HouseDetailFragment : Fragment() {
 
     // https://stackoverflow.com/questions/45830529/how-to-convert-image-url-into-drawable-int
     // https://www.youtube.com/watch?v=japhFMXAJZw
-    private fun convertServerImageURLintoBitmap(){
+    private fun convertServerImageURLintoView(){
         Picasso.get().load("http://localhost:3000/image-1541115065336.jpeg").into(ivFlatImagePreview)
     }
 
