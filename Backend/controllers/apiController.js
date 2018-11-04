@@ -192,6 +192,18 @@ module.exports = function(app) {
         
     });
 
+    app.delete('/flat/:flatID', function(req, res) {
+        
+        Flats.findByIdAndRemove(req.params.flatID, function(err) {
+            if (err){
+                res.send('Unsuccessful');
+            }
+            
+            res.send('Success');
+        })
+        
+    });
+
     //search by username
     app.get('/api/users/:uname', function(req, res) {
         
