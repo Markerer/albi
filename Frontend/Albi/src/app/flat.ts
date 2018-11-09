@@ -8,8 +8,10 @@ export class Flat {
   description: String;
   email: String;
   phone_number: String;
+  zipcode: String;
+  city: String;
   address: String;
-  hasAttachment: Boolean;
+  forSale: Boolean;
   images: Image[];
   firstImage: Image;
   noImageFound: boolean = true;

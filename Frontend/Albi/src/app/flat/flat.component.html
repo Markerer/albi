@@ -39,6 +39,7 @@
             </div>
 
             <input type="file"
+                   class="form-control-file"
                    (change)="onFileChanged($event)"
                    accept="image/*">
             <button class="btn btn-primary btn-round btn-lg btn-block"
@@ -54,8 +55,10 @@
               updateFlatForm.get('description').value,
               updateFlatForm.get('email').value,
               updateFlatForm.get('phone_number').value,
+              updateFlatForm.get('zipcode').value,
+              updateFlatForm.get('city').value,
               updateFlatForm.get('address').value,
-              updateFlatForm.get('hasAttachment').value)"
+              updateFlatForm.get('type').value)"
                 class="form" method="" action=""
                 [class.error]="!updateFlatForm.valid && updateFlatForm.touched">
             <div class="content">
@@ -116,6 +119,26 @@
               <div class="input-group form-group-no-border input-lg">
 
                 <input type="text"
+                       placeholder="ZIP code"
+                       value={{flat.zipcode}}
+                       class="form-control"
+                       [(ngModel)]="zipcode"
+                       [formControl]="updateFlatForm.get('zipcode')">
+              </div>
+
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
+                       placeholder="City"
+                       value={{flat.city}}
+                       class="form-control"
+                       [(ngModel)]="city"
+                       [formControl]="updateFlatForm.get('city')">
+              </div>
+
+              <div class="input-group form-group-no-border input-lg">
+
+                <input type="text"
                        placeholder="Address"
                        value={{flat.address}}
                        class="form-control"
@@ -123,16 +146,25 @@
                        [formControl]="updateFlatForm.get('address')">
               </div>
 
-              <div class="form-check hidden">
-                <label class="form-check-label">
-                  <input class="form-check-input"
-                         type="checkbox"
-                         value={{flat.hasAttachment}}
-                         [(ngModel)]="hasAttachment"
-                         [formControl]="updateFlatForm.get('hasAttachment')">Image
+              <div class="input-group form-group-no-border input-lg">
+                <div class="form-check form-check-radio">
+                  <label class="form-check-label" for="gridRadios1">
+                    For Underlease
+                  </label>
+                  <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="updateFlatForm.get('type')" name="gridRadios" id="gridRadios1" value="underlease" [checked]="!flat.forSale">
                   <span class="form-check-sign"></span>
-                </label>
+                </div>
               </div>
+              <div class="input-group form-group-no-border input-lg">
+                <div class="form-check form-check-radio">
+                  <label class="form-check-label" for="gridRadios2">
+                    For Sale
+                  </label>
+                  <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="updateFlatForm.get('type')" name="gridRadios" id="gridRadios2" value="sale" [checked]="flat.forSale">
+                  <span class="form-check-sign"></span>
+                </div>
+              </div>
+
               <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
                 {{ successMessage }}
 
@@ -146,8 +178,8 @@
             </div>
           </form>
           <div>
-            <button class="btn btn-primary btn-round btn-lg btn-block" (click)="navigateToMain()">
-              Back to the main screen
+            <button class="btn btn-primary btn-round btn-lg btn-block" (click)="navigateToMyAds()">
+              Back to your advertisements
             </button>
             <ng-template #classic let-c="close" let-d="dismiss">
               <div class="modal-header">

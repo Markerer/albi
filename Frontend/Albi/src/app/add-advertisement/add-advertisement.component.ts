@@ -34,8 +34,12 @@ export class AddAdvertisementComponent implements OnInit {
       "price": ["", Validators.required],
       "numberOfRooms": ["", Validators.required],
       "description": ["", Validators.required],
+      'email': ["", Validators.required],
+      'phone_number': ["", Validators.required],
+      'zipcode': ["", Validators.required],
+      'city': ["", Validators.required],
       "address": ["", Validators.required],
-      "hasAttachment": [""]
+      "type": ["", Validators.required]
     });
   }
 
@@ -60,15 +64,23 @@ export class AddAdvertisementComponent implements OnInit {
     this._success.next(`Your picture is being uploaded. Wait a few seconds, please.`);
   }
 
-  createFlat(price: String, numberOfRooms: String, description: String, address: String, hasAttachment: Boolean): void {
+  createFlat(price: String, numberOfRooms: String, description: String, email: String, phone_number: String, zipcode: String, city: String, address: String, type: String): void {
     this.createdFlat.userID = this.user._id;
     this.createdFlat.price = price;
     this.createdFlat.numberOfRooms = numberOfRooms;
     this.createdFlat.description = description;
-    this.createdFlat.email = this.user.email;
-    this.createdFlat.phone_number = this.user.phone_number;
+    this.createdFlat.email = email;
+    this.createdFlat.phone_number = phone_number;
+    this.createdFlat.zipcode = zipcode;
+    this.createdFlat.city = city;
     this.createdFlat.address = address;
-    this.createdFlat.hasAttachment = hasAttachment;
+    console.log(type);
+    if (type === "underlease") {
+      this.createdFlat.forSale = false;
+    } else if (type === "sale") {
+      this.createdFlat.forSale = true;
+    }
+    console.log(this.createdFlat);
     //A belépett user továbbadása
     this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => {
       console.log(addedFlat);

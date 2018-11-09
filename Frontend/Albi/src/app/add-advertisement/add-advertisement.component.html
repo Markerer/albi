@@ -30,17 +30,23 @@
     <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
       {{ successMessage }}
     </div>
-    <input type="file"
-           (change)="onFileChanged($event)"
-           accept="image/*">
-    <button class="btn btn-primary btn-round btn-lg"
-            (click)="uploadImage()">
-      Upload picture
-    </button>
-    <button class="btn btn-primary btn-round btn-lg"
-            (click)="navigateToMain()">
-      Done
-    </button>
+    <div>
+      <input type="file"
+             (change)="onFileChanged($event)"
+             accept="image/*">
+    </div>
+    <div>
+      <button class="btn btn-primary btn-round btn-lg"
+              (click)="uploadImage()">
+        Upload picture
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-primary btn-round btn-lg"
+              (click)="navigateToMain()">
+        Done
+      </button>
+    </div>
   </div>
 
   <div class="container toppadding align-items-center justify-content-center d-flex" *ngIf="!advertisementCreated">
@@ -51,8 +57,12 @@
               createFlatForm.get('price').value,
               createFlatForm.get('numberOfRooms').value,
               createFlatForm.get('description').value,
+              createFlatForm.get('email').value,
+              createFlatForm.get('phone_number').value,
+              createFlatForm.get('zipcode').value,
+              createFlatForm.get('city').value,
               createFlatForm.get('address').value,
-              createFlatForm.get('hasAttachment').value)"
+              createFlatForm.get('type').value)"
               class="form" method="" action=""
               [class.error]="!createFlatForm.valid && createFlatForm.touched">
           <div class="content">
@@ -90,21 +100,68 @@
             <div class="input-group form-group-no-border input-lg">
 
               <input type="text"
+                     placeholder="Email"
+                     class="form-control"
+                     [(ngModel)]="email"
+                     [formControl]="createFlatForm.get('email')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="Phone number"
+                     class="form-control"
+                     [(ngModel)]="phone_number"
+                     [formControl]="createFlatForm.get('phone_number')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="ZIP code"
+                     class="form-control"
+                     [(ngModel)]="zipcode"
+                     [formControl]="createFlatForm.get('zipcode')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
+                     placeholder="City"
+                     class="form-control"
+                     [(ngModel)]="city"
+                     [formControl]="createFlatForm.get('city')">
+            </div>
+
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="text"
                      placeholder="Address"
                      class="form-control"
                      [(ngModel)]="address"
                      [formControl]="createFlatForm.get('address')">
             </div>
-            <div class="form-check hidden">
-              <label class="form-check-label">
-                <input class="form-check-input"
-                       type="checkbox"
-                       value=""
-                       [(ngModel)]="hasAttachment"
-                       [formControl]="createFlatForm.get('hasAttachment')">Image
+
+
+            <div class="input-group form-group-no-border input-lg">
+              <div class="form-check form-check-radio">
+                <label class="form-check-label" for="gridRadios1">
+                  For Underlease
+                </label>
+                <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="createFlatForm.get('type')" name="gridRadios" id="gridRadios1" value="underlease">
                 <span class="form-check-sign"></span>
-              </label>
+              </div>
             </div>
+            <div class="input-group form-group-no-border input-lg">
+              <div class="form-check form-check-radio">
+                <label class="form-check-label" for="gridRadios2">
+                  For Sale
+                </label>
+                <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="createFlatForm.get('type')" name="gridRadios" id="gridRadios2" value="sale">
+                <span class="form-check-sign"></span>
+              </div>
+            </div>
+
             <div>
               <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!createFlatForm.valid">

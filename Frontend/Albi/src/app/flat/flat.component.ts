@@ -77,8 +77,8 @@ export class FlatComponent implements OnInit {
     this._successUpload.next(`Your picture is being uploaded. Wait a few seconds, please.`);
   }
 
-  navigateToMain(): void {
-    this.router.navigate(['main']);
+  navigateToMyAds(): void {
+    this.router.navigate(['main/myadvertisements']);
   }
 
   getFlat(): void {
@@ -102,13 +102,15 @@ export class FlatComponent implements OnInit {
         'description': [this.flat.description, null],
         'email': [this.flat.email, null],
         'phone_number': [this.flat.phone_number, null],
+        'zipcode': [this.flat.zipcode, null],
+        'city': [this.flat.city, null],
         'address': [this.flat.address, null],
-        'hasAttachment': [this.flat.hasAttachment, null]
+        'type': ["", null]
       });
     });
   }
   
-  updateFlat(price: String, numberOfRooms: String, description: String, email: String, phone_number: String, address: String, hasAttachment: Boolean): void {
+  updateFlat(price: String, numberOfRooms: String, description: String, email: String, phone_number: String, zipcode: String, city: String, address: String, type: String): void {
     if (!(price === "" || price === undefined)) {
       this.flat.price = price;
     }
@@ -124,11 +126,20 @@ export class FlatComponent implements OnInit {
     if (!(phone_number === "" || phone_number === undefined)) {
       this.flat.phone_number = phone_number;
     }
+    if (!(zipcode === "" || zipcode === undefined)) {
+      this.flat.zipcode = zipcode;
+    }
+    if (!(city === "" || city === undefined)) {
+      this.flat.city = city;
+    }
     if (!(address === "" || address === undefined)) {
       this.flat.address = address;
     }
-    this.flat.hasAttachment = hasAttachment;
-
+    if (type === "underlease") {
+      this.flat.forSale = false;
+    } else if (type === "sale") {
+      this.flat.forSale = true;
+    }
 
     console.log(this.flat);
 
@@ -193,7 +204,7 @@ export class FlatComponent implements OnInit {
       this.imageService.deleteImage(i._id).subscribe(response => console.log(response));
     }
     this.mainService.deleteFlat(this.flat._id).subscribe(response => console.log(response));
-    this.navigateToMain();
+    this.navigateToMyAds();
   }
 
   // A modal ablak kódja

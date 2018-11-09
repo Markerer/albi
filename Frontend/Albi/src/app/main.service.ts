@@ -42,8 +42,10 @@ export class MainService {
         "description": `${flat.description}`,
         "email": `${flat.email}`,
         "phone_number": `${flat.phone_number}`,
+        "zipcode": `${flat.zipcode}`,
+        "city": `${flat.city}`,
         "address": `${flat.address}`,
-        "hasAttachment": `${flat.hasAttachment}`
+        "forSale": `${flat.forSale}`
       },
       httpOptions);
   }
@@ -59,8 +61,10 @@ export class MainService {
         "description": `${flat.description}`,
         "email": `${flat.email}`,
         "phone_number": `${flat.phone_number}`,
+        "zipcode": `${flat.zipcode}`,
+        "city": `${flat.city}`,
         "address": `${flat.address}`,
-        "hasAttachment": `${flat.hasAttachment}`
+        "forSale": `${flat.forSale}`
       },
       { responseType: 'text' });
   }

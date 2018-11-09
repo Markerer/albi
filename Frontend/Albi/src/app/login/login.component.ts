@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
       this.user.phone_number = phone_number;
     this.userService.createUser(this.user).subscribe(
       response => {
-        if (response == 'The username is already taken.') {
+        if (response === 'The username is already taken.') {
           this.isTaken = true;
           this.changeAlertTakenMessage();
         }
