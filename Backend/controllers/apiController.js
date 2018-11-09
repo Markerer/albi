@@ -356,7 +356,7 @@ module.exports = function(app) {
 
      
      //find all flat with querys
-     app.get('/flat/:price', function(req, res) {
+     app.get('/flats/:price', function(req, res) {
         
         
         Flats.find({$and: [{price: {$lte: req.params.price}}, req.query ]}, function(err, flats) {
