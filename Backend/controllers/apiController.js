@@ -229,6 +229,8 @@ module.exports = function(app) {
        });
         
     });
+ 
+
 
     
     //user updater, create user
@@ -325,6 +327,36 @@ module.exports = function(app) {
         });
        
     });
+       //find all user with querys 
+       app.get('/api/user', function(req, res) {
+       
+        Users.find(req.query, function(err, users) {
+         if(err){
+             res.send("No user was found");
+         }
+  
+            res.send(users);
+        });
+         
+     });
+
+     
+     //find all flat with querys
+     app.get('/flat/:price', function(req, res) {
+        
+        
+        Flats.find({$and: [{price: {$lte: req.params.price}}, req.query ]}, function(err, flats) {
+         if(err){
+             res.send("No flat was found");
+         }
+            console.log(req.query);
+            
+            res.send(flats);
+        });
+   
+   
+         
+     });
 
     app.get('/flats/price/:price', function(req, res){
         

@@ -6,13 +6,15 @@ var Schema = mongoose.Schema;
 
 var flatSchema = new Schema({
     userID: String,
-    price: String,
+    price: Number,
     numberOfRooms: String,
     description: String,
     email: String,
     phone_number: String,
+    zipCode: String,
+    city: String,
     address: String,
-    hasAttachment: Boolean,
+    forSale: Boolean,
 });
 flatSchema.plugin(mongoosePaginate);
  
