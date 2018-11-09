@@ -356,30 +356,39 @@ module.exports = function(app) {
 
      
      //find all flat with querys
-     app.get('/flats/:price', function(req, res) {
+     app.get('/flats/:pageid/:price', function(req, res) {
+        var pageid = req.params.pageid;
         
-        
-        Flats.find({$and: [{price: {$lte: req.params.price}}, req.query ]}, function(err, flats) {
+        Flats.paginate({$and: [{price: {$lte: req.params.price}}, req.query ]}, { page: pageid, limit: 10 }, function(err, flats) {
          if(err){
              res.send("No flat was found");
          }
             
-            
+         if(pageid > 0 && flats.pages >= pageid){
             res.send(flats);
+        }else{
+            res.send("Invalid page");
+        }
+            
         });
    
    
          
      });
      
-     app.get('/flats', function(req, res) {
-  
-        Flats.find(req.query, function(err, flats) {
+     app.get('/flats/:pageid', function(req, res) {
+        var pageid = req.params.pageid;
+        
+        Flats.paginate(req.query, { page: pageid, limit: 10 }, function(err, flats) {
          if(err){
              res.send("No flat was found");
          }
-
+         if(pageid > 0 && flats.pages >= pageid){
             res.send(flats);
+        }else{
+            res.send("Invalid page");
+        }
+            
         });
     
      });
