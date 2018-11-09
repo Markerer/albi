@@ -37,8 +37,10 @@ module.exports = function(app) {
             description: req.body.description,
             email: req.body.email,
             phone_number: req.body.phone_number,
+            zipCode: req.body.zipCode,
+            city: req.body.city,
             address: req.body.address,
-            hasAttachment: false}, function(err, user){
+            forSale: req.body.forSale}, function(err, user){
             if (err) throw err;
             
             res.send('Success');
@@ -278,7 +280,17 @@ module.exports = function(app) {
         
         if (req.body.id) {
             
-            Flats.findByIdAndUpdate(req.body.id, {flatname: req.body.flatname, username: req.body.username, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address, hasAttachment: req.body.hasAttachment, imageID: req.body.imageID }, function(err, user){
+            Flats.findByIdAndUpdate(
+                req.body.id, {
+                    flatname: req.body.flatname, 
+                    username: req.body.username, 
+                    email: req.body.email, 
+                    phone_number: req.body.phone_number, 
+                    zipCode: req.body.zipCode,
+                    city: req.body.city,
+                    address: req.body.address,
+                    forSale: req.body.forSale
+                }, function(err, user){
                 if (err) throw err;
                 
                 res.send('Success');
@@ -298,8 +310,10 @@ module.exports = function(app) {
             description: req.body.description,
             email: req.body.email,
             phone_number: req.body.phone_number,
+            zipCode: req.body.zipCode,
+            city: req.body.city,
             address: req.body.address,
-            hasAttachment: false          
+            forSale: req.body.forSale          
            });
            
            Flats.create(newFlat, function(err, results){
@@ -349,13 +363,25 @@ module.exports = function(app) {
          if(err){
              res.send("No flat was found");
          }
-            console.log(req.query);
+            
             
             res.send(flats);
         });
    
    
          
+     });
+     
+     app.get('/flats', function(req, res) {
+  
+        Flats.find(req.query, function(err, flats) {
+         if(err){
+             res.send("No flat was found");
+         }
+
+            res.send(flats);
+        });
+    
      });
 
     app.get('/flats/price/:price', function(req, res){

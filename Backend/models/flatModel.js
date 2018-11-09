@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 var flatSchema = new Schema({
     userID: String,
-    price: Number,
+    price: String,
     numberOfRooms: String,
     description: String,
     email: String,
