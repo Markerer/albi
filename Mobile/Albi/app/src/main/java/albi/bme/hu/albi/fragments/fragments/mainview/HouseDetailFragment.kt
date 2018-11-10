@@ -3,9 +3,9 @@ package albi.bme.hu.albi.fragments.fragments.mainview
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
-import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -20,25 +20,34 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.os.Handler
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.house_detail_fragment_row.*
 
 class HouseDetailFragment : Fragment() {
 
     var usersData = ArrayList<Flat>()
-    // egy db flat-hez tartozó ID-k, mindig az aktuális
-    private var actualImageData: ImageDataResponse? = null
     private var recyclerView: RecyclerView? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private var pageNum = 1
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
 
+        pageNum = 1
+
         recyclerView = view.findViewById(R.id.rvHouseDetail)
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    networkRequestForPaging()
+                    recyclerView.adapter!!.notifyDataSetChanged()
+                }
+            }
+        })
 
         val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
-            networkRequestForMainFlats()
+            networkRequestForPaging()
             val handler = Handler()
             handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
         }
@@ -51,22 +60,9 @@ class HouseDetailFragment : Fragment() {
 
     private fun initializationRecycle() {
         recyclerView?.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
-        /**
-         * szerintem ide kellene meghívni a többi hívást, előbb leszedni a képeket
-         * hogy a recycelView adapterének már a képekkel feltöltött házak menjenek
-         * viszont akkor meg nem lesz "_id"-nk.....
-         *
-         * szóval lehet át kellene tenni a:
-         * val adapter = RecyclerAdapter(usersData)
-         *  recyclerView.adapter = adapter
-         *
-         *  részt a network hívások után, h már minden adattal hívódjon meg
-         */
-        //Thread(Runnable { networkRequestForMainFlats() }).start()
-        networkRequestForMainFlats()
+        networkRequestForPaging()
     }
 
-    // networkRequestForMainFlats(recyclerView: RecyclerView)
     private fun networkRequestForMainFlats() {
         val client = RestApiFactory.createFlatClient()
         val call = client.getMainFlats()
@@ -76,28 +72,10 @@ class HouseDetailFragment : Fragment() {
                 val flats: List<Flat>? = response.body()
                 usersData = flats as ArrayList<Flat>
 
-
-                // TODO PICASSO --> http://square.github.io/picasso/
-                /**
-                 * flatID --> imageID --> imageName
-                 */
-                for (i in usersData.indices){
-                    /**
-                     * nevet és id-t is visszaadja egy képhez
-                     * "_id": "5bdb61dec893fe2a00cb4fc6",
-                     * "filename": "image-1541104094255.jpg"
-                     */
+                for (i in usersData.indices) {
                     networkRequestForImagesIDs(usersData[i])
-                    //Toast.makeText(activity, "actualFlatImageData.filename: " + actualFlatImageData?.get(0)!!.filename, Toast.LENGTH_LONG).show()
-                    // TODO: Error Array "java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0"
-                    /**
-                     * ezzel error: actualFlatImageData?.get(0)!!.filename
-                     * így jó:.... image-1541115065336.jpeg
-                     */
-
-                    //"https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg"
-                    // http://localhost:3000/image-1541115065336.jpeg
                 }
+
                 val adapter = RecyclerAdapter(usersData, context!!)
                 recyclerView?.adapter = adapter
             }
@@ -118,18 +96,57 @@ class HouseDetailFragment : Fragment() {
                 val imageIDs: List<ImageDataResponse>? = response.body()
                 val actualFlatImageData = imageIDs as ArrayList<ImageDataResponse>
 
-                if(actualFlatImageData.size != 0) {
+                if (actualFlatImageData.size != 0) {
                     for (j in actualFlatImageData.indices) {
-                        flat.imageNames!!.add(actualFlatImageData[j].filename) //actualFlatImageData?.get(i)!!.filename "image-1541115065336.jpeg"
+                        flat.imageNames!!.add(actualFlatImageData[j].filename)
                     }
                     actualFlatImageData.clear()
                 }
-                //Toast.makeText(activity, "succesfully get Image IDs!! :)", Toast.LENGTH_LONG).show()
+
+                recyclerView?.adapter?.notifyItemChanged(usersData.indexOf(flat))
             }
 
             override fun onFailure(call: Call<List<ImageDataResponse>>, t: Throwable?) {
                 t?.printStackTrace()
                 Toast.makeText(activity, "error in: networkRequestForImagesIDs()" + t?.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun networkRequestForPaging() {
+        val client = RestApiFactory.createFlatClient()
+        val call = client.getMainFlatsByPage(pageNum)
+
+        call.enqueue(object : Callback<FlatPageResponse> {
+            override fun onFailure(call: Call<FlatPageResponse>, t: Throwable) {
+            }
+
+            override fun onResponse(call: Call<FlatPageResponse>, response: Response<FlatPageResponse>) {
+                val flatResponse = response.body()!!
+
+                if (pageNum == 1) {
+                    usersData = flatResponse?.docs as ArrayList<Flat>
+
+                    for (i in usersData.indices) {
+                        networkRequestForImagesIDs(usersData[i])
+                    }
+
+                    val adapter = RecyclerAdapter(usersData, context!!)
+                    recyclerView?.adapter = adapter
+                } else {
+                    if (pageNum <= flatResponse.pages!!) {
+                        val flats = flatResponse.docs as ArrayList<Flat>
+                        usersData.addAll(flats)
+
+                        for (i in flats.indices) {
+                            networkRequestForImagesIDs(flats[i])
+                        }
+
+                    }
+
+                }
+
+                pageNum++
             }
         })
     }
