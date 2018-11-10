@@ -18,13 +18,14 @@ class ProfileFragment : Fragment() {
     private lateinit var userName : TextView
     private lateinit var userEmail: TextView
     private lateinit var phoneNumber: TextView
-
-
+    private lateinit var address: TextView
+    
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.profile_fragment, container, false)
         userName = view.findViewById(R.id.userName)
         userEmail = view.findViewById(R.id.profile_email)
         phoneNumber = view.findViewById(R.id.tvphone_number)
+        address = view.findViewById(R.id.tvaddress)
         val editButton = view.findViewById<Button>(R.id.editButton)
         setView()
 
@@ -38,10 +39,11 @@ class ProfileFragment : Fragment() {
         return view
     }
 
-    public fun setView(){
+    fun setView(){
         userName.text = user?.username
         userEmail.text = user?.email
         phoneNumber.text = user?.phone_number
+        address.text = user?.address
     }
 
     fun setUserInProfile(user: User) {

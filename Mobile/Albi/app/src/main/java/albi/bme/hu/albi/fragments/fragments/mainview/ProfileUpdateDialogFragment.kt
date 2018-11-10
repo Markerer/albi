@@ -21,10 +21,10 @@ class ProfileUpdateDialogFragment : DialogFragment() {
 
     private lateinit var email: EditText
     private lateinit var phone: EditText
+    private lateinit var address: EditText
     var user: User? = null
 
     var profileFragment: ProfileFragment? = null
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
@@ -42,6 +42,7 @@ class ProfileUpdateDialogFragment : DialogFragment() {
     private fun updateProfile() {
         user!!.email = email.text.toString()
         user!!.phone_number = phone.text.toString()
+        user!!.address = address.text.toString()
     }
 
     private fun networkRequestForProfileUpdate() {
@@ -67,17 +68,20 @@ class ProfileUpdateDialogFragment : DialogFragment() {
 
     private fun isValid(): Boolean {
         return ((email.text.toString() != user!!.email ||
-                phone.text.toString() != user!!.phone_number) &&
-                (email.text.isNotEmpty() && phone.text.isNotEmpty()))
+                phone.text.toString() != user!!.phone_number ||
+                address.text.toString() != user!!.address) &&
+                (email.text.isNotEmpty() && phone.text.isNotEmpty() && address.text.isNotEmpty()))
     }
 
     private fun getContentView(): View {
         val contentView = LayoutInflater.from(context).inflate(R.layout.profile_update_dialogfragment, null)
         email = contentView.findViewById(R.id.editEmail)
         phone = contentView.findViewById(R.id.editPhone)
+        address = contentView.findViewById(R.id.editAddress)
 
         email.setText(user!!.email)
         phone.setText(user!!.phone_number)
+        address.setText(user!!.address)
 
         return contentView
     }
