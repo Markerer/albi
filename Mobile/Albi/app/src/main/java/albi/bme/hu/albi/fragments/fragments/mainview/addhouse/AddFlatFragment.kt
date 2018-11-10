@@ -46,7 +46,7 @@ class AddFlatFragment : Fragment() {
 
     private var PICK_IMAGE_FROM_GALERY_REQUEST = 1
     private var PERMISSION_REQUEST_CODE = 200
-    private lateinit var uploadButton: Button
+    private lateinit var uploadImageButton: Button
     private lateinit var priceLayout: TextInputLayout
     private lateinit var numberOfRoomsLayout: TextInputLayout
     private lateinit var descriptionLayout: TextInputLayout
@@ -61,7 +61,7 @@ class AddFlatFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.add_house_fragment, container, false)
-        uploadButton = view.findViewById(R.id.uploadimagebutton)
+        uploadImageButton = view.findViewById(R.id.uploadimagebutton)
         priceLayout = view.findViewById(R.id.price_upload)
         numberOfRoomsLayout = view.findViewById(R.id.numberofrooms_upload)
         descriptionLayout = view.findViewById(R.id.description_upload)
@@ -71,17 +71,25 @@ class AddFlatFragment : Fragment() {
 
         iv = view.findViewById(R.id.imageView2)
 
-        uploadButton.setOnClickListener {
+        uploadImageButton.setOnClickListener {
             requestNeededPermission()
 
         }
 
-        // TODO: szebben if-else nélkül!!
-        /**
-         * valamiért ha az egyik üres marad, nem dobja ki
-         * az error-részére a hibát, hanem kilép
-         * TODO--> megoldani
-         */
+        setButtonUpload()
+
+        takePhotoButton.setOnClickListener {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
+        }
+
+        return view
+    }
+
+    private fun setButtonUpload(){
         uploadButtonAdvert.setOnClickListener {
             if (priceLayout.editText!!.text.isEmpty()) {
                 priceLayout.editText!!.error = "This field must be filled!"
@@ -115,15 +123,6 @@ class AddFlatFragment : Fragment() {
                 sendNetworkRequestAdvertisement()
             }
         }
-
-        takePhotoButton.setOnClickListener {
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
-        return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -184,9 +183,6 @@ class AddFlatFragment : Fragment() {
         })
     }
 
-
-
-
     // https://www.aut.bme.hu/Upload/Course/android/hallgatoi_jegyzetek/Android_05.pdf
     private fun requestNeededPermission() {
         if (ContextCompat.checkSelfPermission(context!!,
@@ -222,7 +218,6 @@ class AddFlatFragment : Fragment() {
             }
         }
     }
-
 
 }
 

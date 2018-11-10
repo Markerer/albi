@@ -27,7 +27,6 @@ class ProfileUpdateDialogFragment : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        Toast.makeText(context, user!!._id, Toast.LENGTH_LONG).show()
         return AlertDialog.Builder(requireContext())
                 .setTitle("Edit Profile")
                 .setView(getContentView())

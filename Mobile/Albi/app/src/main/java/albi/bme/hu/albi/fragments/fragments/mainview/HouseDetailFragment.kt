@@ -133,6 +133,6 @@ class HouseDetailFragment : Fragment() {
             }
         })
     }
-    
+
 }
 

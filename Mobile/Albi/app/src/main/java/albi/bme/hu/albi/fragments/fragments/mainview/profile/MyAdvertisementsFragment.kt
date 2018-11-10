@@ -47,8 +47,6 @@ class MyAdvertisementsFragment : Fragment() {
                 myFlats = flats as ArrayList<Flat>
                 val adapter = RecyclerAdapter(myFlats!!, context!!)
                 recyclerView.adapter = adapter
-                Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
-
             }
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {

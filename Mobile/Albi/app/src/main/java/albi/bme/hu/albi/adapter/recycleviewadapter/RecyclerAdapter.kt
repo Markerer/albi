@@ -3,6 +3,7 @@ package albi.bme.hu.albi.adapter.recycleviewadapter
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.R.id.imageView
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,8 +15,6 @@ import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 
 class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-
-    private val BASE_URL: String = "http://10.0.2.2:3000/"
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.house_detail_fragment_row, viewGroup, false)
@@ -29,7 +28,7 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]
         if(! (flat.imageNames!!.isEmpty())){
-            Glide.with(context).load(BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
+            Glide.with(context).load(RestApiFactory.BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
         } else {
             viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
         }
