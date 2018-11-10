@@ -73,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
             sendNetworkRequestLogin(user)
         }
     }
+
     private fun registerOnClickListener(view: View){
         val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
         startActivity(intent)
@@ -82,7 +83,6 @@ class LoginActivity : AppCompatActivity() {
     private fun getEveryDetailOfUser(name: String) {
         val client = RestApiFactory.createUserClient()
         val call = client.getUserByUserName(name)
-
 
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {

@@ -19,11 +19,17 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun registerOnClick(view: View) {
-        val nameEmpty = input_name.text.toString().isEmpty()
-        val emailEmpty = input_email.text.toString().isEmpty()
-        val passwordEmpty = input_password.text.toString().isEmpty()
+        val name = input_name.text.toString()
+        val email = input_email.text.toString()
+        val password = input_password.text.toString()
+        val phoneNumber = input_phone_number.text.toString()
+        val address = input_address.text.toString()
 
-        if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(input_email.text.toString()).matches())) {
+        val nameEmpty = name.isEmpty()
+        val emailEmpty = email.isEmpty()
+        val passwordEmpty = password.isEmpty()
+
+        if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             input_email.error = "This is not a valid email format!"
         }
 
@@ -38,7 +44,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if (!nameEmpty && !emailEmpty && !passwordEmpty) {
-            val newUser = User(input_name.text.toString(), input_email.text.toString(), input_password.text.toString(), input_phone_number.text.toString())
+            val newUser = User(name, email, password, phoneNumber, address)
             sendNetworkRequestRegister(newUser)
         }
     }
@@ -53,12 +59,10 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: retrofit2.Call<User>?, t: Throwable?) {
-                //t?.printStackTrace()
                 input_name.error = "The username is already taken."
             }
         })
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()
