@@ -98,7 +98,7 @@ class HouseDetailFragment : Fragment() {
                     //"https://www.gdn-ingatlan.hu/nagy_kep/one/gdn-ingatlan-243479-1535708208.53-watermark.jpg"
                     // http://localhost:3000/image-1541115065336.jpeg
                 }
-                val adapter = RecyclerAdapter(usersData)
+                val adapter = RecyclerAdapter(usersData, context!!)
                 recyclerView?.adapter = adapter
             }
 
@@ -133,61 +133,6 @@ class HouseDetailFragment : Fragment() {
             }
         })
     }
-
-    private fun networkRequestForImageName(imageID: String) {
-        val client = RestApiFactory.createFlatClient()
-        val call = client.getImageNameByImageID(imageID)
-
-        call.enqueue(object : Callback<ImageDataResponse> {
-            override fun onResponse(call: Call<ImageDataResponse>?, response: Response<ImageDataResponse>?) {
-                val imageNames: ImageDataResponse? = response?.body()
-                actualImageData = imageNames
-                Toast.makeText(activity, "succesfully get Image Datas!! :)", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onFailure(call: Call<ImageDataResponse>?, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(activity, "error in: networkRequestForImageName()" + t?.message, Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-
-    private fun networkRequestForImageView(imagename: String) {
-        val client = RestApiFactory.createFlatClient()
-        val call = client.getImageFileByName(imagename)
-
-        call.enqueue(object : Callback<Image> {
-            override fun onResponse(call: Call<Image>?, response: Response<Image>?) {
-                val image: Image? = response?.body()
-                // PROBA, mindegyiknek ugyan azt, megnézni,
-                // hogy legalább működik e
-
-                for (i in usersData.indices){
-                    usersData[i].image = image
-                }
-
-                // TODO!!!!!! https://stackoverflow.com/questions/41311179/how-do-i-set-an-image-in-recyclerview-in-a-fragment-from-the-drawable-folder
-                /**
-                 * bekellene állítani a recycleViewbem az adott sor image-ját
-                 * lehet kell a flatba egy megfelelő attribútum...
-                 */
-
-            }
-
-            override fun onFailure(call: Call<Image>?, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(activity, "error in: networkRequestForImageView()" + t?.message, Toast.LENGTH_LONG).show()
-            }
-
-        })
-    }
-
-    // https://stackoverflow.com/questions/45830529/how-to-convert-image-url-into-drawable-int
-    // https://www.youtube.com/watch?v=japhFMXAJZw
-    private fun convertServerImageURLintoView(){
-        Picasso.get().load("http://localhost:3000/image-1541115065336.jpeg").into(ivFlatImagePreview)
-    }
-
-
+    
 }
 

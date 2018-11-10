@@ -1,16 +1,19 @@
 package albi.bme.hu.albi.adapter.recycleviewadapter
 
 import albi.bme.hu.albi.R
+import albi.bme.hu.albi.R.id.imageView
 import albi.bme.hu.albi.model.Flat
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 
-class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     private val BASE_URL: String = "http://10.0.2.2:3000/"
 
@@ -25,12 +28,8 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]
-        // TODO ötletelni --> https://developer.android.com/guide/topics/resources/drawable-resource
-        // https://www.youtube.com/watch?v=japhFMXAJZw
-        // http://square.github.io/picasso/
-        // TODO: https://github.com/bumptech/glide
         if(! (flat.imageNames!!.isEmpty())){
-            Picasso.get().load(BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
+            Glide.with(context).load(BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
         } else {
             viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
         }
