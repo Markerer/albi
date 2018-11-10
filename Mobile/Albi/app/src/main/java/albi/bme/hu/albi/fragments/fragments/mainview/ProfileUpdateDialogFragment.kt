@@ -30,7 +30,7 @@ class ProfileUpdateDialogFragment : DialogFragment() {
         return AlertDialog.Builder(requireContext())
                 .setTitle("Edit Profile")
                 .setView(getContentView())
-                .setPositiveButton("OK") { _: DialogInterface, i: Int ->
+                .setPositiveButton("OK") { _: DialogInterface, _: Int ->
                     if (isValid()) {
                         updateProfile()
                         networkRequestForProfileUpdate()

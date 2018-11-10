@@ -128,7 +128,7 @@ class AddFlatFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             data?.also {
-                bitmap = it.extras.get("data") as Bitmap
+                bitmap = it.extras?.get("data") as Bitmap
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == RESULT_OK &&
                 data != null && data.data != null) {

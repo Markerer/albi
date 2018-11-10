@@ -125,7 +125,7 @@ class HouseDetailFragment : Fragment() {
                 val flatResponse = response.body()!!
 
                 if (pageNum == 1) {
-                    usersData = flatResponse?.docs as ArrayList<Flat>
+                    usersData = flatResponse.docs as ArrayList<Flat>
 
                     for (i in usersData.indices) {
                         networkRequestForImagesIDs(usersData[i])
@@ -141,11 +141,8 @@ class HouseDetailFragment : Fragment() {
                         for (i in flats.indices) {
                             networkRequestForImagesIDs(flats[i])
                         }
-
                     }
-
                 }
-
                 pageNum++
             }
         })

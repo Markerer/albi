@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginOnClickListener(view: View){
-        var user: User?
+        val user: User?
         if (etUsername.text.toString().isEmpty()) {
             etUsername.requestFocus()
             etUsername.error = "Please enter your email address"
@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
         }
         if (!etUsername.text.toString().isEmpty() && !etPassword.text.toString().isEmpty()) {
             user = User(etUsername.text.toString(), etPassword.text.toString())
-            sendNetworkRequestLogin(user!!)
+            sendNetworkRequestLogin(user)
         }
     }
     private fun registerOnClickListener(view: View){

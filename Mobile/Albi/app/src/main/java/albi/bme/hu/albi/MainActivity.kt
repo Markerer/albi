@@ -131,9 +131,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 myAdvertisementsFragment!!.user = user
                 replaceFragment(myAdvertisementsFragment!!)
             }
-            R.id.nav_fav_ads -> {
-
-            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
