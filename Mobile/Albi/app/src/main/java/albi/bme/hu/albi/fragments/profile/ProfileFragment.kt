@@ -1,7 +1,7 @@
-package albi.bme.hu.albi.fragments.fragments.mainview.profile
+package albi.bme.hu.albi.fragments.profile
 
 import albi.bme.hu.albi.R
-import albi.bme.hu.albi.fragments.fragments.mainview.ProfileUpdateDialogFragment
+import albi.bme.hu.albi.fragments.mainview.ProfileUpdateDialogFragment
 import albi.bme.hu.albi.model.User
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -19,7 +19,7 @@ class ProfileFragment : Fragment() {
     private lateinit var userEmail: TextView
     private lateinit var phoneNumber: TextView
     private lateinit var address: TextView
-    
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.profile_fragment, container, false)
         userName = view.findViewById(R.id.userName)

@@ -1,7 +1,7 @@
-package albi.bme.hu.albi.fragments.fragments.mainview
+package albi.bme.hu.albi.fragments.mainview
 
 import albi.bme.hu.albi.R
-import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
+import albi.bme.hu.albi.fragments.profile.ProfileFragment
 import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.RestApiFactory
 import android.app.Dialog

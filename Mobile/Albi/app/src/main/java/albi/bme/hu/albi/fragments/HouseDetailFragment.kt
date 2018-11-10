@@ -1,4 +1,4 @@
-package albi.bme.hu.albi.fragments.fragments.mainview
+package albi.bme.hu.albi.fragments
 
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
@@ -63,30 +63,6 @@ class HouseDetailFragment : Fragment() {
         networkRequestForPaging()
     }
 
-    private fun networkRequestForMainFlats() {
-        val client = RestApiFactory.createFlatClient()
-        val call = client.getMainFlats()
-
-        call.enqueue(object : Callback<List<Flat>> {
-            override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
-                val flats: List<Flat>? = response.body()
-                usersData = flats as ArrayList<Flat>
-
-                for (i in usersData.indices) {
-                    networkRequestForImagesIDs(usersData[i])
-                }
-
-                val adapter = RecyclerAdapter(usersData, context!!)
-                recyclerView?.adapter = adapter
-            }
-
-            override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(activity, "error in: networkRequestForMainFlats()" + t.message, Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-
     private fun networkRequestForImagesIDs(flat: Flat) {
         val client = RestApiFactory.createFlatClient()
         val call = client.getImagesIDForFlatID(flat._id)
@@ -102,7 +78,6 @@ class HouseDetailFragment : Fragment() {
                     }
                     actualFlatImageData.clear()
                 }
-
                 recyclerView?.adapter?.notifyItemChanged(usersData.indexOf(flat))
             }
 
@@ -144,6 +119,30 @@ class HouseDetailFragment : Fragment() {
                     }
                 }
                 pageNum++
+            }
+        })
+    }
+
+    private fun networkRequestForMainFlats() {
+        val client = RestApiFactory.createFlatClient()
+        val call = client.getMainFlats()
+
+        call.enqueue(object : Callback<List<Flat>> {
+            override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
+                val flats: List<Flat>? = response.body()
+                usersData = flats as ArrayList<Flat>
+
+                for (i in usersData.indices) {
+                    networkRequestForImagesIDs(usersData[i])
+                }
+
+                val adapter = RecyclerAdapter(usersData, context!!)
+                recyclerView?.adapter = adapter
+            }
+
+            override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
+                t.printStackTrace()
+                Toast.makeText(activity, "error in: networkRequestForMainFlats()" + t.message, Toast.LENGTH_LONG).show()
             }
         })
     }

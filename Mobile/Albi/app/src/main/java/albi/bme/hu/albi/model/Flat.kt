@@ -2,10 +2,7 @@ package albi.bme.hu.albi.model
 
 import albi.bme.hu.albi.network.ImageDataResponse
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.media.Image
-import android.widget.ImageView
 
 
 class Flat(var _id: String = "",

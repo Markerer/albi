@@ -1,7 +1,6 @@
 package albi.bme.hu.albi.network
 
 import albi.bme.hu.albi.model.Flat
-import com.google.gson.annotations.SerializedName
 
 class FlatPageResponse {
     //@SerializedName("docs")

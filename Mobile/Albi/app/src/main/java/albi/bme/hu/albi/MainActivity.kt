@@ -16,10 +16,9 @@ package albi.bme.hu.albi
 
 //TODO: paging (fml)
 
+import albi.bme.hu.albi.fragments.HouseDetailFragment
+import albi.bme.hu.albi.fragments.addhouse.AddFlatFragment
 import android.support.v7.app.AppCompatActivity
-import albi.bme.hu.albi.fragments.fragments.mainview.HouseDetailFragment
-import albi.bme.hu.albi.fragments.fragments.mainview.profile.ProfileFragment
-import albi.bme.hu.albi.fragments.fragments.mainview.search.SearchFragment
 import albi.bme.hu.albi.model.User
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -28,8 +27,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
-import albi.bme.hu.albi.fragments.fragments.mainview.addhouse.AddFlatFragment
-import albi.bme.hu.albi.fragments.fragments.mainview.profile.MyAdvertisementsFragment
+import albi.bme.hu.albi.fragments.profile.MyAdvertisementsFragment
+import albi.bme.hu.albi.fragments.profile.ProfileFragment
+import albi.bme.hu.albi.fragments.search.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*

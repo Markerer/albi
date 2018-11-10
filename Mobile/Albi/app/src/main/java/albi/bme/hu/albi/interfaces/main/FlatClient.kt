@@ -4,8 +4,6 @@ import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.ImageUploadResponse
-import android.graphics.drawable.BitmapDrawable
-import android.media.Image
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*

@@ -1,4 +1,4 @@
-package albi.bme.hu.albi.fragments.fragments.mainview.search
+package albi.bme.hu.albi.fragments.search
 
 import albi.bme.hu.albi.R
 import android.os.Bundle

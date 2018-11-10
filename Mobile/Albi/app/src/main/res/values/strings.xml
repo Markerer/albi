@@ -33,6 +33,10 @@
     <string name="add_description">Add description</string>
     <string name="address">Address</string>
     <string name="upload_advertisement">Upload advertisement</string>
+
+    <string name="price_format">%s Ft</string>
+    <string name="number_of_rooms_format">Nr. of rooms: %s</string>
+
     <string-array name="districts_array_name">
         <item>I. kerület</item>
         <item>II. kerület</item>

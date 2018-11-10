@@ -1,4 +1,4 @@
-package albi.bme.hu.albi.fragments.fragments.mainview.addhouse
+package albi.bme.hu.albi.fragments.addhouse
 
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.model.Flat
