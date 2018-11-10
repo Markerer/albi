@@ -1,7 +1,6 @@
 package albi.bme.hu.albi.adapter.recycleviewadapter
 
 import albi.bme.hu.albi.R
-import albi.bme.hu.albi.R.drawable.ic_no_image_512
 import albi.bme.hu.albi.model.Flat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -24,18 +23,12 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>) : RecyclerView.Adap
         return flatList.size
     }
 
-    // TODO: set image to imageView
-    /**
-     * http://localhost:3000/image-1541099696012.jpg
-     * https://developer.android.com/topic/performance/graphics/load-bitmap
-     * https://stackoverflow.com/questions/8717333/converting-drawable-resource-image-into-bitmap
-     * https://stackoverflow.com/questions/41311179/how-do-i-set-an-image-in-recyclerview-in-a-fragment-from-the-drawable-folder
-     */
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]
         // TODO ötletelni --> https://developer.android.com/guide/topics/resources/drawable-resource
         // https://www.youtube.com/watch?v=japhFMXAJZw
         // http://square.github.io/picasso/
+        // TODO: https://github.com/bumptech/glide
         if(! (flat.imageNames!!.isEmpty())){
             Picasso.get().load(BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
         } else {

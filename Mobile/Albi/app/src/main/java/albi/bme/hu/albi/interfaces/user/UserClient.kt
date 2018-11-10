@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface UserClient {
 
     @POST("/api/user/")
-    fun createUser(@Body user: User): Call<String>
+    fun createUser(@Body user: User): Call<User>
 
     @PUT("/api/user/")
     fun updateUser(@Body user: User): Call<String>

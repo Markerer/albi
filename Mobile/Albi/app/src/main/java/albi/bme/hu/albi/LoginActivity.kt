@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
     private fun registerOnClickListener(view: View){
         val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun getEveryDetailOfUser(name: String) {
@@ -126,6 +127,5 @@ class LoginActivity : AppCompatActivity() {
         intent.putExtra("user", user)
         startActivity(intent)
         finish()
-
     }
 }

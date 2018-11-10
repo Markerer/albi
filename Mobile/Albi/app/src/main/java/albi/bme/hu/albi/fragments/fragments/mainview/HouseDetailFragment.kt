@@ -75,6 +75,8 @@ class HouseDetailFragment : Fragment() {
             override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
                 val flats: List<Flat>? = response.body()
                 usersData = flats as ArrayList<Flat>
+
+
                 // TODO PICASSO --> http://square.github.io/picasso/
                 /**
                  * flatID --> imageID --> imageName
@@ -98,7 +100,6 @@ class HouseDetailFragment : Fragment() {
                 }
                 val adapter = RecyclerAdapter(usersData)
                 recyclerView?.adapter = adapter
-                Toast.makeText(activity, "no error :)", Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
@@ -123,7 +124,7 @@ class HouseDetailFragment : Fragment() {
                     }
                     actualFlatImageData.clear()
                 }
-                Toast.makeText(activity, "succesfully get Image IDs!! :)", Toast.LENGTH_LONG).show()
+                //Toast.makeText(activity, "succesfully get Image IDs!! :)", Toast.LENGTH_LONG).show()
             }
 
             override fun onFailure(call: Call<List<ImageDataResponse>>, t: Throwable?) {

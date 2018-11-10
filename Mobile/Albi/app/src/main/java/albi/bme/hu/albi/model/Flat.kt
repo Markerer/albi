@@ -15,7 +15,10 @@ class Flat(var _id: String = "",
            var description: String = "",
            var email: String = "",
            var phone_number: String = "",
-           var address: String = "") {
+           var zipCode: String = "",
+           var city: String = "",
+           var address: String = "",
+           var forSale: Boolean = false) {
 
     var imageData: ArrayList<ImageDataResponse> = ArrayList()
     // https://developer.android.com/guide/topics/resources/drawable-resource

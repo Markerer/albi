@@ -2,6 +2,7 @@ package albi.bme.hu.albi
 
 import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.RestApiFactory
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -42,24 +43,34 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-
     private fun sendNetworkRequestRegister(user: User) {
         val client = RestApiFactory.createUserClient()
         val call = client.createUser(user)
 
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
-                if (response.body() == "The username is already taken.") {
-                    input_name.error = response.body()
-                }
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(call: retrofit2.Call<User>, response: Response<User>) {
+                startMain(response.body())
             }
 
-            override fun onFailure(call: retrofit2.Call<String>?, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(this@RegisterActivity, "error in register :(" + t?.message, Toast.LENGTH_LONG).show()
+            override fun onFailure(call: retrofit2.Call<User>?, t: Throwable?) {
+                //t?.printStackTrace()
+                input_name.error = "The username is already taken."
             }
         })
     }
 
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun startMain(user: User?){
+        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+        intent.putExtra("user", user)
+        startActivity(intent)
+        finish()
+    }
 }
