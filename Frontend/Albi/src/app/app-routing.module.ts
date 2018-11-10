@@ -16,7 +16,8 @@ const routes: Routes = [
   { path: 'main/addadvertisement', component: AddAdvertisementComponent, canActivate: [IsSecureGuard] },
   { path: 'main/myadvertisements', component: MyadsComponent, canActivate:[IsSecureGuard] },
   { path: 'myprofile', component: ProfileComponent, canActivate: [IsSecureGuard] },
- // { path: '**', redirectTo: '' }
+  { path: 'blank', component: MainComponent },
+  //{ path: '**', redirectTo: '' }
 ];
 
 @NgModule({

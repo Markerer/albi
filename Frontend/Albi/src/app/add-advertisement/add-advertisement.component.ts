@@ -36,7 +36,7 @@ export class AddAdvertisementComponent implements OnInit {
       "description": ["", Validators.required],
       'email': ["", Validators.required],
       'phone_number': ["", Validators.required],
-      'zipcode': ["", Validators.required],
+      'zipCode': ["", Validators.required],
       'city': ["", Validators.required],
       "address": ["", Validators.required],
       "type": ["", Validators.required]
@@ -64,14 +64,14 @@ export class AddAdvertisementComponent implements OnInit {
     this._success.next(`Your picture is being uploaded. Wait a few seconds, please.`);
   }
 
-  createFlat(price: String, numberOfRooms: String, description: String, email: String, phone_number: String, zipcode: String, city: String, address: String, type: String): void {
+  createFlat(price: Number, numberOfRooms: Number, description: String, email: String, phone_number: String, zipCode: Number, city: String, address: String, type: String): void {
     this.createdFlat.userID = this.user._id;
-    this.createdFlat.price = price;
-    this.createdFlat.numberOfRooms = numberOfRooms;
+    this.createdFlat.price = price.toString();
+    this.createdFlat.numberOfRooms = numberOfRooms.toString();
     this.createdFlat.description = description;
     this.createdFlat.email = email;
     this.createdFlat.phone_number = phone_number;
-    this.createdFlat.zipcode = zipcode;
+    this.createdFlat.zipCode = zipCode.toString();
     this.createdFlat.city = city;
     this.createdFlat.address = address;
     console.log(type);
@@ -100,13 +100,15 @@ export class AddAdvertisementComponent implements OnInit {
 
   // Kép feltöltése
   uploadImage() {
-    const uploadData = new FormData();
-    uploadData.append('image', this.selectedFile, this.selectedFile.name);
-    this.imageService.uploadImage(uploadData, this.createdFlat._id).subscribe(object => {
-      console.log(object);
-      this.changeSuccessUploadMsg();
-      this.getImages();
-    });
+    if (!(this.selectedFile === null || this.selectedFile === undefined)) {
+      const uploadData = new FormData();
+      uploadData.append('image', this.selectedFile, this.selectedFile.name);
+      this.imageService.uploadImage(uploadData, this.createdFlat._id).subscribe(object => {
+        console.log(object);
+        this.changeSuccessUploadMsg();
+        this.getImages();
+      });
+    }
   }
 
   // Adott kép törlése

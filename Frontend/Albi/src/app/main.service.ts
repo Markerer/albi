@@ -42,7 +42,7 @@ export class MainService {
         "description": `${flat.description}`,
         "email": `${flat.email}`,
         "phone_number": `${flat.phone_number}`,
-        "zipcode": `${flat.zipcode}`,
+        "zipCode": `${flat.zipCode}`,
         "city": `${flat.city}`,
         "address": `${flat.address}`,
         "forSale": `${flat.forSale}`
@@ -61,7 +61,7 @@ export class MainService {
         "description": `${flat.description}`,
         "email": `${flat.email}`,
         "phone_number": `${flat.phone_number}`,
-        "zipcode": `${flat.zipcode}`,
+        "zipCode": `${flat.zipCode}`,
         "city": `${flat.city}`,
         "address": `${flat.address}`,
         "forSale": `${flat.forSale}`
@@ -71,6 +71,74 @@ export class MainService {
   
   deleteFlat(flatID: String): Observable<String> {
     return this.http.delete(this.apiRoot + 'flat/' + flatID, { responseType: 'text' });
+  }
+
+
+  minusLastChar(str: String): String {
+    if (str != null && str.length > 0) {
+      str = str.substring(0, str.length - 1);
+    }
+    return str;
+  }
+
+  
+  searchFlat(search: Flat, page: number): Observable<Object[]> {
+    var maxprice: String;
+    var numberOfRooms: String;
+    var zipCode: String;
+    var city: String;
+    var forSale: String;
+    var last: String;
+
+    // Ha utolsó, akkor nem kell utána &, 
+
+    if (search.price === "") {
+      maxprice = "?";
+    } else {
+      maxprice = "/" + `${search.price}?`;
+      last = maxprice;
+    }
+    if (search.numberOfRooms === "") {
+      numberOfRooms = "";
+    } else {
+      numberOfRooms = "numberOfRooms=" + `${search.numberOfRooms}` + "&";
+      last = numberOfRooms;
+    }
+    if (search.zipCode === "") {
+      zipCode = "";
+    } else {
+      zipCode = "zipCode=" + `${search.zipCode}` + "&";
+      last = zipCode;
+    }
+    if (search.city === "") {
+      city = "";
+    } else {
+      city = "city=" + `${search.city}` + "&";
+      last = city;
+    }
+    if (search.forSale === undefined) {
+      forSale = "";
+    } else {
+      forSale = "forSale=" + `${search.forSale}`;
+      last = forSale;
+    }
+
+    // Utolsó karakter leválasztása
+    if (last === numberOfRooms) {
+      numberOfRooms = this.minusLastChar(numberOfRooms);
+    }
+    if (last === zipCode) {
+      zipCode = this.minusLastChar(zipCode);
+    }
+    if (last === city) {
+      city === this.minusLastChar(city);
+    }
+    if (last === maxprice) {
+      maxprice = this.minusLastChar(maxprice);
+    }
+    console.log(this.apiRoot + 'flats/' + page + maxprice + numberOfRooms + zipCode + city + forSale);
+
+      return this.http.get<Object[]>(this.apiRoot + 'flats/' + page + maxprice + numberOfRooms + zipCode + city + forSale);
   }
 
 }

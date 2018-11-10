@@ -55,7 +55,7 @@
               updateFlatForm.get('description').value,
               updateFlatForm.get('email').value,
               updateFlatForm.get('phone_number').value,
-              updateFlatForm.get('zipcode').value,
+              updateFlatForm.get('zipCode').value,
               updateFlatForm.get('city').value,
               updateFlatForm.get('address').value,
               updateFlatForm.get('type').value)"
@@ -65,7 +65,7 @@
 
               <div class="input-group form-group-no-border input-lg">
 
-                <input type="text"
+                <input type="number"
                        placeholder="Price"
                        value={{flat.price}}
                        class="form-control"
@@ -74,7 +74,7 @@
               </div>
               <div class="input-group form-group-no-border input-lg">
 
-                <input type="text"
+                <input type="number"
                        placeholder="Number of Rooms"
                        value={{flat.numberOfRooms}}
                        class="form-control"
@@ -118,12 +118,12 @@
 
               <div class="input-group form-group-no-border input-lg">
 
-                <input type="text"
+                <input type="number"
                        placeholder="ZIP code"
-                       value={{flat.zipcode}}
+                       value={{flat.zipCode}}
                        class="form-control"
-                       [(ngModel)]="zipcode"
-                       [formControl]="updateFlatForm.get('zipcode')">
+                       [(ngModel)]="zipCode"
+                       [formControl]="updateFlatForm.get('zipCode')">
               </div>
 
               <div class="input-group form-group-no-border input-lg">
@@ -226,10 +226,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-10 ml-auto col-xl-6 mr-auto">
+    <div class="col-md-10 ml-auto col-xl-6 mr-auto marginbottom">
       <p class="category">Details of the advertisement</p>
       <!-- Tabs with Background on Card -->
-      <div class="card">
+      <div class="card marginbottom">
         <div class="nav-tabs-navigation" data-tabs-color="orange">
           <div class="nav-tabs-wrapper">
             <ngb-tabset [justify]="'center'" class="text-center">
@@ -260,7 +260,7 @@
               <ngb-tab title="Address">
                 <ng-template ngbTabContent>
                   <i class="now-ui-icons location_pin"></i>
-                  <p>{{flat.address}}</p>
+                  <p>{{flat.zipCode}}, {{flat.city}}, {{flat.address}}</p>
                 </ng-template>
               </ngb-tab>
             </ngb-tabset>

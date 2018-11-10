@@ -68,7 +68,7 @@
               <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
                 {{ successMessage }}
               </div>
-              <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block"
+              <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block marginbottom"
                       [disabled]="!updateForm.valid">
                 Update data
               </button>

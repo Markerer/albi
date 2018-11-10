@@ -8,7 +8,7 @@ export class Flat {
   description: String;
   email: String;
   phone_number: String;
-  zipcode: String;
+  zipCode: String;
   city: String;
   address: String;
   forSale: Boolean;

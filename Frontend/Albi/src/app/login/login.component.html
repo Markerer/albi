@@ -3,14 +3,13 @@
    height: 100vh; background-attachment:fixed">
   <div class="container align-items-center justify-content-center d-flex">
 
-
     <div class="col-md-4 content-center">
-      <div class="card card-login card-plain align-items-center justify-content-center d-flex" style="padding-top:50px">
+      <div class="card card-login card-plain align-items-center justify-content-center d-flex" style="padding-top:40px">
 
         <h1 style="color:white">Albi</h1>
         <h6 style="color:white">A flat-sharing application</h6>
-
-
+      </div>
+      <div class="card card-login card-plain">
         <form [formGroup]="loginForm"
               (ngSubmit)="login(
               loginForm.get('usernameLogin').value,
@@ -34,11 +33,12 @@
                      placeholder="Password"
                      [(ngModel)]="passwordLogin"
                      [formControl]="loginForm.get('passwordLogin')">
+            </div>
 
-
-              <div *ngIf="alertMessage" type="danger" class="alert alert-danger" (close)="alertMessage = null">
-                {{ alertMessage }}
-              </div>
+            <div *ngIf="alertMessage" type="danger" class="alert alert-danger" (close)="alertMessage = null">
+              {{ alertMessage }}
+            </div>
+            <div>
               <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!loginForm.valid">
                 Login
@@ -90,16 +90,16 @@
                      [formControl]="createForm.get('address')">
             </div>
             <div class="input-group form-group-no-border input-lg">
-
               <input type="text"
                      placeholder="Phone"
                      class="form-control"
                      [(ngModel)]="phone_number"
                      [formControl]="createForm.get('phone_number')">
-
-              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
-                {{ successMessage }}
-              </div>
+            </div>
+            <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+              {{ successMessage }}
+            </div>
+            <div class="input-group form-group-no-border input-lg">
               <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!createForm.valid">
                 Create user

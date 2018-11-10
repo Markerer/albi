@@ -102,7 +102,7 @@ export class FlatComponent implements OnInit {
         'description': [this.flat.description, null],
         'email': [this.flat.email, null],
         'phone_number': [this.flat.phone_number, null],
-        'zipcode': [this.flat.zipcode, null],
+        'zipCode': [this.flat.zipCode, null],
         'city': [this.flat.city, null],
         'address': [this.flat.address, null],
         'type': ["", null]
@@ -110,12 +110,12 @@ export class FlatComponent implements OnInit {
     });
   }
   
-  updateFlat(price: String, numberOfRooms: String, description: String, email: String, phone_number: String, zipcode: String, city: String, address: String, type: String): void {
-    if (!(price === "" || price === undefined)) {
-      this.flat.price = price;
+  updateFlat(price: Number, numberOfRooms: Number, description: String, email: String, phone_number: String, zipCode: Number, city: String, address: String, type: String): void {
+    if (!(price === undefined || price === null)) {
+      this.flat.price = price.toString();
     }
-    if (!(numberOfRooms === "" || numberOfRooms === undefined)) {
-      this.flat.numberOfRooms = numberOfRooms;
+    if (!(numberOfRooms === undefined || numberOfRooms === null)) {
+      this.flat.numberOfRooms = numberOfRooms.toString();
     }
     if (!(description === "" || description === undefined)) {
       this.flat.description = description;
@@ -126,8 +126,8 @@ export class FlatComponent implements OnInit {
     if (!(phone_number === "" || phone_number === undefined)) {
       this.flat.phone_number = phone_number;
     }
-    if (!(zipcode === "" || zipcode === undefined)) {
-      this.flat.zipcode = zipcode;
+    if (!(zipCode === undefined || zipCode === null)) {
+      this.flat.zipCode = zipCode.toString();
     }
     if (!(city === "" || city === undefined)) {
       this.flat.city = city;
@@ -177,14 +177,15 @@ export class FlatComponent implements OnInit {
   }
 
   uploadImage() {
-    const uploadData = new FormData();
-    uploadData.append('image', this.selectedFile, this.selectedFile.name);
-    this.imageService.uploadImage(uploadData, this.flat._id).subscribe(object =>
-    {
-      console.log(object);
-      this.changeSuccessUploadMsg();
-      this.getFlat();
-    });
+    if (!(this.selectedFile === null || this.selectedFile === undefined)) {
+      const uploadData = new FormData();
+      uploadData.append('image', this.selectedFile, this.selectedFile.name);
+      this.imageService.uploadImage(uploadData, this.flat._id).subscribe(object => {
+        console.log(object);
+        this.changeSuccessUploadMsg();
+        this.getFlat();
+      });
+    }
   }
 
   deleteImage(imageID: String): void {

@@ -2,14 +2,131 @@
 <body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100% 100%;
    height: 100%; background-attachment:fixed">
   <div>
-    <app-navbar></app-navbar>
+    <app-navbar>
+    </app-navbar>
   </div>
   <div class="container">
+
+    <button type="button" class="btn" (click)="collapse = !collapse"
+            id="sidebarCollapse"
+            data-toggle="collapse" data-target="#sidebar"
+            aria-controls="sidebar" aria-expanded="false">
+      <i class="fas fa-align-left"></i>
+      <span>Search</span>
+    </button>
+
+    <div class="wrapper">
+      <nav class="sidebar" [ngbCollapse]="!collapse" id="sidebar">
+        <div class="sidebar-header">
+          <h3>Search</h3>
+        </div>
+        <form [formGroup]="searchFlatForm"
+              (ngSubmit)="searchFlat(
+              searchFlatForm.get('maxprice').value,
+              searchFlatForm.get('numberOfRooms').value,
+              searchFlatForm.get('zipCode').value,
+              searchFlatForm.get('city').value,
+              searchFlatForm.get('type').value)"
+              class="form" method="" action=""
+              [class.error]="!searchFlatForm.valid && searchFlatForm.touched">
+          <div class="content">
+            <div class="sidebar-nav">
+              <ul class="list-unstyled components">
+                <li>
+                  <div class="input-group form-group-no-border input-sm">
+                    <div>
+                      <label for="maxprice">Max. Price:</label>
+                    </div>
+                    <div>
+                      <input type="number"
+                             id="maxprice"
+                             class="form-control"
+                             [(ngModel)]="maxprice"
+                             [formControl]="searchFlatForm.get('maxprice')">
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="input-group form-group-no-border input-sm">
+                    <div>
+                      <label for="numberOfRooms">Number of Rooms:</label>
+                    </div>
+                    <div>
+                      <input type="number"
+                             id="numberOfRooms"
+                             class="form-control"
+                             [(ngModel)]="numberOfRooms"
+                             [formControl]="searchFlatForm.get('numberOfRooms')">
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="input-group form-group-no-border input-sm">
+                    <div>
+                      <label for="zipCode">Zipcode:</label>
+                    </div>
+                    <div>
+                      <input type="number"
+                             id="zipCode"
+                             class="form-control"
+                             [(ngModel)]="zipCode"
+                             [formControl]="searchFlatForm.get('zipCode')">
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="input-group form-group-no-border input-sm">
+                    <div>
+                      <label for="city">City:</label>
+                    </div>
+                    <div>
+                      <input type="text"
+                             id="city"
+                             class="form-control"
+                             [(ngModel)]="city"
+                             [formControl]="searchFlatForm.get('city')">
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="input-group form-group-no-border input-lg">
+                    <div class="form-check form-check-radio">
+                      <label class="form-check-label" for="gridRadios1">
+                        For Underlease
+                      </label>
+                      <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="searchFlatForm.get('type')" name="gridRadios" id="gridRadios1" value="underlease">
+                      <span class="form-check-sign"></span>
+                    </div>
+                  </div>
+                  <div class="input-group form-group-no-border input-lg">
+                    <div class="form-check form-check-radio">
+                      <label class="form-check-label" for="gridRadios2">
+                        For Sale
+                      </label>
+                      <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="searchFlatForm.get('type')" name="gridRadios" id="gridRadios2" value="sale">
+                      <span class="form-check-sign"></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Search</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-primary btn-round btn-lg btn-block" (click)="collapse = !collapse">Close</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!--/.well -->
+        </form>
+      </nav>
+    </div>
+    <!--/span-->
     <div class="row">
       <div class="col-lg-4" *ngFor="let myflat of flats;">
         <div class="card">
-          <img class="card-img-top" *ngIf="!myflat.noImageFound" src="{{myflat.firstImage.filename}}" alt="firstPicture" >
-          <img class="card-img-top" *ngIf="myflat.noImageFound" src="assets/img/download.png" alt="basicIMG" >
+          <img class="card-img-top" *ngIf="!myflat.noImageFound" src="{{myflat.firstImage.filename}}" alt="firstPicture">
+          <img class="card-img-top" *ngIf="myflat.noImageFound" src="assets/img/download.png" alt="basicIMG">
           <div class="card-body">
             <h5 class="card-title">Price: {{myflat.price}}</h5>
             <p class="card-text">Description:<br />{{myflat.description}}</p>
@@ -19,10 +136,10 @@
           </div>
         </div>
       </div>
-      </div>
     </div>
-  <div>
+    <div>
     <ngb-pagination class="d-flex justify-content-center pagination-danger" (pageChange)="loadPage($event)" [collectionSize]="collectionSize" [(page)]="page" size="lg"></ngb-pagination>
+    </div>
   </div>
 </body>
 </html>

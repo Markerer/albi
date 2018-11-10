@@ -51,7 +51,7 @@
 
   <div class="container toppadding align-items-center justify-content-center d-flex" *ngIf="!advertisementCreated">
     <div class="col-md-4 content-center" id="centeralign">
-      <div class="card card-login card-plain toppadding">
+      <div class="card card-login card-plain">
         <form [formGroup]="createFlatForm"
               (ngSubmit)="createFlat(
               createFlatForm.get('price').value,
@@ -59,7 +59,7 @@
               createFlatForm.get('description').value,
               createFlatForm.get('email').value,
               createFlatForm.get('phone_number').value,
-              createFlatForm.get('zipcode').value,
+              createFlatForm.get('zipCode').value,
               createFlatForm.get('city').value,
               createFlatForm.get('address').value,
               createFlatForm.get('type').value)"
@@ -69,15 +69,16 @@
 
             <div class="input-group form-group-no-border input-lg">
 
-              <input type="text"
+              <input type="number"
                      placeholder="Price"
                      class="form-control"
                      [(ngModel)]="price"
                      [formControl]="createFlatForm.get('price')">
             </div>
+
             <div class="input-group form-group-no-border input-lg">
 
-              <input type="text"
+              <input type="number"
                      placeholder="Number of Rooms"
                      class="form-control"
                      [(ngModel)]="numberOfRooms"
@@ -117,11 +118,11 @@
 
             <div class="input-group form-group-no-border input-lg">
 
-              <input type="text"
+              <input type="number"
                      placeholder="ZIP code"
                      class="form-control"
-                     [(ngModel)]="zipcode"
-                     [formControl]="createFlatForm.get('zipcode')">
+                     [(ngModel)]="zipCode"
+                     [formControl]="createFlatForm.get('zipCode')">
             </div>
 
             <div class="input-group form-group-no-border input-lg">

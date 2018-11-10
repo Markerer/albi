@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { isNull, isUndefined } from 'util';
 import { ImageService } from '../image.service';
 import { Image } from "../image";
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-main',
@@ -16,13 +17,25 @@ import { Image } from "../image";
 export class MainComponent implements OnInit {
 
   flats: Flat[];
+  search: Flat;
   collectionSize: number;
   page: number = 1;
   previousPage: number;
   user: User;
   undefinedUser: boolean = false;
 
-  constructor(private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) { }
+  searchFlatForm: FormGroup;
+
+  constructor(private fb: FormBuilder, private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService)
+  {
+    this.searchFlatForm = fb.group({
+      "maxprice": ["", null],
+      "numberOfRooms": ["", null],
+      'zipCode': ["", null],
+      'city': ["", null],
+      "type": ["", null]
+    });
+  }
 
   ngOnInit() {
     this.data.currentData.subscribe(data => {
@@ -42,7 +55,11 @@ export class MainComponent implements OnInit {
     if (page !== this.page) {
       this.page = page;
       this.removeItems();
-      this.getFlatsByPage(this.page);
+      if (this.search === undefined || this.search === null) {
+        this.getFlatsByPage(this.page);
+      } else {
+        this.getFlatsBySearch(this.page);
+      }
     }
   }
 
@@ -119,6 +136,64 @@ export class MainComponent implements OnInit {
       }
       console.log(this.flats);
     });
+  }
+
+  
+  getFlatsBySearch(page: number): void {
+    this.removeItems();
+    this.mainService.searchFlat(this.search, page).subscribe(data => {
+      console.log(data);
+      var objects: Flat[];
+      var num: number;
+      objects = data["docs"];
+      num = data["total"];
+      this.collectionSize = num;
+      for (let i of objects) {
+        var temp: Flat = new Flat();
+        temp = i;
+        temp.firstImage = new Image();
+        this.getImageUrls(i._id, i);
+        this.flats.push(i);
+      }
+      console.log(this.flats);
+    });
+  }
+
+
+  searchFlat(maxprice: Number, numberOfRooms: Number, zipCode: Number, city: String, type: String): void {
+
+    this.search = new Flat();
+
+    if (maxprice === undefined || maxprice === null) {
+      this.search.price = "";
+    } else {
+      this.search.price = maxprice.toString();
+    }
+    if (numberOfRooms === undefined || numberOfRooms === null) {
+      this.search.numberOfRooms = "";
+    } else {
+      this.search.numberOfRooms = numberOfRooms.toString();
+    }
+    if (zipCode === undefined || zipCode === null) {
+      this.search.zipCode = "";
+    } else {
+      this.search.zipCode = zipCode.toString();
+    }
+    if (city === undefined || city === "") {
+      this.search.city = "";
+    } else {
+      this.search.city = city;
+    }
+    if (type === "underlease") {
+      console.log("albérlet");
+      this.search.forSale = false;
+    } else if (type === "sale") {
+      console.log("eladó");
+      this.search.forSale = true;
+    }
+    console.log(this.search);
+    this.page = 1;
+    this.getFlatsBySearch(this.page);
   }
 
 }
