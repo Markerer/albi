@@ -372,7 +372,7 @@ module.exports = function(app) {
             
         });
         var price = req.params.price;
-        Flats.find({price: {$lte: price}}, function(err, flats){
+        Flats.paginate({price: {$lte: price}}, { page: pageid, limit: 10 }, function(err, flats){
             if(err) throw err;
             res.send(flats);
         });
@@ -397,14 +397,7 @@ module.exports = function(app) {
     
      });
 
-    app.get('/flats/price/:price', function(req, res){
-        var price = req.params.price;
-        Flats.find({price: {$lte: price}}, function(err, flats){
-            if(err) throw err;
-            res.send(flats);
-        });
-       
-    });
+
 
     app.get('/flat/:flatID', function(req, res){
         Flats.findById({_id: req.params.flatID}, function(err, flat){
