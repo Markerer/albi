@@ -12,11 +12,13 @@ import android.graphics.Bitmap
 import android.media.Image
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +28,7 @@ import android.widget.Toast
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -131,7 +134,7 @@ class AddFlatFragment : Fragment() {
                 bitmap = it.extras?.get("data") as Bitmap
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == RESULT_OK &&
-                data != null && data.data != null) {
+                data != null) {
             try {
                 bitmapUri = data.data
                 bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
@@ -140,27 +143,31 @@ class AddFlatFragment : Fragment() {
             }
         }
         iv.setImageBitmap(bitmap)
-        sendNetworkUploadPhoto("5bdf6a1d5a02c64820888fd5")
+        sendNetworkUploadPhoto("5be82cefdcba3e22b8bb0411")
+
     }
+
+
 
     private fun sendNetworkUploadPhoto(flatID: String){
         val client = RestApiFactory.createFlatClient()
 
-        val file = File(bitmapUri?.path)
+        //val file = File(Environment.getExternalStorageDirectory().absolutePath + bitmapUri?.path)
+        val file = File("/storage/emulated/0/DCIM/Camera/IMG_20181104_220614.jpg")
 
-        val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-        val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
+        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData("image", file.name, reqFile)
 
         val call = client.uploadPhoto(flatID, body)
 
-        call.enqueue(object: Callback<ImageUploadResponse>{
-            override fun onFailure(call: Call<ImageUploadResponse>, t: Throwable) {
-                //Toast.makeText(context, "Upload failed " + t.message, Toast.LENGTH_LONG).show()
+        call.enqueue(object: Callback<ResponseBody>{
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(context, "Upload failed " + t.message, Toast.LENGTH_LONG).show()
             }
 
-            override fun onResponse(call: Call<ImageUploadResponse>, response: Response<ImageUploadResponse>) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 
-                Toast.makeText(context, "Upload done lol", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "" + response.body().toString(), Toast.LENGTH_LONG).show()
             }
         })
 
@@ -198,6 +205,7 @@ class AddFlatFragment : Fragment() {
         } else {
             val intent: Intent = Intent()
             intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "select picture"), PICK_IMAGE_FROM_GALERY_REQUEST)
         }

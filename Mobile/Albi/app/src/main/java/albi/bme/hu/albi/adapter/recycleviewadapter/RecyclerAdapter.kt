@@ -33,7 +33,7 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
             viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
         }
 
-        viewHolder.tvPrice.text = context.resources.getString(R.string.price_format, flat.price)
+        viewHolder.tvPrice.text = context.resources.getString(R.string.rent_price_format, flat.price)
         viewHolder.tvAddress.text = flat.address
         viewHolder.tvNumberOfRooms.text = context.resources.getString(R.string.number_of_rooms_format, flat.numberOfRooms)
 
