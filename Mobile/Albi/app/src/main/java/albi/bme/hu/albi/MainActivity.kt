@@ -1,21 +1,5 @@
 package albi.bme.hu.albi
 
-
-//TODO: 1)fénykép feltöltése
-//TODO: 2)lakás feltöltése (pipa)
-//TODO: 3)kép megjelenítése mainben
-//TODO: 4)profil szerkesztése (pipa)
-//TODO: 5)saját lakások megtekintése  -- profilban lehetne egy recycler, ahol szerepel az összes, ott lehet egyesével megnézni
-//TODO: layout mappa szelektálása--> https://stackoverflow.com/questions/4930398/can-the-android-layout-folder-contain-subfolders
-
-//Kérdések:
-//Auto bejelentkeztetés jó-e simán id-vel?
-//Fénykép feltöltése hogyan?
-//Fénykép megjelenítése?
-
-
-//TODO: paging (fml)
-
 import albi.bme.hu.albi.fragments.HouseDetailFragment
 import albi.bme.hu.albi.fragments.addhouse.AddFlatFragment
 import android.support.v7.app.AppCompatActivity
@@ -30,6 +14,7 @@ import android.view.MenuItem
 import albi.bme.hu.albi.fragments.profile.MyAdvertisementsFragment
 import albi.bme.hu.albi.fragments.profile.ProfileFragment
 import albi.bme.hu.albi.fragments.search.SearchFragment
+import android.content.Intent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -39,11 +24,11 @@ const val CURRENT_USER_KEY = "currentUser"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var houseDetail: HouseDetailFragment? = null
-    var profileDetail: ProfileFragment? = null
-    var searchFragment: SearchFragment? = null
-    var addFlatFragment: AddFlatFragment? = null
-    var myAdvertisementsFragment: MyAdvertisementsFragment? = null
+    private var houseDetail: HouseDetailFragment? = null
+    private var profileDetail: ProfileFragment? = null
+    private var searchFragment: SearchFragment? = null
+    private var addFlatFragment: AddFlatFragment? = null
+    private var myAdvertisementsFragment: MyAdvertisementsFragment? = null
     var user: User? = null
 
 
@@ -82,12 +67,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // java.lang.RuntimeException: Unable to start activity ComponentInfo{albi.bme.hu.albi/albi.bme.hu.albi.MainActivity}: kotlin.TypeCastException: null cannot be cast to non-null type albi.bme.hu.albi.model.User
-        // https://stackoverflow.com/questions/37949024/kotlin-typecastexception-null-cannot-be-cast-to-non-null-type-com-midsizemango
         user = intent.getSerializableExtra("user") as? User
 
 
-        //Code from here is copied from the NavigationDrawerTest bullshit
+        //Code from here is copied from the NavigationDrawerTest
         setSupportActionBar(toolbar)
 
 
@@ -121,7 +104,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
                 profileDetail!!.setUserInProfile(user!!)

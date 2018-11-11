@@ -1,9 +1,11 @@
 package albi.bme.hu.albi.adapter.recycleviewadapter
 
 import albi.bme.hu.albi.R
+import albi.bme.hu.albi.SingleFlatActivity
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +36,12 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         viewHolder.tvPrice.text = context.resources.getString(R.string.price_format, flat.price)
         viewHolder.tvAddress.text = flat.address
         viewHolder.tvNumberOfRooms.text = context.resources.getString(R.string.number_of_rooms_format, flat.numberOfRooms)
+
+        viewHolder.itemView.setOnClickListener{
+            val intent = Intent(context, SingleFlatActivity::class.java)
+            intent.putExtra("flat", flatList[position])
+            context.startActivity(intent)
+        }
     }
 
     class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
@@ -43,14 +51,5 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         val tvNumberOfRooms = itemView.findViewById<TextView>(R.id.tvNumberOfRooms)!!
     }
 
-    public fun clearData(){
-        flatList.clear()
-        notifyDataSetChanged()
-    }
-
-    public fun addAll(list: ArrayList<Flat>){
-        flatList.addAll(list)
-        notifyDataSetChanged()
-    }
 }
 

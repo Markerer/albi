@@ -1,9 +1,6 @@
 package albi.bme.hu.albi.model
 
-import albi.bme.hu.albi.network.ImageDataResponse
-import android.graphics.Bitmap
-import android.media.Image
-
+import java.io.Serializable
 
 class Flat(var _id: String = "",
            var userID: String = "",
@@ -15,17 +12,8 @@ class Flat(var _id: String = "",
            var zipCode: String = "",
            var city: String = "",
            var address: String = "",
-           var forSale: Boolean = false) {
+           var forSale: Boolean = false) : Serializable{
 
-    var imageData: ArrayList<ImageDataResponse> = ArrayList()
-    // https://developer.android.com/guide/topics/resources/drawable-resource
-    var image: Image? = null
-    //https://stackoverflow.com/questions/8937036/what-is-the-difference-between-bitmap-and-drawable-in-android
-    //https://corochann.com/convert-between-bitmap-and-drawable-313.html
-    var bitmapImage: Bitmap? = null // BitmapDrawable ???
-
-    var imageURLs: ArrayList<String>? = ArrayList()
-    var imageIDs: ArrayList<String>? = ArrayList()
     var imageNames: ArrayList<String>? = ArrayList()
 
 }
