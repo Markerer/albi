@@ -2,20 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Image } from './image';
-import { Binary } from '@angular/compiler';
 
 
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-}
 
 @Injectable()
 export class ImageService {
 
-  apiRoot: string = 'http://localhost:3000/';
+  apiRoot = 'http://localhost:3000/';
 
 
   constructor(private http: HttpClient) { }

@@ -8,12 +8,12 @@ const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
-}
+};
 
 @Injectable()
 export class MainService {
 
-  apiRoot: string = 'http://localhost:3000/';
+  apiRoot = 'http://localhost:3000/';
 
   constructor(private http: HttpClient) { }
 
@@ -36,16 +36,16 @@ export class MainService {
   addAdvertisement(flat: Flat): Observable<Flat> {
     return this.http.post<Flat>(this.apiRoot + 'addflat/' + flat.userID,
       {
-        "userID": `${flat.userID}`,
-        "price": `${flat.price}`,
-        "numberOfRooms": `${flat.numberOfRooms}`,
-        "description": `${flat.description}`,
-        "email": `${flat.email}`,
-        "phone_number": `${flat.phone_number}`,
-        "zipCode": `${flat.zipCode}`,
-        "city": `${flat.city}`,
-        "address": `${flat.address}`,
-        "forSale": `${flat.forSale}`
+        'userID': `${flat.userID}`,
+        'price': `${flat.price}`,
+        'numberOfRooms': `${flat.numberOfRooms}`,
+        'description': `${flat.description}`,
+        'email': `${flat.email}`,
+        'phone_number': `${flat.phone_number}`,
+        'zipCode': `${flat.zipCode}`,
+        'city': `${flat.city}`,
+        'address': `${flat.address}`,
+        'forSale': `${flat.forSale}`
       },
       httpOptions);
   }
@@ -54,21 +54,21 @@ export class MainService {
   updateFlat(flat: Flat): Observable<String> {
     return this.http.put(this.apiRoot + 'flats/',
       {
-        "_id": `${flat._id}`,
-        "userID": `${flat.userID}`,
-        "price": `${flat.price}`,
-        "numberOfRooms": `${flat.numberOfRooms}`,
-        "description": `${flat.description}`,
-        "email": `${flat.email}`,
-        "phone_number": `${flat.phone_number}`,
-        "zipCode": `${flat.zipCode}`,
-        "city": `${flat.city}`,
-        "address": `${flat.address}`,
-        "forSale": `${flat.forSale}`
+        '_id': `${flat._id}`,
+        'userID': `${flat.userID}`,
+        'price': `${flat.price}`,
+        'numberOfRooms': `${flat.numberOfRooms}`,
+        'description': `${flat.description}`,
+        'email': `${flat.email}`,
+        'phone_number': `${flat.phone_number}`,
+        'zipCode': `${flat.zipCode}`,
+        'city': `${flat.city}`,
+        'address': `${flat.address}`,
+        'forSale': `${flat.forSale}`
       },
       { responseType: 'text' });
   }
-  
+
   deleteFlat(flatID: String): Observable<String> {
     return this.http.delete(this.apiRoot + 'flat/' + flatID, { responseType: 'text' });
   }
@@ -81,45 +81,45 @@ export class MainService {
     return str;
   }
 
-  
+
   searchFlat(search: Flat, page: number): Observable<Object[]> {
-    var maxprice: String;
-    var numberOfRooms: String;
-    var zipCode: String;
-    var city: String;
-    var forSale: String;
-    var last: String;
+    let maxprice: String;
+    let numberOfRooms: String;
+    let zipCode: String;
+    let city: String;
+    let forSale: String;
+    let last: String;
 
-    // Ha utolsó, akkor nem kell utána &, 
+    // Ha utolsó, akkor nem kell utána &,
 
-    if (search.price === "") {
-      maxprice = "?";
+    if (search.price === '') {
+      maxprice = '?';
     } else {
-      maxprice = "/" + `${search.price}?`;
+      maxprice = '/' + `${search.price}?`;
       last = maxprice;
     }
-    if (search.numberOfRooms === "") {
-      numberOfRooms = "";
+    if (search.numberOfRooms === '') {
+      numberOfRooms = '';
     } else {
-      numberOfRooms = "numberOfRooms=" + `${search.numberOfRooms}` + "&";
+      numberOfRooms = 'numberOfRooms=' + `${search.numberOfRooms}` + '&';
       last = numberOfRooms;
     }
-    if (search.zipCode === "") {
-      zipCode = "";
+    if (search.zipCode === '') {
+      zipCode = '';
     } else {
-      zipCode = "zipCode=" + `${search.zipCode}` + "&";
+      zipCode = 'zipCode=' + `${search.zipCode}` + '&';
       last = zipCode;
     }
-    if (search.city === "") {
-      city = "";
+    if (search.city === '') {
+      city = '';
     } else {
-      city = "city=" + `${search.city}` + "&";
+      city = 'city=' + `${search.city}` + '&';
       last = city;
     }
     if (search.forSale === undefined) {
-      forSale = "";
+      forSale = '';
     } else {
-      forSale = "forSale=" + `${search.forSale}`;
+      forSale = 'forSale=' + `${search.forSale}`;
       last = forSale;
     }
 
@@ -131,7 +131,7 @@ export class MainService {
       zipCode = this.minusLastChar(zipCode);
     }
     if (last === city) {
-      city === this.minusLastChar(city);
+      city = this.minusLastChar(city);
     }
     if (last === maxprice) {
       maxprice = this.minusLastChar(maxprice);

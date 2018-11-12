@@ -28,55 +28,51 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   createForm: FormGroup;
-  
   focus: boolean;
   focus1: boolean;
-  correctDatas: boolean = true;
+  correctDatas: boolean;
   isTaken = false;
 
   constructor(private userService: UserService, fb: FormBuilder, private router: Router, private data: DataService) {
     this.loginForm = fb.group({
-      "usernameLogin": ["", Validators.required],
-      "passwordLogin": ["", Validators.required]
+      'usernameLogin': ['', Validators.required],
+      'passwordLogin': ['', Validators.required]
     });
     this.createForm = fb.group({
-      "username": ["", Validators.required],
-      "password": ["", Validators.required],
-      "email": ["", [Validators.required, Validators.email]],
-      "phone_number": ["", Validators.required],
-      "address": ["", Validators.required]
+      'username': ['', Validators.required],
+      'password': ['', Validators.required],
+      'email': ['', [Validators.required, Validators.email]],
+      'phone_number': ['', Validators.required],
+      'address': ['', Validators.required]
     });
+    this.correctDatas = true;
   }
 
   ngOnInit() {
 
-    //A sikeres üzenet
+    // A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
       debounceTime(5000)
     ).subscribe(() => this.successMessage = null);
 
-    //A sikertelen bejelentkezés üzenet
+    // A sikertelen bejelentkezés üzenet
     this._alert.subscribe((message) => this.alertMessage = message);
     this._alert.pipe(
       debounceTime(5000)
     ).subscribe(() => this.alertMessage = null);
 
-    //A már létező username esetén kiírandó üzenet
+    // A már létező username esetén kiírandó üzenet
     this._alertTaken.subscribe((message) => this.alertTakenMessage = message);
     this._alertTaken.pipe(
       debounceTime(5000)
     ).subscribe(() => this.alertTakenMessage = null);
 
-    var body = document.getElementsByTagName('body')[0];
+    const body = document.getElementsByTagName('body')[0];
     body.classList.add('login-page');
   }
 
-  ngOnDestroy() {
-    var body = document.getElementsByTagName('body')[0];
-    body.classList.remove('login-page');
-  }
-  //Az üzenetek
+  // Az üzenetek
   public changeSuccessMessage(): void {
     this._success.next(`New user successfully created, you will be redirected to the main page in a few seconds!`);
   }
@@ -95,7 +91,6 @@ export class LoginComponent implements OnInit {
 
 
   createUser(username: String, password: String, email: String, phone_number: String, address: String): void {
-    
       this.user.username = username;
       this.user.password = password;
       this.user.address = address;
@@ -106,8 +101,7 @@ export class LoginComponent implements OnInit {
         if (response === 'The username is already taken.') {
           this.isTaken = true;
           this.changeAlertTakenMessage();
-        }
-        else {
+        } else {
           // 5 sec múlva belépés ezzel az accounttal
           this.changeSuccessMessage();
           this.isTaken = false;
@@ -122,7 +116,7 @@ export class LoginComponent implements OnInit {
   userLogger(response: String, usernameLogin: String): void {
 
     console.log(response);
-    if (response === "OK") {
+    if (response === 'OK') {
       this.userService.getUser(usernameLogin).subscribe(loggedUser => {
         this.user = loggedUser;
         console.log(this.user);
@@ -130,18 +124,14 @@ export class LoginComponent implements OnInit {
         this.data.changeData(this.user);
         this.router.navigate(['main']);
       });
-    }
-    else {
+    } else {
       this.correctDatas = false;
       this.changeAlertMessage();
     }
   }
 
   login(usernameLogin: String, passwordLogin: String): void {
-  
     this.userService.loginUser(usernameLogin, passwordLogin)
       .subscribe(data => { this.userLogger(data, usernameLogin); console.log(data); });
   }
-	
-
 }

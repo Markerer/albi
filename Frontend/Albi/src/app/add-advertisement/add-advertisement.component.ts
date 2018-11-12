@@ -18,8 +18,8 @@ import { Image } from '../image';
 export class AddAdvertisementComponent implements OnInit {
 
   user: User = new User();
-  undefinedUser: boolean = false;
-  advertisementCreated: boolean = false;
+  undefinedUser: boolean;
+  advertisementCreated: boolean;
   createdFlat: Flat = new Flat();
 
   selectedFile: File;
@@ -31,16 +31,18 @@ export class AddAdvertisementComponent implements OnInit {
 
   constructor(private data: DataService, fb: FormBuilder, private router: Router, private mainService: MainService, private imageService: ImageService) {
     this.createFlatForm = fb.group({
-      "price": ["", Validators.required],
-      "numberOfRooms": ["", Validators.required],
-      "description": ["", Validators.required],
-      'email': ["", Validators.required],
-      'phone_number': ["", Validators.required],
-      'zipCode': ["", Validators.required],
-      'city': ["", Validators.required],
-      "address": ["", Validators.required],
-      "type": ["", Validators.required]
+      'price': ['', Validators.required],
+      'numberOfRooms': ['', Validators.required],
+      'description': ['', Validators.required],
+      'email': ['', Validators.required],
+      'phone_number': ['', Validators.required],
+      'zipCode': ['', Validators.required],
+      'city': ['', Validators.required],
+      'address': ['', Validators.required],
+      'type': ['', Validators.required]
     });
+    this.undefinedUser = false;
+    this.advertisementCreated = false;
   }
 
   ngOnInit() {
@@ -53,7 +55,7 @@ export class AddAdvertisementComponent implements OnInit {
         console.log(this.user);
       }
     });
-    //A sikeres üzenet
+    // A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
       debounceTime(5000)
@@ -75,13 +77,13 @@ export class AddAdvertisementComponent implements OnInit {
     this.createdFlat.city = city;
     this.createdFlat.address = address;
     console.log(type);
-    if (type === "underlease") {
+    if (type === 'underlease') {
       this.createdFlat.forSale = false;
-    } else if (type === "sale") {
+    } else if (type === 'sale') {
       this.createdFlat.forSale = true;
     }
     console.log(this.createdFlat);
-    //A belépett user továbbadása
+    // A belépett user továbbadása
     this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => {
       console.log(addedFlat);
       this.createdFlat = addedFlat;
@@ -131,17 +133,16 @@ export class AddAdvertisementComponent implements OnInit {
     this.imageService.getFlatImageIDs(flatID).subscribe(data => {
       flat.images = [];
       for (let i = 0; i < data.length; i++) {
-        var temp = new Image();
+        let temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = 'http://localhost:3000/' + data[i].filename;
         flat.images.push(temp);
       }
       flat.firstImage = new Image();
       if (flat.images[0] === undefined) {
         flat.noImageFound = true;
-        flat.firstImage.filename = "assets/img/download.png";
-      }
-      else {
+        flat.firstImage.filename = 'assets/img/download.png';
+      } else {
         flat.noImageFound = false;
         flat.firstImage.filename = flat.images[0].filename;
       }

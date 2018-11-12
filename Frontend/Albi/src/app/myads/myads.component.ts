@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainService } from '../main.service';
 import { Router } from '@angular/router';
 import { Flat } from '../flat';
@@ -13,11 +13,11 @@ import { Image } from '../image';
   templateUrl: './myads.component.html',
   styleUrls: ['./myads.component.scss']
 })
-export class MyadsComponent implements OnInit {
+export class MyadsComponent implements OnInit, OnDestroy {
 
   flats: Flat[];
   user: User;
-  undefinedUser: boolean = false;
+  undefinedUser = false;
 
 
   constructor(private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) { }
@@ -52,7 +52,7 @@ export class MyadsComponent implements OnInit {
     this.mainService.getUserFlats(userID).subscribe(data => {
 
       for (let i = 0; i < data.length; i++) {
-        var temp: Flat = new Flat();
+        let temp: Flat = new Flat();
         temp = data[i];
         temp.firstImage = new Image();
         this.getImageUrls(temp._id, temp);
@@ -69,17 +69,16 @@ export class MyadsComponent implements OnInit {
     this.imageService.getFlatImageIDs(flatID).subscribe(data => {
       flat.images = [];
       for (let i = 0; i < data.length; i++) {
-        var temp = new Image();
+        let temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = 'http://localhost:3000/' + data[i].filename;
         flat.images.push(temp);
       }
       flat.firstImage = new Image();
       if (flat.images[0] === undefined) {
         flat.noImageFound = true;
-        flat.firstImage.filename = "assets/img/download.png";
-      }
-      else {
+        flat.firstImage.filename = 'assets/img/download.png';
+      } else {
         flat.noImageFound = false;
         flat.firstImage.filename = flat.images[0].filename;
       }

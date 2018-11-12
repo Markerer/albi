@@ -18,8 +18,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class FlatComponent implements OnInit {
 
-  undefinedUser: boolean = false;
-  visitorMode: boolean = false;
+  undefinedUser: boolean;
+  visitorMode: boolean;
   owner: boolean;
 
   flat: Flat = new Flat();
@@ -42,8 +42,10 @@ export class FlatComponent implements OnInit {
     private mainService: MainService,
     private fb: FormBuilder,
     private imageService: ImageService,
-    private modalService: NgbModal)
-  {}
+    private modalService: NgbModal) {
+    this.undefinedUser = false;
+    this.visitorMode = false;
+  }
 
   ngOnInit() {
     this.data.currentData.subscribe(data => {
@@ -56,13 +58,13 @@ export class FlatComponent implements OnInit {
       }
     });
 
-    //A sikeres üzenet
+    // A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
       debounceTime(5000)
     ).subscribe(() => this.successMessage = null);
 
-    //A sikeres üzenet
+    // A sikeres üzenet
     this._successUpload.subscribe((message) => this.successUpload = message);
     this._successUpload.pipe(
       debounceTime(5000)
@@ -82,8 +84,8 @@ export class FlatComponent implements OnInit {
   }
 
   getFlat(): void {
-    //Az id kinyerése az URL címből.
-    var id: String = this.activatedRoute.snapshot.paramMap.get('_id');
+    // Az id kinyerése az URL címből.
+    const id: String = this.activatedRoute.snapshot.paramMap.get('_id');
     this.mainService.getFlatByID(id).subscribe(data => {
       this.flat = data;
       this.flat.images = [];
@@ -105,11 +107,11 @@ export class FlatComponent implements OnInit {
         'zipCode': [this.flat.zipCode, null],
         'city': [this.flat.city, null],
         'address': [this.flat.address, null],
-        'type': ["", null]
+        'type': ['', null]
       });
     });
   }
-  
+
   updateFlat(price: Number, numberOfRooms: Number, description: String, email: String, phone_number: String, zipCode: Number, city: String, address: String, type: String): void {
     if (!(price === undefined || price === null)) {
       this.flat.price = price.toString();
@@ -117,27 +119,27 @@ export class FlatComponent implements OnInit {
     if (!(numberOfRooms === undefined || numberOfRooms === null)) {
       this.flat.numberOfRooms = numberOfRooms.toString();
     }
-    if (!(description === "" || description === undefined)) {
+    if (!(description === '' || description === undefined)) {
       this.flat.description = description;
     }
-    if (!(email === "" || email === undefined)) {
+    if (!(email === '' || email === undefined)) {
       this.flat.email = email;
     }
-    if (!(phone_number === "" || phone_number === undefined)) {
+    if (!(phone_number === '' || phone_number === undefined)) {
       this.flat.phone_number = phone_number;
     }
     if (!(zipCode === undefined || zipCode === null)) {
       this.flat.zipCode = zipCode.toString();
     }
-    if (!(city === "" || city === undefined)) {
+    if (!(city === '' || city === undefined)) {
       this.flat.city = city;
     }
-    if (!(address === "" || address === undefined)) {
+    if (!(address === '' || address === undefined)) {
       this.flat.address = address;
     }
-    if (type === "underlease") {
+    if (type === 'underlease') {
       this.flat.forSale = false;
-    } else if (type === "sale") {
+    } else if (type === 'sale') {
       this.flat.forSale = true;
     }
 
@@ -155,17 +157,16 @@ export class FlatComponent implements OnInit {
     this.imageService.getFlatImageIDs(flatID).subscribe(data => {
       flat.images = [];
       for (let i = 0; i < data.length; i++) {
-        var temp = new Image();
+        let temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = 'http://localhost:3000/' + data[i].filename;
         flat.images.push(temp);
       }
       flat.firstImage = new Image();
       if (flat.images[0] === undefined) {
         flat.noImageFound = true;
-        flat.firstImage.filename = "assets/img/download.png";
-      }
-      else {
+        flat.firstImage.filename = 'assets/img/download.png';
+      } else {
         flat.noImageFound = false;
         flat.firstImage.filename = flat.images[0].filename;
       }
@@ -189,8 +190,7 @@ export class FlatComponent implements OnInit {
   }
 
   deleteImage(imageID: String): void {
-    this.imageService.deleteImage(imageID).subscribe(response =>
-    {
+    this.imageService.deleteImage(imageID).subscribe(response => {
       console.log(response);
       this.getFlat();
     });
@@ -198,10 +198,10 @@ export class FlatComponent implements OnInit {
 
   visitMode(): void {
     this.visitorMode = !this.visitorMode;
-  } 
+  }
 
   deleteAdvertisement(): void {
-    for (let i of this.flat.images) {
+    for (const i of this.flat.images) {
       this.imageService.deleteImage(i._id).subscribe(response => console.log(response));
     }
     this.mainService.deleteFlat(this.flat._id).subscribe(response => console.log(response));
@@ -211,7 +211,7 @@ export class FlatComponent implements OnInit {
   // A modal ablak kódja
   open(content, type) {
     if (type === 'sm') {
-      
+
       this.modalService.open(content, { size: 'sm' }).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
