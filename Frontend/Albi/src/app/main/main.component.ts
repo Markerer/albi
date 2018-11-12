@@ -23,6 +23,7 @@ export class MainComponent implements OnInit {
   previousPage: number;
   user: User;
   undefinedUser: boolean = false;
+  collapse: boolean = false;
 
   searchFlatForm: FormGroup;
 
@@ -194,6 +195,30 @@ export class MainComponent implements OnInit {
     console.log(this.search);
     this.page = 1;
     this.getFlatsBySearch(this.page);
+  }
+
+
+  openNavBar() {
+    document.getElementById('sidebar').style.width = '340px';
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    var labels = document.getElementsByTagName('label');
+    if (width <= 768) {
+      document.getElementById('sidebar').style.width = '100vw';
+      for (var i = 0; i < labels.length; i++) {
+        labels[i].style.width = '50vw';
+      }
+    } else {
+      document.getElementById('ads').style.paddingLeft = '355px';
+      for (var i = 0; i < labels.length; i++) {
+        labels[i].style.width = '135px';
+      }
+    }
+  }
+
+  closeNavBar() {
+    document.getElementById('sidebar').style.width = '0';
+    document.getElementById('sidebar').style.marginLeft = '0';
+    document.getElementById('ads').style.paddingLeft = '15px';
   }
 
 }
