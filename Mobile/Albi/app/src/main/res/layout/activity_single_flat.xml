@@ -9,36 +9,49 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="250dp" />
 
-    <TextView
-        android:id="@+id/tvPriceSingle"
+    <EditText
+        android:id="@+id/etPriceSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="@string/price"
+        android:enabled="false"
+        android:inputType="numberDecimal"
+        android:textColor="@drawable/custom_edittext"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvNumberOfRooms"
+    <EditText
+        android:id="@+id/etNumberOfRoomsSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
+        android:inputType="numberDecimal"
+        android:textColor="@drawable/custom_edittext"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvDescriptionSingle"
+    <EditText
+        android:id="@+id/etDescriptionSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textColor="@drawable/custom_edittext"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvEmailSingle"
+    <EditText
+        android:id="@+id/etEmailSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textColor="@drawable/custom_edittext"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvPhoneNumberSingle"
+    <EditText
+        android:id="@+id/etPhoneNumberSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textColor="@drawable/custom_edittext"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -46,35 +59,56 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvZipCodeSingle"
+        <EditText
+            android:id="@+id/etZipCodeSingle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:enabled="false"
+            android:inputType="numberDecimal"
+            android:textColor="@drawable/custom_edittext"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvCitySingle"
+        <EditText
+            android:id="@+id/etCitySingle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:enabled="false"
+            android:textColor="@drawable/custom_edittext"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvAddressSingle"
+        <EditText
+            android:id="@+id/etAddressSingle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="@drawable/custom_edittext"
             android:textSize="18sp" />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/editAdvertisement"
-        android:gravity="center"
-        android:layout_gravity="center"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edit" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/editAdvertisement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="@string/edit" />
+
+        <Button
+            android:id="@+id/saveAdvertisement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="@string/save"/>
+
+    </LinearLayout>
 
 
 </LinearLayout>

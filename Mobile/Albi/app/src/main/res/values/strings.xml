@@ -42,6 +42,7 @@
     <string name="email_format">e-mail: %s</string>
     <string name="phone_number_format">Phone number: %s</string>
     <string name="description_format">Description:\n%s</string>
+    <string name="save">Save</string>
 
     <string-array name="districts_array_name">
         <item>I. kerület</item>

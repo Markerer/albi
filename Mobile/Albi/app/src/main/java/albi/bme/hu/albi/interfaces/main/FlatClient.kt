@@ -30,4 +30,7 @@ interface FlatClient {
     @GET("/flat/images/{flatID}")
     fun getImagesIDForFlatID(@Path("flatID") flatID: String): Call<List<ImageDataResponse>>
 
+    @PUT("/flats")
+    fun updateFlat(@Body flat: Flat): Call<String>
+
 }

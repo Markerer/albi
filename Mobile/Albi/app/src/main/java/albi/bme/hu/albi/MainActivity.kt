@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         user = intent.getSerializableExtra("user") as? User
         //saveUserId()
-        Toast.makeText(this, user?._id, Toast.LENGTH_LONG).show()
 
         //Code from here is copied from the NavigationDrawerTest
         setSupportActionBar(toolbar)
