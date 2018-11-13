@@ -14,6 +14,7 @@ import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.StrictMode
 import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
@@ -65,7 +66,8 @@ class AddFlatFragment : Fragment() {
     private lateinit var takePhotoButton: Button
     private var bitmapUri: Uri? = null
     private var bitmap: Bitmap? = null
-    private var imageToUploadUri: String = Environment.getExternalStorageDirectory().absolutePath+"/tmp_image.jpg"
+    private var imageFile = File(Environment.getExternalStorageDirectory().absolutePath.toString())
+    private var imageToUploadUri: Uri = Uri.fromFile(imageFile)
     private lateinit var finalFile: File
 
 
@@ -168,6 +170,7 @@ class AddFlatFragment : Fragment() {
                /*data?.also {
                 bitmap = it.extras?.get("data") as Bitmap
             }*/
+               Log.i("data.data.path", data.data.path)
                bitmapUri = data.data
                bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
 
@@ -176,6 +179,7 @@ class AddFlatFragment : Fragment() {
 
                // CALL THIS METHOD TO GET THE ACTUAL PATH
                finalFile = File(getRealPathFromURI(tempUri))
+               LogFinalFilePath()
 
                iv.setImageBitmap(bitmap)
            } catch(e: IOException) {
@@ -211,7 +215,7 @@ class AddFlatFragment : Fragment() {
         //val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
         //val FULL_PATH = IMAGE_PATH + bitmapUri?.path
         //val file = File(IMAGE_PATH)
-        Log.i("finalFile.path" , finalFile.path)
+        LogFinalFilePath()
         val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), finalFile)
         val body = MultipartBody.Part.createFormData("image", finalFile.name, reqFile)
 
@@ -223,7 +227,7 @@ class AddFlatFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.i("finalFile.path" , finalFile.path)
+                LogFinalFilePath()
                 Toast.makeText(context, "uploading photo was successfull", Toast.LENGTH_LONG).show()
             }
         })
@@ -295,6 +299,11 @@ class AddFlatFragment : Fragment() {
                     arrayOf(android.Manifest.permission.CAMERA),
                     PERMISSION_REQUEST_CODE)
         } else {
+            /**
+             * https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
+             */
+            val builder = StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
             Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageToUploadUri).also { takePictureIntent ->
                     takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
@@ -378,6 +387,10 @@ class AddFlatFragment : Fragment() {
             Log.e("", e.message, e)
             return null
         }
+    }
+
+    private fun LogFinalFilePath(){
+        Log.i("finalFile.path" , finalFile.path)
     }
 
 }
