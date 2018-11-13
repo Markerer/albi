@@ -14,6 +14,7 @@ import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Environment.DIRECTORY_DCIM
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
@@ -215,9 +216,21 @@ class AddFlatFragment : Fragment() {
         //val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
         //val FULL_PATH = IMAGE_PATH + bitmapUri?.path
         //val file = File(IMAGE_PATH)
+        /**
+         * original parameter: finalFile !!!!!!
+         * kíváncsiságból megnéztem, de a natúr elérési útvonallal sem akarja feltölteni
+         * postmanbe ezzel sem jelenik meg
+         * /storage/emulated/0/Pictures/1542150123646.jpg --- >Pictures
+         * /storage/emulated/0/DCIM/Camera/IMG_20181113_213409.jpg --->Camera
+         *
+         * kamera feltöltéshez vissza kell állítani a paramétert
+         * finalFile-ra
+         */
         LogFinalFilePath()
-        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), finalFile)
-        val body = MultipartBody.Part.createFormData("image", finalFile.name, reqFile)
+        val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181113_213409.jpg")
+        Log.i("absolutePath", tmpFile.absolutePath)
+        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), tmpFile) //finalFile
+        val body = MultipartBody.Part.createFormData("image", tmpFile.name, reqFile)
 
         val call = client.uploadPhoto(flatID, body)
 
