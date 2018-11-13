@@ -14,6 +14,7 @@ import android.view.MenuItem
 import albi.bme.hu.albi.fragments.profile.MyAdvertisementsFragment
 import albi.bme.hu.albi.fragments.profile.ProfileFragment
 import albi.bme.hu.albi.fragments.search.SearchFragment
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var addFlatFragment: AddFlatFragment? = null
     private var myAdvertisementsFragment: MyAdvertisementsFragment? = null
     var user: User? = null
-
+    var contextOfApplication: Context? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -67,6 +68,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        contextOfApplication = applicationContext
 
         user = intent.getSerializableExtra("user") as? User
         //saveUserId()

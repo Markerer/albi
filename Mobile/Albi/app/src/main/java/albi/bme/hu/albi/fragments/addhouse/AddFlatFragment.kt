@@ -5,9 +5,11 @@ import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.RestApiFactory
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.Image
 import android.net.Uri
 import android.os.Bundle
@@ -17,13 +19,13 @@ import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,8 +33,10 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 
 class AddFlatFragment : Fragment() {
 
@@ -61,6 +65,9 @@ class AddFlatFragment : Fragment() {
     private lateinit var takePhotoButton: Button
     private var bitmapUri: Uri? = null
     private var bitmap: Bitmap? = null
+    private var imageToUploadUri: String = Environment.getExternalStorageDirectory().absolutePath+"/tmp_image.jpg"
+    private lateinit var finalFile: File
+
 
 
     private lateinit var iv: ImageView
@@ -82,6 +89,7 @@ class AddFlatFragment : Fragment() {
         }
 
         takePhotoButton.setOnClickListener {
+            requestNeededPermissionForWriteExternalStorage()
             requestNeededPermissionForCamera()
         }
 
@@ -136,17 +144,58 @@ class AddFlatFragment : Fragment() {
 
     }
 
+    fun getImageUri(inContext: Context, inImage:Bitmap):Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(uri: Uri): String {
+        val cursor = context!!.contentResolver.query(uri, null, null, null, null)
+        cursor.moveToFirst()
+        val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+        return cursor.getString(idx)
+    }
+
+    /**
+     * https://stackoverflow.com/questions/15432592/get-file-path-of-image-on-android
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CAMERA_IMAGE && resultCode == Activity.RESULT_OK) {
-           data?.also {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CAMERA_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+           try {
+               /*data?.also {
                 bitmap = it.extras?.get("data") as Bitmap
-            }
-            iv.setImageBitmap(bitmap)
-        } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == Activity.RESULT_OK &&
-                data != null) {
+            }*/
+               bitmapUri = data.data
+               bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
+
+               // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+               val tempUri: Uri = getImageUri(this.context!!, this.bitmap!!)
+
+               // CALL THIS METHOD TO GET THE ACTUAL PATH
+               finalFile = File(getRealPathFromURI(tempUri))
+
+               iv.setImageBitmap(bitmap)
+           } catch(e: IOException) {
+               e.printStackTrace()
+               Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
+           }
+        } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             try {
+                /*data?.also {
+                    bitmap = it.extras?.get("data") as Bitmap
+                }*/
                 bitmapUri = data.data
                 bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
+
+                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                val tempUri: Uri = getImageUri(this.context!!, this.bitmap!!)
+
+                // CALL THIS METHOD TO GET THE ACTUAL PATH
+                finalFile = File(getRealPathFromURI(tempUri))
+
                 iv.setImageBitmap(bitmap)
             } catch(e: IOException) {
                 e.printStackTrace()
@@ -154,21 +203,17 @@ class AddFlatFragment : Fragment() {
             }
         }
         sendNetworkUploadPhoto("5be82cefdcba3e22b8bb0411")
-
     }
 
 
     private fun sendNetworkUploadPhoto(flatID: String){
         val client = RestApiFactory.createFlatClient()
-
-        val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
+        //val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
         //val FULL_PATH = IMAGE_PATH + bitmapUri?.path
-        val file = File(IMAGE_PATH)
-        val fileUri = Uri.fromFile(file)
-
-
-        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val body = MultipartBody.Part.createFormData("image", file.name, reqFile)
+        //val file = File(IMAGE_PATH)
+        Log.i("finalFile.path" , finalFile.path)
+        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), finalFile)
+        val body = MultipartBody.Part.createFormData("image", finalFile.name, reqFile)
 
         val call = client.uploadPhoto(flatID, body)
 
@@ -178,8 +223,8 @@ class AddFlatFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-
-                //Toast.makeText(context, "" + response.body().toString(), Toast.LENGTH_LONG).show()
+                Log.i("finalFile.path" , finalFile.path)
+                Toast.makeText(context, "uploading photo was successfull", Toast.LENGTH_LONG).show()
             }
         })
 
@@ -200,6 +245,21 @@ class AddFlatFragment : Fragment() {
                 Toast.makeText(context, "error in uploading advertisement :(" + t?.message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun requestNeededPermissionForWriteExternalStorage() {
+        if (ContextCompat.checkSelfPermission(context!!,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(context, "I need it for write storage", Toast.LENGTH_SHORT).show()
+            }
+            ActivityCompat.requestPermissions(activity!!,
+                    arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    PERMISSION_REQUEST_CODE)
+        }
+        return
     }
 
     // https://www.aut.bme.hu/Upload/Course/android/hallgatoi_jegyzetek/Android_05.pdf
@@ -235,18 +295,11 @@ class AddFlatFragment : Fragment() {
                     arrayOf(android.Manifest.permission.CAMERA),
                     PERMISSION_REQUEST_CODE)
         } else {
-            /*
-            val intent: Intent = Intent()
-            intent.type = "image/ *"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "select picture"), PICK_IMAGE_FROM_GALERY_REQUEST)
-            */
-
-
             Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
-                    startActivityForResult(takePictureIntent, REQUEST_CAMERA_IMAGE)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageToUploadUri).also { takePictureIntent ->
+                    takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
+                        startActivityForResult(takePictureIntent, REQUEST_CAMERA_IMAGE)
+                    }
                 }
             }
         }
@@ -265,6 +318,65 @@ class AddFlatFragment : Fragment() {
                             Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    /**
+     * https://stackoverflow.com/questions/32329461/how-to-get-path-of-picture-in-onactivityresult-intent-data-is-null
+     */
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun getBitmap(path:String):Bitmap? {
+        val uri = Uri.fromFile(File(path))
+        var inputStream: InputStream?
+        try
+        {
+            val IMAGE_MAX_SIZE = 1200000 // 1.2MP
+            inputStream = context!!.contentResolver.openInputStream(uri)
+            // Decode image size
+            var o = BitmapFactory.Options()
+            o.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(inputStream, null, o)
+            inputStream.close()
+            var scale = 1
+            while (((o.outWidth * o.outHeight) * (1 / Math.pow(scale.toDouble(), 2.0)) > IMAGE_MAX_SIZE))
+            {
+                scale++
+            }
+            Log.d("", "scale = " + scale + ", orig-width: " + o.outWidth + ", orig-height: " + o.outHeight)
+            var b:Bitmap?
+            inputStream = context!!.contentResolver.openInputStream(uri)
+            if (scale > 1)
+            {
+                scale--
+                // scale to max possible inSampleSize that still yields an image
+                // larger than target
+                o = BitmapFactory.Options()
+                o.inSampleSize = scale
+                b = BitmapFactory.decodeStream(inputStream, null, o)
+                // resize to desired dimensions
+                val height = b.getHeight()
+                val width = b.getWidth()
+                Log.d("", "1th scale operation dimenions - width: " + width + ", height: " + height)
+                val y = Math.sqrt((IMAGE_MAX_SIZE / ((width.toDouble()) / height)))
+                val x = (y / height) * width
+                val scaledBitmap = Bitmap.createScaledBitmap(b, x.toInt(),
+                        y.toInt(), true)
+                b.recycle()
+                b = scaledBitmap
+                System.gc()
+            }
+            else
+            {
+                b = BitmapFactory.decodeStream(inputStream)
+            }
+            inputStream.close()
+            Log.d("", ("bitmap size - width: " + b.getWidth() + ", height: " +
+                    b.getHeight()))
+            return b
+        }
+        catch (e:IOException) {
+            Log.e("", e.message, e)
+            return null
         }
     }
 
