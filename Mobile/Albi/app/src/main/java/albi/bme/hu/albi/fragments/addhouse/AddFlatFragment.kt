@@ -3,9 +3,8 @@ package albi.bme.hu.albi.fragments.addhouse
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
-import albi.bme.hu.albi.network.ImageUploadResponse
 import albi.bme.hu.albi.network.RestApiFactory
-import android.app.Activity.RESULT_OK
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -18,13 +17,13 @@ import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -45,10 +44,14 @@ class AddFlatFragment : Fragment() {
 
     companion object {
         private var MY_PERMISSIONS_REQUEST = 100
+        private val REQUEST_CAMERA_IMAGE = 101
+        private const val TMP_IMAGE_JPG = "/tmp_image.jpg"
+        private val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath + TMP_IMAGE_JPG
+        private var PICK_IMAGE_FROM_GALERY_REQUEST = 1
+        private var PERMISSION_REQUEST_CODE = 200
     }
 
-    private var PICK_IMAGE_FROM_GALERY_REQUEST = 1
-    private var PERMISSION_REQUEST_CODE = 200
+
     private lateinit var uploadImageButton: Button
     private lateinit var priceLayout: TextInputLayout
     private lateinit var numberOfRoomsLayout: TextInputLayout
@@ -59,7 +62,7 @@ class AddFlatFragment : Fragment() {
     private var bitmapUri: Uri? = null
     private var bitmap: Bitmap? = null
 
-    val REQUEST_IMAGE_CAPTURE = 101
+
     private lateinit var iv: ImageView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -75,18 +78,22 @@ class AddFlatFragment : Fragment() {
         iv = view.findViewById(R.id.imageView2)
 
         uploadImageButton.setOnClickListener {
-            requestNeededPermission()
+            requestNeededPermissionForGalery()
+        }
+
+        takePhotoButton.setOnClickListener {
+            requestNeededPermissionForCamera()
         }
 
         setButtonUpload()
 
-        takePhotoButton.setOnClickListener {
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
+        /*takePhotoButton.setOnClickListener {
+            val imageFile = File(IMAGE_PATH)
+            val imageFileUri = Uri.fromFile(imageFile)
+            val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageFileUri)
+            startActivityForResult(cameraIntent, REQUEST_CAMERA_IMAGE)
+        }*/
 
         return view
     }
@@ -125,23 +132,27 @@ class AddFlatFragment : Fragment() {
                 sendNetworkRequestAdvertisement()
             }
         }
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            data?.also {
+        if (requestCode == REQUEST_CAMERA_IMAGE && resultCode == Activity.RESULT_OK) {
+           data?.also {
                 bitmap = it.extras?.get("data") as Bitmap
             }
-        } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == RESULT_OK &&
+            iv.setImageBitmap(bitmap)
+        } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == Activity.RESULT_OK &&
                 data != null) {
             try {
                 bitmapUri = data.data
                 bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
+                iv.setImageBitmap(bitmap)
             } catch(e: IOException) {
-                Toast.makeText(context, "Photo error idk", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
+                Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
             }
         }
-        iv.setImageBitmap(bitmap)
         sendNetworkUploadPhoto("5be82cefdcba3e22b8bb0411")
 
     }
@@ -151,10 +162,10 @@ class AddFlatFragment : Fragment() {
         val client = RestApiFactory.createFlatClient()
 
         val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
-        val FULL_PATH = IMAGE_PATH + bitmapUri?.path
-        val fileUri = Uri.fromFile(File(FULL_PATH))
+        //val FULL_PATH = IMAGE_PATH + bitmapUri?.path
+        val file = File(IMAGE_PATH)
+        val fileUri = Uri.fromFile(file)
 
-        val file = File(fileUri.path)
 
         val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData("image", file.name, reqFile)
@@ -192,7 +203,7 @@ class AddFlatFragment : Fragment() {
     }
 
     // https://www.aut.bme.hu/Upload/Course/android/hallgatoi_jegyzetek/Android_05.pdf
-    private fun requestNeededPermission() {
+    private fun requestNeededPermissionForGalery() {
         if (ContextCompat.checkSelfPermission(context!!,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -209,6 +220,35 @@ class AddFlatFragment : Fragment() {
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "select picture"), PICK_IMAGE_FROM_GALERY_REQUEST)
+        }
+    }
+
+    private fun requestNeededPermissionForCamera() {
+        if (ContextCompat.checkSelfPermission(context!!,
+                        android.Manifest.permission.CAMERA) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
+                            android.Manifest.permission.CAMERA)) {
+                Toast.makeText(context, "I need it for camera", Toast.LENGTH_SHORT).show()
+            }
+            ActivityCompat.requestPermissions(activity!!,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    PERMISSION_REQUEST_CODE)
+        } else {
+            /*
+            val intent: Intent = Intent()
+            intent.type = "image/ *"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "select picture"), PICK_IMAGE_FROM_GALERY_REQUEST)
+            */
+
+
+            Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
+                    startActivityForResult(takePictureIntent, REQUEST_CAMERA_IMAGE)
+                }
+            }
         }
     }
 
@@ -229,5 +269,4 @@ class AddFlatFragment : Fragment() {
     }
 
 }
-
 
