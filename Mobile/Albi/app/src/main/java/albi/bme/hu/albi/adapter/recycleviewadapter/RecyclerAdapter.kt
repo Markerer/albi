@@ -10,11 +10,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 
-class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context: Context, private val owner: Boolean) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.house_detail_fragment_row, viewGroup, false)
@@ -40,6 +41,7 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         viewHolder.itemView.setOnClickListener{
             val intent = Intent(context, SingleFlatActivity::class.java)
             intent.putExtra("flat", flatList[position])
+            intent.putExtra("owner", owner)
             context.startActivity(intent)
         }
     }

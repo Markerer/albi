@@ -15,6 +15,7 @@ import albi.bme.hu.albi.fragments.profile.MyAdvertisementsFragment
 import albi.bme.hu.albi.fragments.profile.ProfileFragment
 import albi.bme.hu.albi.fragments.search.SearchFragment
 import android.content.Intent
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -68,7 +69,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
         user = intent.getSerializableExtra("user") as? User
-
+        //saveUserId()
+        Toast.makeText(this, user?._id, Toast.LENGTH_LONG).show()
 
         //Code from here is copied from the NavigationDrawerTest
         setSupportActionBar(toolbar)
@@ -95,12 +97,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun saveUserId(user: User?) {
+    private fun saveUserId() {
         val sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val editor = sp.edit()
         editor.putString(CURRENT_USER_KEY, user?._id)
         editor.apply()
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

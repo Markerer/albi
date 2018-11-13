@@ -2,19 +2,23 @@ package albi.bme.hu.albi
 
 import albi.bme.hu.albi.adapter.recycleviewadapter.SlidingImageAdapter
 import albi.bme.hu.albi.model.Flat
+import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import kotlinx.android.synthetic.main.activity_single_flat.*
 
 class SingleFlatActivity : AppCompatActivity() {
 
     private lateinit var flat: Flat
+    private var owner: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_flat)
 
         flat = intent.getSerializableExtra("flat") as Flat
+        owner = intent.getBooleanExtra("owner", false)
 
         val slidingImageAdapter = SlidingImageAdapter(applicationContext, flat.imageNames!!)
 
@@ -29,5 +33,9 @@ class SingleFlatActivity : AppCompatActivity() {
         tvCitySingle.text = flat.city
         tvZipCodeSingle.text = flat.zipCode
         tvAddressSingle.text = flat.address
+
+        if (!owner){
+            editAdvertisement.visibility = View.INVISIBLE
+        }
     }
 }

@@ -47,6 +47,7 @@ class HouseDetailFragment : Fragment() {
 
         val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
+            pageNum = 1
             networkRequestForPaging()
             val handler = Handler()
             handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
@@ -106,7 +107,7 @@ class HouseDetailFragment : Fragment() {
                         networkRequestForImagesIDs(usersData[i])
                     }
 
-                    val adapter = RecyclerAdapter(usersData, context!!)
+                    val adapter = RecyclerAdapter(usersData, context!!, owner = false)
                     recyclerView?.adapter = adapter
                 } else {
                     if (pageNum <= flatResponse.pages!!) {
@@ -136,7 +137,7 @@ class HouseDetailFragment : Fragment() {
                     networkRequestForImagesIDs(usersData[i])
                 }
 
-                val adapter = RecyclerAdapter(usersData, context!!)
+                val adapter = RecyclerAdapter(usersData, context!!, false)
                 recyclerView?.adapter = adapter
             }
 

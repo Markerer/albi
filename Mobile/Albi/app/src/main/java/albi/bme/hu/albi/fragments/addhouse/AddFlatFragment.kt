@@ -76,7 +76,6 @@ class AddFlatFragment : Fragment() {
 
         uploadImageButton.setOnClickListener {
             requestNeededPermission()
-
         }
 
         setButtonUpload()
@@ -148,12 +147,14 @@ class AddFlatFragment : Fragment() {
     }
 
 
-
     private fun sendNetworkUploadPhoto(flatID: String){
         val client = RestApiFactory.createFlatClient()
 
-        //val file = File(Environment.getExternalStorageDirectory().absolutePath + bitmapUri?.path)
-        val file = File("/storage/emulated/0/DCIM/Camera/IMG_20181104_220614.jpg")
+        val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
+        val FULL_PATH = IMAGE_PATH + bitmapUri?.path
+        val fileUri = Uri.fromFile(File(FULL_PATH))
+
+        val file = File(fileUri.path)
 
         val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData("image", file.name, reqFile)
@@ -167,7 +168,7 @@ class AddFlatFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 
-                Toast.makeText(context, "" + response.body().toString(), Toast.LENGTH_LONG).show()
+                //Toast.makeText(context, "" + response.body().toString(), Toast.LENGTH_LONG).show()
             }
         })
 

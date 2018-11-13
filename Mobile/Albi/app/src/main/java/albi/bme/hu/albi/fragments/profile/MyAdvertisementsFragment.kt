@@ -52,7 +52,7 @@ class MyAdvertisementsFragment : Fragment() {
                     networkRequestForImagesIDs(myFlats[i])
                 }
 
-                val adapter = RecyclerAdapter(myFlats, context!!)
+                val adapter = RecyclerAdapter(myFlats, context!!, owner = true)
                 recyclerView.adapter = adapter
             }
 
