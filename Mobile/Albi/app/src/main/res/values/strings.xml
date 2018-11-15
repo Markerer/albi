@@ -43,6 +43,10 @@
     <string name="phone_number_format">Phone number: %s</string>
     <string name="description_format">Description:\n%s</string>
     <string name="save">Save</string>
+    <string name="where_do_you_want_to_search">Where do you want to search ?</string>
+    <string name="how_many_rooms_do_you_want">How many rooms do you want ?</string>
+    <string name="price">Price</string>
+    <string name="value">Value</string>
 
     <string-array name="districts_array_name">
         <item>I. kerület</item>

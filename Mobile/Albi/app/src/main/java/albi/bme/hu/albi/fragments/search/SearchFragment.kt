@@ -26,7 +26,7 @@ class SearchFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initDistrict()
         val view = inflater.inflate(R.layout.search_fragment, container, false)
-        seekBar = view.findViewById(R.id.seekBar)
+        seekBar = view.findViewById(R.id.search_seekBar)
         spinner = view.findViewById(R.id.spinner_district)
         /**
          * Spinner click listener
