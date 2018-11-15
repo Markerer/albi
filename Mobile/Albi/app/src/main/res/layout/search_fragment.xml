@@ -15,19 +15,19 @@
         android:weightSum="2">
 
         <TextView
-            android:id="@+id/search_text_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/value"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/search_price_text"
+            android:id="@+id/search_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/price"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/search_price_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/_0_ft"
             android:textAlignment="center" />
 
     </LinearLayout>

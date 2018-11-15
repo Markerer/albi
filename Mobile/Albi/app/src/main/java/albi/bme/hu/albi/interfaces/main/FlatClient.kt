@@ -53,6 +53,6 @@ interface FlatClient {
     fun getFlatsBySearch(@Path("pageID") pageID: Int,
                          @Path("MaxPrice") MaxPrice: Int,
                          @Path("numberOfRooms") numberOfRooms: Int,
-                         @Path("address") address: String)
+                         @Path("address") address: String): Call<ResponseBody>
 
 }

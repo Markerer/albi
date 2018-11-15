@@ -44,6 +44,7 @@
     <string name="how_many_rooms_do_you_want">How many rooms do you want ?</string>
     <string name="price">Price</string>
     <string name="value">Value</string>
+    <string name="_0_ft">0 Ft</string>
 
     <string-array name="districts_array_name">
         <item>I. kerület</item>
