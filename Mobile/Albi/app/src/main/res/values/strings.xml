@@ -28,14 +28,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="select_the_price">Price</string>
     <string name="upload_photo">Upload photo</string>
-    <string name="price">Price</string>
     <string name="number_of_rooms">Number of rooms</string>
     <string name="add_description">Add description</string>
     <string name="address">Address</string>
     <string name="upload_advertisement">Upload advertisement</string>
-
     <string name="edit">Edit</string>
-
     <string name="rent_price_format">%s Ft/month</string>
     <string name="for_sale_price_format">%s Ft</string>
     <string name="number_of_rooms_format">Nr. of rooms: %s</string>

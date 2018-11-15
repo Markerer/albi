@@ -2,6 +2,7 @@ package albi.bme.hu.albi.fragments.search
 
 import albi.bme.hu.albi.R
 import android.os.Bundle
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,29 +13,19 @@ import android.widget.Spinner
 
 class SearchFragment : Fragment(){
 
-    private val districts: ArrayList<String> = ArrayList()
-    private var seekBarValue: Int? = 0
-    private var spinner: Spinner? = null
-    private var seekBar: SeekBar? = null
+    private var priceSeekBarValue: Int? = 0
+    private var priceSeekBar: SeekBar? = null
+    private var address: String? = null
+    private var numberOfRooms: Int? = 0
 
-    private fun initDistrict(){
-        for(i in 1..23){
-            this.districts.add(i.toString()+ ". kerület")
-        }
-    }
+    private var addressLayout: TextInputLayout? = null
+    private var roomsLayout: TextInputLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        initDistrict()
         val view = inflater.inflate(R.layout.search_fragment, container, false)
-        seekBar = view.findViewById(R.id.search_seekBar)
-        spinner = view.findViewById(R.id.spinner_district)
-        /**
-         * Spinner click listener
-         * spinner.setOnItemSelectedListener(this);
-         */
-        var dataAdapter: ArrayAdapter<String> = ArrayAdapter(context!!, R.layout.support_simple_spinner_dropdown_item, districts)
-        dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-        spinner!!.adapter = dataAdapter
+        priceSeekBar = view.findViewById(R.id.search_price_seekBar)
+        addressLayout = view.findViewById(R.id.search_address)
+        roomsLayout = view.findViewById(R.id.search_number_of_rooms)
 
         return view
     }
