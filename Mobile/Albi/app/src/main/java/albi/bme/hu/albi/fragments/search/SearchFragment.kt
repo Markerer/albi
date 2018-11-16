@@ -40,6 +40,7 @@ class SearchFragment : Fragment() {
 
         searchButton!!.setOnClickListener {
             searchDetailsLoad()
+            networkRequestSearch()
             Toast.makeText(context, "price: " + priceSeekBarValue + "\n" +
                     "numberOfRooms: " + numberOfRooms + "\n" +
                     "address: " + address
@@ -81,7 +82,7 @@ class SearchFragment : Fragment() {
     private fun priceFormatter(value: Int): String {
         var formatted: String? = null
         formatted = (String.format("%,d", value)).replace(',', ' ')
-        return formatted + " Ft"
+        return "$formatted Ft"
     }
 
     private fun networkRequestSearch() {

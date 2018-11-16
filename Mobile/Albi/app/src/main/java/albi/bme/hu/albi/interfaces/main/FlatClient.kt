@@ -47,12 +47,12 @@ interface FlatClient {
      * illetve párokban is
      * pl ez valid: http://localhost:3000/flats/1/25000?numberOfRooms=10&address=
      * ez invalid: http://localhost:3000/flats/1/?numberOfRooms=3&address=
-     *
+     *{MaxPrice}?numberOfRooms={numberOfRooms}&address={address}
      */
-    @GET("/flats/{pageID}/{MaxPrice}?numberOfRooms={numberOfRooms}&address={address}")
+    @GET("/flats/{pageID}/{MaxPrice}?")
     fun getFlatsBySearch(@Path("pageID") pageID: Int,
                          @Path("MaxPrice") MaxPrice: Int,
-                         @Path("numberOfRooms") numberOfRooms: Int,
-                         @Path("address") address: String): Call<FlatPageResponse>
+                         @Query("numberOfRooms") numberOfRooms: Int,
+                         @Query("address") address: String): Call<FlatPageResponse>
 
 }
