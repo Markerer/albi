@@ -1,6 +1,8 @@
 package albi.bme.hu.albi.fragments.search
 
 import albi.bme.hu.albi.R
+import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,11 +22,13 @@ class SearchFragment : Fragment() {
     private var priceSeekBar: SeekBar? = null
     private var address: String? = null
     private var numberOfRooms: Int? = 0
+    var flatsData = ArrayList<Flat>()
 
     private var addressLayout: TextInputLayout? = null
     private var roomsLayout: TextInputLayout? = null
     private var searchButton: Button? = null
     private var priceValueText: TextView? = null
+    private var pageNum = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
@@ -81,16 +84,29 @@ class SearchFragment : Fragment() {
         return formatted + " Ft"
     }
 
-    private fun networkRequestSearch(){
+    private fun networkRequestSearch() {
         val client = RestApiFactory.createFlatClient()
-        val call = client.getFlatsBySearch(1, priceSeekBarValue!!, numberOfRooms!!, address!!)
+        val call = client.getFlatsBySearch(pageNum, priceSeekBarValue!!, numberOfRooms!!, address!!)
 
-        call.enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                //TODO implement
+        call.enqueue(object : Callback<FlatPageResponse> {
+            override fun onResponse(call: Call<FlatPageResponse>, response: Response<FlatPageResponse>) {
+                val flatResponse = response.body()
+
+                if (pageNum == 1) {
+                    if (flatResponse != null) {
+                        flatsData = flatResponse.docs as ArrayList<Flat>
+                    }
+                } else {
+                    if (flatResponse != null) {
+                        if (pageNum <= flatResponse.pages!!) {
+                            val flats = flatResponse.docs as ArrayList<Flat>
+                            flatsData.addAll(flats)
+                        }
+                    }
+                }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<FlatPageResponse>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(context, "error: " + t.message, Toast.LENGTH_LONG).show()
             }
