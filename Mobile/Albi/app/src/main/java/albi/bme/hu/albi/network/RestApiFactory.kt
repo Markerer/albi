@@ -2,7 +2,12 @@ package albi.bme.hu.albi.network
 
 import albi.bme.hu.albi.interfaces.main.FlatClient
 import albi.bme.hu.albi.interfaces.user.UserClient
+import albi.bme.hu.albi.model.Flat
+import android.support.v7.widget.RecyclerView
 import com.google.gson.GsonBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory

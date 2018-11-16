@@ -14,7 +14,7 @@ class Flat(var _id: String = "",
            var address: String = "",
            var forSale: Boolean = false) : Serializable{
 
-    var imageNames: ArrayList<String>? = ArrayList()
+    var imageNames: ArrayList<String> = ArrayList()
 
 }
 

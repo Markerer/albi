@@ -64,6 +64,7 @@ class HouseDetailFragment : Fragment() {
         networkRequestForPaging()
     }
 
+
     private fun networkRequestForImagesIDs(flat: Flat) {
         val client = RestApiFactory.createFlatClient()
         val call = client.getImagesIDForFlatID(flat._id)
@@ -88,6 +89,7 @@ class HouseDetailFragment : Fragment() {
             }
         })
     }
+
 
     private fun networkRequestForPaging() {
         val client = RestApiFactory.createFlatClient()

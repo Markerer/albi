@@ -27,7 +27,7 @@ class MyAdvertisementsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.my_house_advertisements_fragment, container, false)
-        recyclerView = view.findViewById<RecyclerView>(R.id.rvMyHouses)
+        recyclerView = view.findViewById(R.id.rvMyHouses)
 
         initializationRecycle()
 

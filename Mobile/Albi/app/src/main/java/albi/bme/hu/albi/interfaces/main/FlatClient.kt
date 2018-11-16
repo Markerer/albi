@@ -33,26 +33,12 @@ interface FlatClient {
     @PUT("/flats")
     fun updateFlat(@Body flat: Flat): Call<String>
 
-    /**
-     * @param pageID
-     * mindenféleképpen kell, enélkül hibát dob
-     *
-     * @param MaxPrice
-     * @param numberOfRooms
-     * @param address
-     * Valamelyiknek mindenféleképpen benne kell lennie
-     * a kérésben, különben nem lesz jó.
-     * csak a szobaszám nem lehet egyedül
-     * egyenként is lekérdezhetőek, ekkor a többi üres marad
-     * illetve párokban is
-     * pl ez valid: http://localhost:3000/flats/1/25000?numberOfRooms=10&address=
-     * ez invalid: http://localhost:3000/flats/1/?numberOfRooms=3&address=
-     *{MaxPrice}?numberOfRooms={numberOfRooms}&address={address}
-     */
+
     @GET("/flats/{pageID}/{MaxPrice}?")
     fun getFlatsBySearch(@Path("pageID") pageID: Int,
                          @Path("MaxPrice") MaxPrice: Int,
                          @Query("numberOfRooms") numberOfRooms: Int,
                          @Query("address") address: String): Call<FlatPageResponse>
+
 
 }
