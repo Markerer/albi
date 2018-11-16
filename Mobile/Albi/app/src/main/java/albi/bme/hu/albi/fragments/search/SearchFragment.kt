@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchFragment : Fragment() {
+class SearchFragment: Fragment(){
 
     private var priceSeekBarValue: Int? = 0
     private var priceSeekBar: SeekBar? = null
@@ -30,6 +30,7 @@ class SearchFragment : Fragment() {
     private var priceValueText: TextView? = null
     private var pageNum = 1
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
         priceSeekBar = view.findViewById(R.id.search_price_seekBar)
@@ -41,8 +42,7 @@ class SearchFragment : Fragment() {
         searchButton!!.setOnClickListener {
             searchDetailsLoad()
             networkRequestSearch()
-            val searchDetailFragment = SearchDetailFragment()
-            searchDetailFragment.loadData(flatsData)
+            val searchDetailFragment = SearchDetailFragment(flatsData)
             replaceFragment(searchDetailFragment)
             Toast.makeText(context, "price: " + priceSeekBarValue + "\n" +
                     "numberOfRooms: " + numberOfRooms + "\n" +
@@ -123,4 +123,5 @@ class SearchFragment : Fragment() {
             }
         })
     }
+
 }
