@@ -41,6 +41,9 @@ class SearchFragment : Fragment() {
         searchButton!!.setOnClickListener {
             searchDetailsLoad()
             networkRequestSearch()
+            val searchDetailFragment = SearchDetailFragment()
+            searchDetailFragment.loadData(flatsData)
+            replaceFragment(searchDetailFragment)
             Toast.makeText(context, "price: " + priceSeekBarValue + "\n" +
                     "numberOfRooms: " + numberOfRooms + "\n" +
                     "address: " + address
@@ -63,6 +66,13 @@ class SearchFragment : Fragment() {
 
         return view
     }
+
+    private fun replaceFragment(fragment: Fragment) {
+        activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, fragment)
+                .commit()
+    }
+
 
     private fun searchDetailsLoad() {
         if (!roomsLayout!!.editText!!.text.isEmpty()) {
