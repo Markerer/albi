@@ -31,7 +31,6 @@ app.use(function (req, res, next) {
 
 app.set('view engine', 'ejs');
 app.use(express.static('./public/uploads'));
-app.use(express.static('./public'));
 mongoose.connect(config.getDbConnectionString());
 setupController(app);
 apiController(app);

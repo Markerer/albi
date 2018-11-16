@@ -2,6 +2,8 @@ var Users = require('../models/userModel');
 var Flats = require('../models/flatModel');
 var Images = require('../models/image');
 var bodyParser = require('body-parser');
+const sharp = require('sharp');
+const fs = require('fs');
 
 
 module.exports = function(app) {
@@ -105,7 +107,9 @@ module.exports = function(app) {
     const upload = multer({
         storage: storage,
         limits:{fileSize: 1000000},
+        
         fileFilter: function(req, file, cb){
+            
           checkFileType(file, cb);
         }
     }).single('image');
@@ -156,6 +160,7 @@ module.exports = function(app) {
             }
           }
         });
+        
       });
     
     //END of upload Image
@@ -165,6 +170,7 @@ module.exports = function(app) {
         Images.find({flatID: req.params.flatId }, function(err, images){
             if(err) throw err;
             res.send(images);
+            
         }).select('_id filename');
     });
 
@@ -173,7 +179,13 @@ module.exports = function(app) {
             if(err){
                 res.send("There is no image with this ID");
             }
-               
+            
+            sharp('./public/uploads/'+ image.filename).resize({ width: 600 }).toBuffer(function(err, buffer) {
+                // 100 pixels wide, auto-scaled height
+                fs.writeFile('./public/uploads/'+ image.filename, buffer, function(e) {
+
+                });
+                             });
                res.send(image);
            }).select('filename');
 
