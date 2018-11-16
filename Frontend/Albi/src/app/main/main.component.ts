@@ -6,7 +6,7 @@ import { User } from '../user';
 import { Router } from '@angular/router';
 import { isNull, isUndefined } from 'util';
 import { ImageService } from '../image.service';
-import { Image } from '../image';
+import { Image } from "../image";
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -19,21 +19,22 @@ export class MainComponent implements OnInit {
   flats: Flat[];
   search: Flat;
   collectionSize: number;
-  page = 1;
+  page: number = 1;
   previousPage: number;
   user: User;
-  undefinedUser = false;
-  collapse = false;
+  undefinedUser: boolean = false;
+  collapse: boolean = false;
 
   searchFlatForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) {
+  constructor(private fb: FormBuilder, private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService)
+  {
     this.searchFlatForm = fb.group({
-      'maxprice': ['', null],
-      'numberOfRooms': ['', null],
-      'zipCode': ['', null],
-      'city': ['', null],
-      'type': ['', null]
+      "maxprice": ["", null],
+      "numberOfRooms": ["", null],
+      'zipCode': ["", null],
+      'city': ["", null],
+      "type": ["", null]
     });
   }
 
@@ -98,17 +99,18 @@ export class MainComponent implements OnInit {
     this.imageService.getFlatImageIDs(flatID).subscribe(data => {
       flat.images = [];
       for (let i = 0; i < data.length; i++) {
-        let temp = new Image();
+        var temp = new Image();
         temp = data[i];
-        temp.filename = 'http://localhost:3000/' + data[i].filename;
-        // console.log(temp);
+        temp.filename = "http://localhost:3000/" + data[i].filename;
+        //console.log(temp);
         flat.images.push(temp);
       }
       flat.firstImage = new Image();
       if (flat.images[0] === undefined) {
         flat.noImageFound = true;
-        flat.firstImage.filename = 'assets/img/download.png';
-      } else {
+        flat.firstImage.filename = "assets/img/download.png";
+      }
+      else {
         flat.noImageFound = false;
         flat.firstImage.filename = flat.images[0].filename;
       }
@@ -120,14 +122,14 @@ export class MainComponent implements OnInit {
   // illetve még az összes oldal számát is
   getFlatsByPage(page: number): void {
     this.mainService.getMainScreen(page).subscribe(data => {
-      let i = 0;
-      let objects: Flat[];
-      let num: number;
-      objects = data['docs'];
-      num = data['total'];
+      var i: number = 0;
+      var objects: Flat[];
+      var num: number;
+      objects = data["docs"];
+      num = data["total"];
       this.collectionSize = num;
       for (i = 0; i < objects.length; i++) {
-        let temp: Flat = new Flat();
+        var temp: Flat = new Flat();
         temp = objects[i];
         temp.firstImage = new Image();
         this.getImageUrls(temp._id, temp);
@@ -137,18 +139,18 @@ export class MainComponent implements OnInit {
     });
   }
 
-
+  
   getFlatsBySearch(page: number): void {
     this.removeItems();
     this.mainService.searchFlat(this.search, page).subscribe(data => {
       console.log(data);
-      let objects: Flat[];
-      let num: number;
-      objects = data['docs'];
-      num = data['total'];
+      var objects: Flat[];
+      var num: number;
+      objects = data["docs"];
+      num = data["total"];
       this.collectionSize = num;
-      for (const i of objects) {
-        let temp: Flat = new Flat();
+      for (let i of objects) {
+        var temp: Flat = new Flat();
         temp = i;
         temp.firstImage = new Image();
         this.getImageUrls(i._id, i);
@@ -164,30 +166,30 @@ export class MainComponent implements OnInit {
     this.search = new Flat();
 
     if (maxprice === undefined || maxprice === null) {
-      this.search.price = '';
+      this.search.price = "";
     } else {
       this.search.price = maxprice.toString();
     }
     if (numberOfRooms === undefined || numberOfRooms === null) {
-      this.search.numberOfRooms = '';
+      this.search.numberOfRooms = "";
     } else {
       this.search.numberOfRooms = numberOfRooms.toString();
     }
     if (zipCode === undefined || zipCode === null) {
-      this.search.zipCode = '';
+      this.search.zipCode = "";
     } else {
       this.search.zipCode = zipCode.toString();
     }
-    if (city === undefined || city === '') {
-      this.search.city = '';
+    if (city === undefined || city === "") {
+      this.search.city = "";
     } else {
       this.search.city = city;
     }
-    if (type === 'underlease') {
-      console.log('albérlet');
+    if (type === "underlease") {
+      console.log("albérlet");
       this.search.forSale = false;
-    } else if (type === 'sale') {
-      console.log('eladó');
+    } else if (type === "sale") {
+      console.log("eladó");
       this.search.forSale = true;
     }
     console.log(this.search);
@@ -198,16 +200,16 @@ export class MainComponent implements OnInit {
 
   openNavBar() {
     document.getElementById('sidebar').style.width = '340px';
-    const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    const labels = document.getElementsByTagName('label');
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    var labels = document.getElementsByTagName('label');
     if (width <= 768) {
       document.getElementById('sidebar').style.width = '100vw';
-      for (let i = 0; i < labels.length; i++) {
+      for (var i = 0; i < labels.length; i++) {
         labels[i].style.width = '50vw';
       }
     } else {
       document.getElementById('ads').style.paddingLeft = '355px';
-      for (let i = 0; i < labels.length; i++) {
+      for (var i = 0; i < labels.length; i++) {
         labels[i].style.width = '135px';
       }
     }

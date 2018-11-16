@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(private data: DataService, fb: FormBuilder, private router: Router, private userService: UserService) {
-
+   
     if (!this.undefinedUser) {
       this.updateForm = fb.group({
         'username': [this.user.username, null],
@@ -41,13 +41,14 @@ export class ProfileComponent implements OnInit {
       if (data === undefined || data === null) {
         this.undefinedUser = true;
         this.router.navigate(['']);
-      } else {
+      }
+      else {
         this.user = data;
         console.log(this.user);
       }
     });
 
-    // A sikeres üzenet
+    //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
       debounceTime(5000)
@@ -60,19 +61,19 @@ export class ProfileComponent implements OnInit {
 
 
   updateUser(username: String, password: String, email: String, phone_number: String, address: String): void {
-    if (!(username === '' || username === undefined)) {
+    if (!(username === "" || username === undefined)) {
        this.user.username = username;
     }
-    if (!(password === '' || password === undefined)) {
+    if (!(password === "" || password === undefined)) {
       this.user.password = password;
     }
-    if (!(address === '' || address === undefined)) {
+    if (!(address === "" || address === undefined)) {
       this.user.address = address;
     }
-    if (!(email === '' || email === undefined)) {
+    if (!(email === "" || email === undefined)) {
       this.user.email = email;
     }
-    if (!(phone_number === '' || phone_number === undefined)) {
+    if (!(phone_number === "" || phone_number === undefined)) {
       this.user.phone_number = phone_number;
     }
 

@@ -5,4 +5,5 @@ export class User {
   phone_number: String;
   address: String;
   email: String;
+
 }
