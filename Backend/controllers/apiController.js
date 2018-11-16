@@ -170,6 +170,16 @@ module.exports = function(app) {
         Images.find({flatID: req.params.flatId }, function(err, images){
             if(err) throw err;
             res.send(images);
+            //kép átméretezés
+            images.forEach(image => {
+                sharp('./public/uploads/'+ image.filename).resize({ width: 600 }).toBuffer(function(err, buffer) {
+                    // 100 pixels wide, auto-scaled height
+                    fs.writeFile('./public/uploads/'+ image.filename, buffer, function(e) {
+    
+                    });
+                                 });
+                
+            });
             
         }).select('_id filename');
     });
@@ -370,7 +380,7 @@ module.exports = function(app) {
      //find all flat with querys
      app.get('/flats/:pageid/:price', function(req, res) {
         var pageid = req.params.pageid;
-        if(req.query >0)
+        if(req.query)
         Flats.paginate({$and: [{price: {$lte: req.params.price}}, req.query ]}, { page: pageid, limit: 10 }, function(err, flats) {
          if(err){
              res.send("No flat was found");
