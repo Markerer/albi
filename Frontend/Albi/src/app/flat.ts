@@ -1,4 +1,4 @@
-import { Image } from './image';
+import { Image } from "./image";
 
 export class Flat {
   _id: String;
@@ -14,7 +14,7 @@ export class Flat {
   forSale: Boolean;
   images: Image[];
   firstImage: Image;
-  noImageFound = true;
+  noImageFound: boolean = true;
 
 
   constructor() {
