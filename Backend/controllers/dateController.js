@@ -29,11 +29,11 @@ module.exports = function(app) {
         var date = req.body.date;
         var flatID = req.params.flatID;
         
-        Dates.count({date: date}, function(err, count){
+        Dates.count({flatID: flatID, date: date}, function(err, count){
            
             if(count > 0){
                
-                Dates.findOneAndUpdate({date: date},{
+                Dates.findOneAndUpdate({flatID: flatID, date: date},{
                         $inc: {counter: 1}
                 }, function(err, date){
                     
