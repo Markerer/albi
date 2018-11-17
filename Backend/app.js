@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var config = require('./config');
 var setupController = require('./controllers/setupController');
 var apiController = require('./controllers/apiController');
-
+var dateController = require('./controllers/dateController');
 
 var port = process.env.PORT || 3000;
 
@@ -34,5 +34,6 @@ app.use(express.static('./public/uploads'));
 mongoose.connect(config.getDbConnectionString());
 setupController(app);
 apiController(app);
+dateController(app);
 
 app.listen(port);
