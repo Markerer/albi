@@ -34,3 +34,19 @@
   background-color:red;
   margin-top: 50px;
 }
+
+.chart {
+  padding-left:15vw;
+  padding-right:15vw;
+  max-height:500px;
+}
+
+@media (max-width: 768px) {
+  .chart{
+    width:90vw;
+    height:70vw;
+    padding-left:2em;
+    padding-right:2em;
+  }
+
+}

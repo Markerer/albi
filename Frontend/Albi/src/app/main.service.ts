@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Flat } from './flat';
+import { ChartData } from './chartdata';
 
 
 const httpOptions = {
@@ -26,7 +27,22 @@ export class MainService {
   getFlatByID(flatID: String): Observable<Flat> {
     return this.http.get<Flat>(this.apiRoot + 'flat/' + flatID);
   }
+  /*
+  // Egy hirdetéshez tartozó megtekintési adatok lekérése
+  getAdvertisementStats(flatID: String): Observable<ChartData[]> {
+    return this.http.get<ChartData[]>(this.apiRoot + 'date/' + flatID);
+  }
 
+  // Egy hirdetés megtekintési számának növelése
+  addViewingToAdvertisement(flatID: String, date: String){
+    this.http.post(this.apiRoot + 'date/' + flatID,
+    {
+      "date" : `${date}`
+    },
+    httpOptions);
+  }
+
+  */
   // Egy felhasználó minden lakásának lekérése
   getUserFlats(userID: String): Observable<Flat[]> {
     return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID);

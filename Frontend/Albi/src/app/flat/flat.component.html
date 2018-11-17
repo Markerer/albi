@@ -5,14 +5,29 @@
   </div>
   <!--Amennyiben a hirdetés tulajdonosaként tekintjük meg a hirdetést, akkor szerkeszthetjük. -->
   <div class="toppadding align-items-center justify-content-center d-flex" *ngIf="owner">
-    <button class="btn btn-primary btn-round btn-lg" (click)="visitMode()" *ngIf="owner && !visitorMode">
+    <button class="btn btn-primary btn-round btn-lg" (click)="visitMode()" *ngIf="owner && !visitorMode && !statisticsMode">
       Watch your advertisements as a visitor
     </button>
+  </div>
+  <div class="align-items-center justify-content-center d-flex" *ngIf="owner">
+    <button class="btn btn-primary btn-round btn-lg" (click)="getStats()" *ngIf="owner && !visitorMode && !statisticsMode">
+      Watch the statistics of this advertisement
+    </button>
+  </div>
+  <div class="align-items-center justify-content-center d-flex" *ngIf="owner">
     <button class="btn btn-primary btn-round btn-lg" (click)="visitMode()" *ngIf="owner && visitorMode">
       Back to editing your advertisement
     </button>
   </div>
-  <div class="container toppadding" *ngIf="owner && !visitorMode">
+  <div class="align-items-center justify-content-center d-flex" *ngIf="owner">
+    <button class="btn btn-primary btn-round btn-lg" (click)="statMode()" *ngIf="owner && statisticsMode">
+      Back to editing your advertisement
+    </button>
+  </div>
+  <div class="align-items-center justify-content-center d-flex">
+    <canvas class="chart"  style="display: none;" #mycanvas>{{ chart }}</canvas>
+  </div>
+  <div class="container toppadding" *ngIf="owner && !visitorMode && !statisticsMode">
     <div class="row">
       <div class="col-lg-4" *ngFor="let myimage of flat.images;">
         <div class="card" *ngIf="!flat.noImageFound">
@@ -27,7 +42,7 @@
       </div>
     </div>
   </div>
-  <div class="container" *ngIf="owner && !visitorMode">
+  <div class="container" *ngIf="owner && !visitorMode && !statisticsMode">
     <div class="row">
       <div class="col-md-4 content-center centering">
         <div class="card card-login card-plain">
@@ -210,7 +225,7 @@
     </div>
   </div>
   <!--Amennyiben nem a hirdetés tulajdonosa vagyunk-->
-  <div class="container-fluid" *ngIf="!owner || visitorMode">
+  <div class="container-fluid" *ngIf="!owner || (visitorMode && !statisticsMode)">
     <div class="section" id="carousel">
       <div class="container">
         <div class="row justify-content-center text-center">

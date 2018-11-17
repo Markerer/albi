@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { MainService } from '../main.service';
@@ -10,6 +10,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImageService } from '../image.service';
 import { Image } from '../image';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Chart } from 'chart.js';
+import { ChartData } from '../chartdata';
+
+declare var require: any;
 
 @Component({
   selector: 'app-flat',
@@ -17,13 +21,19 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./flat.component.scss']
 })
 export class FlatComponent implements OnInit {
+  @ViewChild('mycanvas') mycanvas: ElementRef;
 
   undefinedUser: boolean = false;
   visitorMode: boolean = false;
+  statisticsMode: boolean = false; 
   owner: boolean;
+
+
 
   flat: Flat = new Flat();
   user: User;
+
+  chart: any[];
 
   selectedFile: File;
 
@@ -42,8 +52,7 @@ export class FlatComponent implements OnInit {
     private mainService: MainService,
     private fb: FormBuilder,
     private imageService: ImageService,
-    private modalService: NgbModal)
-  {}
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.data.currentData.subscribe(data => {
@@ -95,7 +104,13 @@ export class FlatComponent implements OnInit {
         this.owner = true;
       } else {
         this.owner = false;
+        var today: ChartData = new ChartData();
+        today.setTodayDate();
+        /*
+         this.mainService.addViewingToAdvertisement(this.flat._id, today.date);
+         */
       }
+
       this.updateFlatForm = this.fb.group({
         'price': [this.flat.price, null],
         'numberOfRooms': [this.flat.numberOfRooms, null],
@@ -109,7 +124,7 @@ export class FlatComponent implements OnInit {
       });
     });
   }
-  
+
   updateFlat(price: Number, numberOfRooms: Number, description: String, email: String, phone_number: String, zipCode: Number, city: String, address: String, type: String): void {
     if (!(price === undefined || price === null)) {
       this.flat.price = price.toString();
@@ -189,8 +204,7 @@ export class FlatComponent implements OnInit {
   }
 
   deleteImage(imageID: String): void {
-    this.imageService.deleteImage(imageID).subscribe(response =>
-    {
+    this.imageService.deleteImage(imageID).subscribe(response => {
       console.log(response);
       this.getFlat();
     });
@@ -198,7 +212,16 @@ export class FlatComponent implements OnInit {
 
   visitMode(): void {
     this.visitorMode = !this.visitorMode;
-  } 
+  }
+
+  statMode(): void {
+    this.statisticsMode = !this.statisticsMode;
+    if (this.statisticsMode) {
+      (this.mycanvas.nativeElement).style.display = "inline-block";
+    } else {
+      (this.mycanvas.nativeElement).style.display = "none";
+    }
+  }
 
   deleteAdvertisement(): void {
     for (let i of this.flat.images) {
@@ -211,7 +234,7 @@ export class FlatComponent implements OnInit {
   // A modal ablak kódja
   open(content, type) {
     if (type === 'sm') {
-      
+
       this.modalService.open(content, { size: 'sm' }).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
@@ -238,5 +261,71 @@ export class FlatComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  private getStats(): void {
+    /*
+    this.mainService.getAdvertisementStats(this.flat._id).subscribe(chartData => {
+      this.loadChart(chartData);
+    });*/
+    this.statMode();
+    this.loadChart();
+  }
+
+
+  public loadChart(/*chartDatas: ChartData[]*/): void {
+    /*
+    var labels: String[];
+    var counts: Number[];
+
+    for (let i of chartDatas) {
+      labels.push(i.date);
+      counts.push(i.count);
+    }*/
+    /*
+    var cols: chartCol[];
+    var col: chartCol = new chartCol();
+    col.label = "szia";
+    col.y = 10;
+    cols.push(col);
+    */
+    // { y: 71, label: "Apple" }
+
+
+    var context = (<HTMLCanvasElement>this.mycanvas.nativeElement).getContext('2d');
+
+    var weatherDates = ["hello", "szia"];
+    var temp_max = [1, 2];
+
+
+
+    this.chart = new Chart(context, {
+      type: 'bar',
+      data: {
+        labels: weatherDates,
+        datasets: [
+          {
+            data: temp_max,
+            borderColor: "#3cba9f",
+            fill: true
+          }
+        ]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: true
+          }],
+          yAxes: [{
+            display: true
+          }],
+        }
+      }
+    });
+   
+
   }
 }
