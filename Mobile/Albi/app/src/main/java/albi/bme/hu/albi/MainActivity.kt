@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         contextOfApplication = applicationContext
 
         user = intent.getSerializableExtra("user") as? User
-        //saveUserId()
 
         //Code from here is copied from the NavigationDrawerTest
         setSupportActionBar(toolbar)
@@ -97,13 +96,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         loadFragment(houseDetail!!)
 
 
-    }
-
-    private fun saveUserId() {
-        val sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-        val editor = sp.edit()
-        editor.putString(CURRENT_USER_KEY, user?._id)
-        editor.apply()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

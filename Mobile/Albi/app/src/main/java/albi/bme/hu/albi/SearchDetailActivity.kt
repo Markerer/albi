@@ -5,6 +5,7 @@ import albi.bme.hu.albi.fragments.search.SearchResult
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.RestApiFactory
+import albi.bme.hu.albi.network.RestApiList
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -15,11 +16,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchDetailActivity : AppCompatActivity() {
+class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
 
-    private lateinit var recyclerView:  RecyclerView
-
+    private lateinit var recyclerView: RecyclerView
+    private var usersData =  ArrayList<Flat>()
     private lateinit var searchResult: SearchResult
+
+    private val restApiList = RestApiList(this)
+    override fun photoLoaded(flat: Flat) {
+        recyclerView.adapter?.notifyItemChanged(usersData.indexOf(flat))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +55,13 @@ class SearchDetailActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<FlatPageResponse>, response: Response<FlatPageResponse>) {
-                val adapter = RecyclerAdapter( response.body()?.docs as ArrayList<Flat>, this@SearchDetailActivity, false)
+                usersData = response.body()?.docs as ArrayList<Flat>
+
+                for (i in usersData.indices) {
+                    restApiList.networkRequestForImagesIDs(usersData[i])
+                }
+
+                val adapter = RecyclerAdapter( usersData, this@SearchDetailActivity, false)
                 recyclerView.adapter = adapter
             }
         })

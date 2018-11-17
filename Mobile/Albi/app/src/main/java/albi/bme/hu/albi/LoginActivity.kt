@@ -19,36 +19,9 @@ class LoginActivity : AppCompatActivity() {
 
     var loggedUser: User? = null
 
-    private fun checkIfLogged(){
-        val sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-        if (!sp.contains(CURRENT_USER_KEY)) return
-        val currentId = sp.getString(CURRENT_USER_KEY, "")
-        if (currentId != ""){
-            searchForUserById(currentId!!)
-        }
-    }
-
-    private fun searchForUserById(id: String){
-        val client = RestApiFactory.createUserClient()
-        val call = client.getUserById(id)
-
-        call.enqueue( object : Callback<User>{
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@LoginActivity, "error in finding user by ID:(" + t.message, Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                startMain(response.body())
-            }
-        })
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        checkIfLogged()
 
         btnLogin.setOnClickListener (::loginOnClickListener)
         btnRegister.setOnClickListener (::registerOnClickListener)

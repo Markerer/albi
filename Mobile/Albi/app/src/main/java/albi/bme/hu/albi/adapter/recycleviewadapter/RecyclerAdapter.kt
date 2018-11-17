@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -26,10 +25,11 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         return flatList.size
     }
 
+
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]
-        if(! (flat.imageNames!!.isEmpty())){
-            Glide.with(context).load(RestApiFactory.BASE_URL + flat.imageNames!![0]).into(viewHolder.ivHousePicture)
+        if(! (flat.imageNames.isEmpty())){
+            Glide.with(context).load(RestApiFactory.BASE_URL + flat.imageNames[0]).into(viewHolder.ivHousePicture)
         } else {
             viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
         }

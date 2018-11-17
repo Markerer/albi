@@ -6,6 +6,7 @@ import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
+import albi.bme.hu.albi.network.RestApiList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -21,12 +22,18 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.os.Handler
 
-class HouseDetailFragment : Fragment() {
+class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
 
     var usersData = ArrayList<Flat>()
     private var recyclerView: RecyclerView? = null
 
     private var pageNum = 1
+
+    private val restApiList = RestApiList(this)
+    override fun photoLoaded(flat: Flat) {
+        recyclerView?.adapter?.notifyItemChanged(usersData.indexOf(flat))
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
@@ -64,33 +71,6 @@ class HouseDetailFragment : Fragment() {
         networkRequestForPaging()
     }
 
-
-    private fun networkRequestForImagesIDs(flat: Flat) {
-        val client = RestApiFactory.createFlatClient()
-        val call = client.getImagesIDForFlatID(flat._id)
-
-        call.enqueue(object : Callback<List<ImageDataResponse>> {
-            override fun onResponse(call: Call<List<ImageDataResponse>>, response: Response<List<ImageDataResponse>>) {
-                val imageIDs: List<ImageDataResponse>? = response.body()
-                val actualFlatImageData = imageIDs as ArrayList<ImageDataResponse>
-
-                if (actualFlatImageData.size != 0) {
-                    for (j in actualFlatImageData.indices) {
-                        flat.imageNames!!.add(actualFlatImageData[j].filename)
-                    }
-                    actualFlatImageData.clear()
-                }
-                recyclerView?.adapter?.notifyItemChanged(usersData.indexOf(flat))
-            }
-
-            override fun onFailure(call: Call<List<ImageDataResponse>>, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(activity, "error in: networkRequestForImagesIDs()" + t?.message, Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-
-
     private fun networkRequestForPaging() {
         val client = RestApiFactory.createFlatClient()
         val call = client.getMainFlatsByPage(pageNum)
@@ -106,7 +86,7 @@ class HouseDetailFragment : Fragment() {
                     usersData = flatResponse.docs as ArrayList<Flat>
 
                     for (i in usersData.indices) {
-                        networkRequestForImagesIDs(usersData[i])
+                        restApiList.networkRequestForImagesIDs(usersData[i])
                     }
 
                     val adapter = RecyclerAdapter(usersData, context!!, owner = false)
@@ -117,7 +97,7 @@ class HouseDetailFragment : Fragment() {
                         usersData.addAll(flats)
 
                         for (i in flats.indices) {
-                            networkRequestForImagesIDs(flats[i])
+                            restApiList.networkRequestForImagesIDs(flats[i])
                         }
                     }
                 }
@@ -136,7 +116,7 @@ class HouseDetailFragment : Fragment() {
                 usersData = flats as ArrayList<Flat>
 
                 for (i in usersData.indices) {
-                    networkRequestForImagesIDs(usersData[i])
+                    restApiList.networkRequestForImagesIDs(usersData[i])
                 }
 
                 val adapter = RecyclerAdapter(usersData, context!!, false)
