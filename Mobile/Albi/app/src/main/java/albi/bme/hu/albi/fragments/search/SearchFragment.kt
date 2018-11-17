@@ -14,7 +14,7 @@ import java.io.Serializable
 
 
 
-data class SearchResult(var price: Int, var numberOfRooms: Int, var address: String) : Serializable
+data class SearchResult(var price: Int, var numberOfRooms: Int?, var address: String?) : Serializable
 
 
 
@@ -38,8 +38,8 @@ class SearchFragment: Fragment(){
         priceValueText = view.findViewById(R.id.search_price_value)
 
         searchButton!!.setOnClickListener {
-            var numberOfRooms = 0
-            var address = ""
+            var numberOfRooms: Int? = null
+            var address: String? = null
             if (roomsLayout!!.editText!!.text.isNotEmpty()) {
                 numberOfRooms = Integer.parseInt(roomsLayout!!.editText!!.text.toString())
             }

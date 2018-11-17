@@ -37,8 +37,8 @@ interface FlatClient {
     @GET("/flats/{pageID}/{MaxPrice}?")
     fun getFlatsBySearch(@Path("pageID") pageID: Int,
                          @Path("MaxPrice") MaxPrice: Int,
-                         @Query("numberOfRooms") numberOfRooms: Int,
-                         @Query("address") address: String): Call<FlatPageResponse>
+                         @Query("numberOfRooms") numberOfRooms: Int?,
+                         @Query("address") address: String?): Call<FlatPageResponse>
 
 
 }
