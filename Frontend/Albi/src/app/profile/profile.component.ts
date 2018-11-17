@@ -17,15 +17,13 @@ export class ProfileComponent implements OnInit {
 
   user: User = new User();
   updateForm: FormGroup;
-  undefinedUser: Boolean = false;
+  undefinedUser: boolean;
 
   private _success = new Subject<string>();
   successMessage: string;
 
 
   constructor(private data: DataService, fb: FormBuilder, private router: Router, private userService: UserService) {
-   
-    if (!this.undefinedUser) {
       this.updateForm = fb.group({
         'username': [this.user.username, null],
         'password': [this.user.password, null],
@@ -33,7 +31,6 @@ export class ProfileComponent implements OnInit {
         'phone_number': [this.user.phone_number, null],
         'address': [this.user.address, null]
       });
-    }
   }
 
   ngOnInit() {
@@ -43,6 +40,7 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
+        this.undefinedUser = false;
         this.user = data;
         console.log(this.user);
       }

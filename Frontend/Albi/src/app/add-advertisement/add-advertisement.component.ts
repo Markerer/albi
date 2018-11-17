@@ -18,7 +18,7 @@ import { Image } from '../image';
 export class AddAdvertisementComponent implements OnInit {
 
   user: User = new User();
-  undefinedUser: boolean = false;
+  undefinedUser: boolean;
   advertisementCreated: boolean = false;
   createdFlat: Flat = new Flat();
 
@@ -49,6 +49,7 @@ export class AddAdvertisementComponent implements OnInit {
         this.undefinedUser = true;
         this.router.navigate(['']);
       } else {
+        this.undefinedUser = false;
         this.user = data;
         console.log(this.user);
       }

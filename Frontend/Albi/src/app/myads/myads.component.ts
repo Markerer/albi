@@ -17,10 +17,11 @@ export class MyadsComponent implements OnInit {
 
   flats: Flat[];
   user: User;
-  undefinedUser: boolean = false;
+  undefinedUser: boolean;
 
 
-  constructor(private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) { }
+  constructor(private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) {}
+  
 
 
   ngOnInit() {
@@ -31,6 +32,7 @@ export class MyadsComponent implements OnInit {
         this.undefinedUser = true;
         this.router.navigate(['']);
       } else {
+        this.undefinedUser = false;
         this.flats = [];
         this.getFlats(this.user._id);
       }

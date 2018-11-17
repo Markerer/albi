@@ -22,19 +22,19 @@ export class MainComponent implements OnInit {
   page: number = 1;
   previousPage: number;
   user: User;
-  undefinedUser: boolean = false;
+  undefinedUser: boolean;
   collapse: boolean = false;
 
   searchFlatForm: FormGroup;
 
   constructor(private fb: FormBuilder, private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService)
   {
-    this.searchFlatForm = fb.group({
-      "maxprice": ["", null],
-      "numberOfRooms": ["", null],
-      'zipCode': ["", null],
-      'city': ["", null],
-      "type": ["", null]
+      this.searchFlatForm = fb.group({
+        "maxprice": ["", null],
+        "numberOfRooms": ["", null],
+        'zipCode': ["", null],
+        'city': ["", null],
+        "type": ["", null]
     });
   }
 
@@ -45,6 +45,7 @@ export class MainComponent implements OnInit {
         this.router.navigate(['']);
       } else {
         this.user = data;
+        this.undefinedUser = false;
         this.flats = [];
         this.page = 1;
         this.getFlatsByPage(this.page);
@@ -52,8 +53,13 @@ export class MainComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.removeItems();
+    this.user = null;
+  }
+
   loadPage(page: number): void {
-    if (page !== this.page) {
+    if (page !== this.page && !this.undefinedUser) {
       this.page = page;
       this.removeItems();
       if (this.search === undefined || this.search === null) {
@@ -69,31 +75,7 @@ export class MainComponent implements OnInit {
       this.flats.splice(0);
   }
   }
-/*
-  // Kép előállítása Blob objektumból
-  createImageFromBlob(image: Blob) {
-    let reader = new FileReader();
-    reader.addEventListener("load", () => {
-      this.imageToShow = reader.result;
-    }, false);
 
-    if (image) {
-      reader.readAsDataURL(image);
-    }
-  }
-
-  getImageFromService(filename: String): void {
-
-    this.imageService.getFlatImage(filename).subscribe(data => {
-      this.isImageLoading = true;
-      this.createImageFromBlob(data);
-      this.isImageLoading = false;
-    }, error => {
-      this.isImageLoading = false;
-      console.log(error);
-    });
-  }
-*/
   // A lakás képeinek (ID és fájlnév) beállítása
   getImageUrls(flatID: String, flat: Flat) {
     this.imageService.getFlatImageIDs(flatID).subscribe(data => {

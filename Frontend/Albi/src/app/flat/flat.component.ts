@@ -29,8 +29,7 @@ export class FlatComponent implements OnInit {
   owner: boolean;
 
 
-
-  flat: Flat = new Flat();
+  flat: Flat;
   user: User;
 
   chart: any[];
@@ -52,7 +51,8 @@ export class FlatComponent implements OnInit {
     private mainService: MainService,
     private fb: FormBuilder,
     private imageService: ImageService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal)
+  {  }
 
   ngOnInit() {
     this.data.currentData.subscribe(data => {
@@ -61,6 +61,8 @@ export class FlatComponent implements OnInit {
         this.router.navigate(['']);
       } else {
         this.user = data;
+        this.undefinedUser = false;
+        this.flat = new Flat();
         this.getFlat();
       }
     });
@@ -78,6 +80,21 @@ export class FlatComponent implements OnInit {
     ).subscribe(() => this.successUpload = null);
   }
 
+  private viewAd() {
+    if (!this.owner) {
+      var today: ChartData = new ChartData();
+      today.setTodayDate();
+      var _id = this.flat._id;
+      console.log(_id);
+      this.mainService.addViewingToAdvertisement(_id, today.date).subscribe(response => console.log(response));
+    }
+  }
+
+
+  ngOnDestroy() {
+    this.flat = null;
+  }
+
   public changeSuccessMessage(): void {
     this._success.next(`Your advertisement have been successfully updated.`);
   }
@@ -93,7 +110,9 @@ export class FlatComponent implements OnInit {
   getFlat(): void {
     //Az id kinyerése az URL címből.
     var id: String = this.activatedRoute.snapshot.paramMap.get('_id');
+    console.log(id);
     this.mainService.getFlatByID(id).subscribe(data => {
+      this.flat = new Flat();
       this.flat = data;
       this.flat.images = [];
       this.flat.firstImage = new Image();
@@ -104,11 +123,6 @@ export class FlatComponent implements OnInit {
         this.owner = true;
       } else {
         this.owner = false;
-        var today: ChartData = new ChartData();
-        today.setTodayDate();
-        /*
-         this.mainService.addViewingToAdvertisement(this.flat._id, today.date);
-         */
       }
 
       this.updateFlatForm = this.fb.group({
@@ -122,6 +136,7 @@ export class FlatComponent implements OnInit {
         'address': [this.flat.address, null],
         'type': ["", null]
       });
+      this.viewAd();
     });
   }
 
@@ -264,50 +279,36 @@ export class FlatComponent implements OnInit {
   }
 
   private getStats(): void {
-    /*
+    
     this.mainService.getAdvertisementStats(this.flat._id).subscribe(chartData => {
       this.loadChart(chartData);
-    });*/
+    });
     this.statMode();
-    this.loadChart();
   }
 
 
-  public loadChart(/*chartDatas: ChartData[]*/): void {
-    /*
-    var labels: String[];
-    var counts: Number[];
+  public loadChart(chartDatas: ChartData[]): void {
+    
+    let labels: String[] = [];
+    let counts: Number[] = [];
 
     for (let i of chartDatas) {
       labels.push(i.date);
-      counts.push(i.count);
-    }*/
-    /*
-    var cols: chartCol[];
-    var col: chartCol = new chartCol();
-    col.label = "szia";
-    col.y = 10;
-    cols.push(col);
-    */
-    // { y: 71, label: "Apple" }
-
+      counts.push(i.counter);
+    }
 
     var context = (<HTMLCanvasElement>this.mycanvas.nativeElement).getContext('2d');
-
-    var weatherDates = ["hello", "szia"];
-    var temp_max = [1, 2];
-
-
 
     this.chart = new Chart(context, {
       type: 'bar',
       data: {
-        labels: weatherDates,
+        labels: labels,
         datasets: [
           {
-            data: temp_max,
-            borderColor: "#3cba9f",
-            fill: true
+            data: counts,
+            backgroundColor: "#3cba9f",
+            fill: false,
+            barPercentage: 0.5
           }
         ]
       },
@@ -320,7 +321,12 @@ export class FlatComponent implements OnInit {
             display: true
           }],
           yAxes: [{
-            display: true
+            display: true,
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1
+            }
+
           }],
         }
       }

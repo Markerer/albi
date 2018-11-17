@@ -27,22 +27,23 @@ export class MainService {
   getFlatByID(flatID: String): Observable<Flat> {
     return this.http.get<Flat>(this.apiRoot + 'flat/' + flatID);
   }
-  /*
+  
   // Egy hirdetéshez tartozó megtekintési adatok lekérése
   getAdvertisementStats(flatID: String): Observable<ChartData[]> {
-    return this.http.get<ChartData[]>(this.apiRoot + 'date/' + flatID);
+    return this.http.get<ChartData[]>(this.apiRoot + 'flat/' + 'dates/' + flatID);
   }
 
   // Egy hirdetés megtekintési számának növelése
-  addViewingToAdvertisement(flatID: String, date: String){
-    this.http.post(this.apiRoot + 'date/' + flatID,
+  addViewingToAdvertisement(flatID: String, date: String): Observable<ChartData>{
+    console.log("add"+ flatID);
+    return this.http.post<ChartData>(this.apiRoot + 'date/' + flatID,
     {
-      "date" : `${date}`
+      "date": `${date}`
     },
     httpOptions);
   }
 
-  */
+  
   // Egy felhasználó minden lakásának lekérése
   getUserFlats(userID: String): Observable<Flat[]> {
     return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID);

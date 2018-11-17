@@ -2,7 +2,8 @@ declare var require: any;
 
 export class ChartData {
 
-  flatid: String;
+  _id: String;
+  flatID: String;
   counter: Number;
   date: String;
 
@@ -12,14 +13,13 @@ export class ChartData {
     this.date += date.getMonth.toString();
     this.date += ".";
     this.date += date.getDay.toString();
-    this.date += ".";
     console.log(this.date);
   }
 
   public setTodayDate(): void {
     var dateFormat = require('dateformat');
     var today = new Date();
-    this.date = dateFormat(today, "yyyy.mm.dd.").toString();
+    this.date = dateFormat(today, "yyyy.mm.dd").toString();
     console.log(this.date);
   }
 }
