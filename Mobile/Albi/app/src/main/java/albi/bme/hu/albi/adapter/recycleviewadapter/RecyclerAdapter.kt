@@ -34,7 +34,10 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
             viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
         }
 
-        viewHolder.tvPrice.text = context.resources.getString(R.string.rent_price_format, flat.price)
+        /**
+         * context.resources.getString(R.string.rent_price_format, flat.price)
+         */
+        viewHolder.tvPrice.text = priceFormatter(Integer.parseInt(flat.price)) + " Ft/Month"
         viewHolder.tvAddress.text = flat.address
         viewHolder.tvNumberOfRooms.text = context.resources.getString(R.string.number_of_rooms_format, flat.numberOfRooms)
 
@@ -51,6 +54,11 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)!!
         val tvAddress = itemView.findViewById<TextView>(R.id.tvAddress)!!
         val tvNumberOfRooms = itemView.findViewById<TextView>(R.id.tvNumberOfRooms)!!
+    }
+
+    private fun priceFormatter(value: Int): String {
+        val formatted = (String.format("%,d", value)).replace(',', ' ')
+        return "$formatted"
     }
 
 }
