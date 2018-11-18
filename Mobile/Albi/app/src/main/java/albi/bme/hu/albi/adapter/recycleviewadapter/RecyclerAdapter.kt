@@ -28,20 +28,21 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]
-        if(! (flat.imageNames.isEmpty())){
+        if (!(flat.imageNames.isEmpty())) {
             Glide.with(context).load(RestApiFactory.BASE_URL + flat.imageNames[0]).into(viewHolder.ivHousePicture)
         } else {
             viewHolder.ivHousePicture.setImageResource(R.drawable.ic_no_image_512)
         }
 
-        /**
-         * context.resources.getString(R.string.rent_price_format, flat.price)
-         */
-        viewHolder.tvPrice.text = priceFormatter(Integer.parseInt(flat.price)) + " Ft/Month"
+        if (flat.forSale) {
+            viewHolder.tvPrice.text = context.resources.getString(R.string.for_sale_price_format, priceFormatter(Integer.parseInt(flat.price)))
+        } else {
+            viewHolder.tvPrice.text = context.resources.getString(R.string.rent_price_format, priceFormatter(Integer.parseInt(flat.price)))
+        }
         viewHolder.tvAddress.text = flat.address
         viewHolder.tvNumberOfRooms.text = context.resources.getString(R.string.number_of_rooms_format, flat.numberOfRooms)
 
-        viewHolder.itemView.setOnClickListener{
+        viewHolder.itemView.setOnClickListener {
             val intent = Intent(context, SingleFlatActivity::class.java)
             intent.putExtra("flat", flatList[position])
             intent.putExtra("owner", owner)
@@ -49,7 +50,7 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         }
     }
 
-    class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews){
+    class ViewHolder(itemViews: View) : RecyclerView.ViewHolder(itemViews) {
         var ivHousePicture = itemView.findViewById<ImageView>(R.id.ivFlatImagePreview)
         val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)!!
         val tvAddress = itemView.findViewById<TextView>(R.id.tvAddress)!!
