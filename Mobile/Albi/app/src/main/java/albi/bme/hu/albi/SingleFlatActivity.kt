@@ -57,12 +57,15 @@ class SingleFlatActivity : AppCompatActivity() {
             sendView()
         }
 
-        getAllDates()
-
         editAdvertisement.setOnClickListener { editOnClick() }
         saveAdvertisement.setOnClickListener { saveOnClick() }
         showStatistics.setOnClickListener { showStatistics() }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getAllDates()
     }
 
     private fun sendView() {

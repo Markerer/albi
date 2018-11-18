@@ -47,27 +47,30 @@ class MyAdvertisementsFragment : Fragment(), RestApiList.ListInterface {
     }
 
     private fun networkRequestForMyFlats(recyclerView: RecyclerView) {
-        val client = RestApiFactory.createUserClient()
-        val call = client.getMyFlats(user!!._id!!)
+        if(user != null){
 
-        call.enqueue(object : Callback<List<Flat>> {
-            override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
-                val flats: List<Flat>? = response.body()
-                myFlats = flats as ArrayList<Flat>
+            val client = RestApiFactory.createUserClient()
+            val call = client.getMyFlats(user!!._id!!)
 
-                for (i in myFlats.indices) {
-                    restApiList.networkRequestForImagesIDs(myFlats[i])
+            call.enqueue(object : Callback<List<Flat>> {
+                override fun onResponse(call: Call<List<Flat>>, response: Response<List<Flat>>) {
+                    val flats: List<Flat>? = response.body()
+                    myFlats = flats as ArrayList<Flat>
+
+                    for (i in myFlats.indices) {
+                        restApiList.networkRequestForImagesIDs(myFlats[i])
+                    }
+
+                    val adapter = RecyclerAdapter(myFlats, context!!, owner = true)
+                    recyclerView.adapter = adapter
                 }
 
-                val adapter = RecyclerAdapter(myFlats, context!!, owner = true)
-                recyclerView.adapter = adapter
-            }
-
-            override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(context, "error :(" + t.message, Toast.LENGTH_LONG).show()
-            }
-        })
+                override fun onFailure(call: Call<List<Flat>>, t: Throwable) {
+                    t.printStackTrace()
+                    Toast.makeText(context, "error :(" + t.message, Toast.LENGTH_LONG).show()
+                }
+            })
+        }
     }
 
 }

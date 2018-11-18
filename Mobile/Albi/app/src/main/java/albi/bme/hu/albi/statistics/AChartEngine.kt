@@ -2,6 +2,7 @@ package albi.bme.hu.albi.statistics
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Paint
 import org.achartengine.GraphicalView
 import org.achartengine.chart.PointStyle
 import org.achartengine.model.XYMultipleSeriesDataset
@@ -23,13 +24,14 @@ class AChartEngine {
     private var sdf = SimpleDateFormat("YYYY.MM.DD")
 
     fun initChart(){
-        mCurrentSeries = XYSeries("Flat statistics")
+        mCurrentSeries = XYSeries("")
         mDataSet!!.addSeries(mCurrentSeries)
         //https://stackoverflow.com/questions/47204146/how-to-iterate-over-hashmap-in-kotlin
+        var index: Int = 0
+        mRenderer!!.xLabels = dataToChart.size
         for((key, value) in dataToChart){
-            var index: Int = 0
             mCurrentSeries!!.add(index.toDouble(), value.toDouble())
-            mRenderer!!.addXTextLabel(value.toDouble(), sdf.format(key))
+            mRenderer!!.addXTextLabel(index.toDouble(), key)
             index++
         }
 
@@ -38,22 +40,24 @@ class AChartEngine {
          */
         mCurrentRenderer = XYSeriesRenderer()
         mCurrentRenderer!!.lineWidth = 5F
-        mCurrentRenderer!!.color = Color.RED
+        mCurrentRenderer!!.color = Color.GREEN
         mCurrentRenderer!!.isDisplayBoundingPoints = true
         mCurrentRenderer!!.pointStyle = PointStyle.CIRCLE
-        mCurrentRenderer!!.pointStrokeWidth = 7F
+        mCurrentRenderer!!.pointStrokeWidth = 10F
         mRenderer!!.addSeriesRenderer(mCurrentRenderer)
-
         mRenderer!!.marginsColor = Color.argb(0x00, 0xff, 0x00, 0x00)
-
         mRenderer!!.setPanEnabled(false, false)
-        mRenderer!!.yAxisMax = 7.0
+        mRenderer!!.yAxisMax = 50.0
         mRenderer!!.yAxisMin = 0.0
-        mRenderer!!.xAxisMin = 0.0
-        mRenderer!!.xAxisMax = 7.0
         mRenderer!!.setShowGrid(true)
         mRenderer!!.gridLineWidth = 5F
-
+        mRenderer!!.labelsTextSize = 30F
+        mRenderer!!.setYLabelsAlign(Paint.Align.RIGHT)
+        mRenderer!!.marginsColor = Color.WHITE
+        mRenderer!!.xLabelsColor = Color.BLACK
+        mRenderer!!.setYLabelsColor(0, Color.BLACK)
+        mRenderer!!.xLabelsAngle = 90F
+        mRenderer!!.xLabelsAlign = Paint.Align.LEFT
     }
 
 }

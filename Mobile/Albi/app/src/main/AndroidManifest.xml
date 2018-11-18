@@ -29,7 +29,8 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SingleFlatActivity" />
         <activity android:name=".SearchDetailActivity" />
-        <activity android:name=".StatisticsActivity"></activity>
+        <activity android:name=".StatisticsActivity">
+        </activity>
     </application>
 
 </manifest>
