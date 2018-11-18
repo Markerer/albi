@@ -25,6 +25,7 @@ class StatisticsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if(mAChartEngine.mChart == null){
+            mAChartEngine.dataToChart = data
             mAChartEngine.initChart()
         }
         /**

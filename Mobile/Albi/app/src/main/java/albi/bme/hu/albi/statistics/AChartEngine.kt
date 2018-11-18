@@ -1,5 +1,6 @@
 package albi.bme.hu.albi.statistics
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import org.achartengine.GraphicalView
 import org.achartengine.chart.PointStyle
@@ -7,7 +8,8 @@ import org.achartengine.model.XYMultipleSeriesDataset
 import org.achartengine.model.XYSeries
 import org.achartengine.renderer.XYMultipleSeriesRenderer
 import org.achartengine.renderer.XYSeriesRenderer
-import java.util.*
+import java.text.SimpleDateFormat
+import kotlin.collections.HashMap
 
 class AChartEngine {
 
@@ -16,12 +18,19 @@ class AChartEngine {
     var mRenderer: XYMultipleSeriesRenderer? = XYMultipleSeriesRenderer()
     var mCurrentSeries: XYSeries? = null
     var mCurrentRenderer: XYSeriesRenderer? = null
+    var dataToChart = HashMap<String, Int>()
+    @SuppressLint("SimpleDateFormat")
+    private var sdf = SimpleDateFormat("YYYY.MM.DD")
 
     fun initChart(){
         mCurrentSeries = XYSeries("Flat statistics")
         mDataSet!!.addSeries(mCurrentSeries)
-        for(i in 1..7){
-            mCurrentSeries!!.add(i.toDouble(), Math.abs(Random().nextInt().toDouble()) % 7)
+        //https://stackoverflow.com/questions/47204146/how-to-iterate-over-hashmap-in-kotlin
+        for((key, value) in dataToChart){
+            var index: Int = 0
+            mCurrentSeries!!.add(index.toDouble(), value.toDouble())
+            mRenderer!!.addXTextLabel(value.toDouble(), sdf.format(key))
+            index++
         }
 
         /**
@@ -44,10 +53,6 @@ class AChartEngine {
         mRenderer!!.xAxisMax = 7.0
         mRenderer!!.setShowGrid(true)
         mRenderer!!.gridLineWidth = 5F
-
-    }
-
-    fun setData(){
 
     }
 
