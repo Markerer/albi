@@ -45,6 +45,7 @@
     <string name="price">Price</string>
     <string name="value">Value</string>
     <string name="_0_ft">0 Ft</string>
+    <string name="show_statistics">Show statistics</string>
 
     <string-array name="districts_array_name">
         <item>I. kerület</item>

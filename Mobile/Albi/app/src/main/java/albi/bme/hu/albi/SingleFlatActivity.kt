@@ -3,6 +3,7 @@ package albi.bme.hu.albi
 import albi.bme.hu.albi.adapter.recycleviewadapter.SlidingImageAdapter
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.RestApiFactory
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,7 +14,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-
 
 class Today {
     init{
@@ -36,6 +36,7 @@ class SingleFlatActivity : AppCompatActivity() {
     private lateinit var flat: Flat
     private var owner: Boolean = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_flat)
@@ -48,7 +49,6 @@ class SingleFlatActivity : AppCompatActivity() {
 
         setFormattedText()
 
-
         if (owner) {
             editAdvertisement.visibility = View.VISIBLE
         } else {
@@ -57,9 +57,9 @@ class SingleFlatActivity : AppCompatActivity() {
 
         editAdvertisement.setOnClickListener { editOnClick() }
         saveAdvertisement.setOnClickListener { saveOnClick() }
+        showStatistics.setOnClickListener { showStatistics() }
 
     }
-
 
     private fun sendView() {
         val client = RestApiFactory.createFlatClient()
@@ -67,7 +67,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(this@SingleFlatActivity, "Couldn't send view", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@SingleFlatActivity, "Couldn't send view: " + t.printStackTrace(), Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -75,11 +75,18 @@ class SingleFlatActivity : AppCompatActivity() {
         })
     }
 
+    private fun showStatistics(){
+        val intent = Intent(this@SingleFlatActivity, StatisticsActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     private fun editOnClick() {
         setElementsEditability(true)
         editAdvertisement.visibility = View.INVISIBLE
         saveAdvertisement.visibility = View.VISIBLE
     }
+
     private fun saveOnClick() {
         if (everythingFilled()) {
             setFlatValuesFromEdittexts()
@@ -113,6 +120,7 @@ class SingleFlatActivity : AppCompatActivity() {
         flat.zipCode = etZipCodeSingle.text.toString()
         flat.address = etAddressSingle.text.toString()
     }
+
     private fun everythingFilled(): Boolean {
         var filled = true
         if (etPriceSingle.text.isEmpty()) {
@@ -147,6 +155,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
         return filled
     }
+
     private fun setFormattedText() {
         etEmailSingle.setText(getString(R.string.email_format, flat.email))
         etPhoneNumberSingle.setText(getString(R.string.phone_number_format, flat.phone_number))
@@ -157,6 +166,7 @@ class SingleFlatActivity : AppCompatActivity() {
         etAddressSingle.setText(flat.address)
         etCitySingle.setText(flat.city)
     }
+
     private fun setTextForEdit() {
         etPriceSingle.setText(flat.price)
         etDescriptionSingle.setText(flat.description)
