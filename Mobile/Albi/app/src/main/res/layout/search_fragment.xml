@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_margin="8dp"
-        android:max="500000"
+        android:max="5000000"
         android:min="0" />
 
     <android.support.design.widget.TextInputLayout

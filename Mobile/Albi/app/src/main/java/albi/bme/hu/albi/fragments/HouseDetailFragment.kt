@@ -25,13 +25,13 @@ import android.os.Handler
 class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
 
     var usersData = ArrayList<Flat>()
-    private var recyclerView: RecyclerView? = null
+    private lateinit var recyclerView: RecyclerView
 
     private var pageNum = 1
 
     private val restApiList = RestApiList(this)
     override fun photoLoaded(flat: Flat) {
-        recyclerView?.adapter?.notifyItemChanged(usersData.indexOf(flat))
+        recyclerView.adapter?.notifyItemChanged(usersData.indexOf(flat))
     }
 
 
@@ -41,37 +41,42 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
         pageNum = 1
 
         recyclerView = view.findViewById(R.id.rvHouseDetail)
-        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    networkRequestForPaging()
-                    recyclerView.adapter!!.notifyDataSetChanged()
-                }
-            }
-        })
+        initializationRecycle()
 
         val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
             pageNum = 1
+            usersData.clear()
             networkRequestForPaging()
             val handler = Handler()
             handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
         }
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
-        initializationRecycle()
+
 
         return view
     }
 
     private fun initializationRecycle() {
-        recyclerView?.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
+        recyclerView.adapter = RecyclerAdapter(usersData, context!!, owner = false)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (pageNum != -1 && !recyclerView.canScrollVertically(1)) {
+                    networkRequestForPaging()
+                    recyclerView.adapter!!.notifyDataSetChanged()
+                }
+            }
+        })
         networkRequestForPaging()
     }
 
     private fun networkRequestForPaging() {
+        if (pageNum == -1)
+            return
         val client = RestApiFactory.createFlatClient()
         val call = client.getMainFlatsByPage(pageNum)
 
@@ -83,27 +88,16 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
 
             override fun onResponse(call: Call<FlatPageResponse>, response: Response<FlatPageResponse>) {
                 val flatResponse = response.body()!!
+                val flats = flatResponse.docs!! as ArrayList<Flat>
 
-                if (pageNum == 1) {
-                    usersData = flatResponse.docs as ArrayList<Flat>
-
-                    for (i in usersData.indices) {
-                        restApiList.networkRequestForImagesIDs(usersData[i])
-                    }
-
-                    val adapter = RecyclerAdapter(usersData, context!!, owner = false)
-                    recyclerView?.adapter = adapter
-                } else {
-                    if (pageNum <= flatResponse.pages!!) {
-                        val flats = flatResponse.docs as ArrayList<Flat>
-                        usersData.addAll(flats)
-
-                        for (i in flats.indices) {
-                            restApiList.networkRequestForImagesIDs(flats[i])
-                        }
-                    }
+                for (i in flats.indices){
+                    restApiList.networkRequestForImagesIDs(flats[i])
                 }
+                usersData.addAll(flats)
                 pageNum++
+                if (pageNum > flatResponse.pages!!){
+                    pageNum = -1
+                }
             }
         })
     }

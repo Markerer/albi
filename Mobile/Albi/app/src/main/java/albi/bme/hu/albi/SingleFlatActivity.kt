@@ -103,15 +103,15 @@ class SingleFlatActivity : AppCompatActivity() {
                      * ha még nem tartalmazza a dátumot, akkor beletesszük
                      */
                     if(!statisticData.contains(datesResponse[i].date)){
-                            statisticData.put(datesResponse[i].date!!, datesResponse[i].counter!!)
+                        statisticData[datesResponse[i].date!!] = datesResponse[i].counter!!
                     }
                     /**
                      * egyébként meg megkeressük azt a dátumot,
                      * és hozzáadjuk a countert pluszba
                      */
                     else {
-                        var totalView = statisticData.get(datesResponse[i].date)
-                        statisticData.put(datesResponse[i].date!!, datesResponse[i].counter!! + totalView!!)
+                        val totalView = statisticData[datesResponse[i].date]
+                        statisticData[datesResponse[i].date!!] = datesResponse[i].counter!! + totalView!!
                     }
                 }
             }
@@ -127,7 +127,6 @@ class SingleFlatActivity : AppCompatActivity() {
         // https://stackoverflow.com/questions/7578236/how-to-send-hashmap-value-to-another-activity-using-an-intent
         intent.putExtra("statisticData", statisticData)
         startActivity(intent)
-        finish()
     }
 
     private fun editOnClick() {

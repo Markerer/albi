@@ -19,8 +19,10 @@ import retrofit2.Response
 class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
 
     private lateinit var recyclerView: RecyclerView
-    private var usersData =  ArrayList<Flat>()
+    private var usersData = ArrayList<Flat>()
     private lateinit var searchResult: SearchResult
+
+    private var pageNum = 1
 
     private val restApiList = RestApiList(this)
     override fun photoLoaded(flat: Flat) {
@@ -36,33 +38,52 @@ class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
 
         recyclerView = findViewById(R.id.rvSearchResult)
         recyclerView.layoutManager = LinearLayoutManager(this@SearchDetailActivity, LinearLayout.VERTICAL, false)
+        recyclerView.adapter = RecyclerAdapter(usersData, this@SearchDetailActivity, owner = false)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    sendNetworkRequestSearch()
+                    recyclerView.adapter!!.notifyDataSetChanged()
+                }
+            }
+        })
 
         sendNetworkRequestSearch()
 
     }
 
-    private fun sendNetworkRequestSearch(){
+    private fun sendNetworkRequestSearch() {
+        if (pageNum == -1)
+            return
+
         val client = RestApiFactory.createFlatClient()
-        val call = client.getFlatsBySearch(1,
+        val call = client.getFlatsBySearch(pageNum,
                 searchResult.price,
                 searchResult.numberOfRooms,
                 searchResult.address)
 
 
-        call.enqueue(object: Callback<FlatPageResponse> {
+        call.enqueue(object : Callback<FlatPageResponse> {
             override fun onFailure(call: Call<FlatPageResponse>, t: Throwable) {
                 Toast.makeText(this@SearchDetailActivity, "Something is not okay with the server (again)\n" + t.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<FlatPageResponse>, response: Response<FlatPageResponse>) {
-                usersData = response.body()?.docs as ArrayList<Flat>
+                val flatResponse = response.body()!!
+                val newData = flatResponse.docs as ArrayList<Flat>
 
-                for (i in usersData.indices) {
-                    restApiList.networkRequestForImagesIDs(usersData[i])
+                for (i in newData.indices) {
+                    restApiList.networkRequestForImagesIDs(newData[i])
                 }
 
-                val adapter = RecyclerAdapter( usersData, this@SearchDetailActivity, false)
-                recyclerView.adapter = adapter
+                usersData.addAll(newData)
+                pageNum++
+                if (pageNum > flatResponse.pages!!){
+                    pageNum = -1
+                }
+
             }
         })
     }
