@@ -2,6 +2,7 @@ package albi.bme.hu.albi
 
 import albi.bme.hu.albi.adapter.recycleviewadapter.SlidingImageAdapter
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.network.FlatDateResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -14,6 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.HashMap
 
 class Today {
     init{
@@ -35,7 +37,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
     private lateinit var flat: Flat
     private var owner: Boolean = false
-
+    private var statisticData = HashMap<String, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +57,8 @@ class SingleFlatActivity : AppCompatActivity() {
             sendView()
         }
 
+        getAllDates()
+
         editAdvertisement.setOnClickListener { editOnClick() }
         saveAdvertisement.setOnClickListener { saveOnClick() }
         showStatistics.setOnClickListener { showStatistics() }
@@ -66,17 +70,62 @@ class SingleFlatActivity : AppCompatActivity() {
         val call = client.addView(flat._id, Today())
 
         call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+
+            }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(this@SingleFlatActivity, "Couldn't send view: " + t.printStackTrace(), Toast.LENGTH_LONG).show()
             }
+        })
+    }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+    private fun getAllDates(){
+        val client = RestApiFactory.createFlatClient()
+        val call = client.getAllDatesForFlat("5be60d3c2be1db3bc01c2184") // flat._id
+
+        call.enqueue(object : Callback<List<FlatDateResponse>>{
+            /**
+             * azt kell, hogy eltároljuk, egy hashmap-be
+             * ha az adott dátumhoz még nincs megtekintés,
+             * akkor ott pl lehetne 0
+             * egyébként ha meg már tartalmazza azt a dátumot
+             * akkor ha találunk még egy ugyan olyan dátumot
+             * akkor annak a counterjét hozzáadjuk a már benne lévő dátumhoz
+             *
+             * dateFormat: "date": "2018.11.17",
+             */
+            override fun onResponse(call: Call<List<FlatDateResponse>>, response: Response<List<FlatDateResponse>>) {
+                val datesResponse = response.body()
+                if (datesResponse != null) {
+                    for(i in datesResponse.indices)
+                    /**
+                     * ha még nem tartalmazza a dátumot, akkor beletesszük
+                     */
+                    if(!statisticData.contains(datesResponse[i].date)){
+                            statisticData.put(datesResponse[i].date!!, datesResponse[i].counter!!)
+                    }
+                    /**
+                     * egyébként meg megkeressük azt a dátumot,
+                     * és hozzáadjuk a countert pluszba
+                     */
+                    else {
+                        var totalView = statisticData.get(datesResponse[i].date)
+                        statisticData.put(datesResponse[i].date!!, datesResponse[i].counter!! + totalView!!)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<FlatDateResponse>>, t: Throwable) {
+                Toast.makeText(this@SingleFlatActivity, "Couldn't send view: " + t.printStackTrace(), Toast.LENGTH_LONG).show()
             }
         })
     }
 
     private fun showStatistics(){
         val intent = Intent(this@SingleFlatActivity, StatisticsActivity::class.java)
+        // https://stackoverflow.com/questions/7578236/how-to-send-hashmap-value-to-another-activity-using-an-intent
+        intent.putExtra("statisticData", statisticData)
         startActivity(intent)
         finish()
     }

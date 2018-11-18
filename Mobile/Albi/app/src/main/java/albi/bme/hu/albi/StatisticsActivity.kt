@@ -10,12 +10,16 @@ class StatisticsActivity : AppCompatActivity() {
 
     private val mAChartEngine = AChartEngine()
     private lateinit var chartLayout: LinearLayout
+    private var data = HashMap<String, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics2)
 
         chartLayout = findViewById(R.id.chart)
+
+        var intent = intent
+        data = intent.getSerializableExtra("statisticData") as (HashMap<String, Int>)
     }
 
     override fun onResume() {

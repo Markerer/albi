@@ -21,26 +21,33 @@ class AChartEngine {
         mCurrentSeries = XYSeries("Flat statistics")
         mDataSet!!.addSeries(mCurrentSeries)
         for(i in 1..7){
-            mCurrentSeries!!.add(Random().nextDouble() % 7, Random().nextDouble() % 7)
+            mCurrentSeries!!.add(i.toDouble(), Math.abs(Random().nextInt().toDouble()) % 7)
         }
 
         /**
          * when using achartengine is that the dimensions are expressed in pixel not in dp!
          */
         mCurrentRenderer = XYSeriesRenderer()
-        mCurrentRenderer!!.lineWidth = 2F
+        mCurrentRenderer!!.lineWidth = 5F
         mCurrentRenderer!!.color = Color.RED
         mCurrentRenderer!!.isDisplayBoundingPoints = true
         mCurrentRenderer!!.pointStyle = PointStyle.CIRCLE
-        mCurrentRenderer!!.pointStrokeWidth = 3F
+        mCurrentRenderer!!.pointStrokeWidth = 7F
         mRenderer!!.addSeriesRenderer(mCurrentRenderer)
 
         mRenderer!!.marginsColor = Color.argb(0x00, 0xff, 0x00, 0x00)
 
         mRenderer!!.setPanEnabled(false, false)
-        mRenderer!!.yAxisMax = 10.0
+        mRenderer!!.yAxisMax = 7.0
         mRenderer!!.yAxisMin = 0.0
+        mRenderer!!.xAxisMin = 0.0
+        mRenderer!!.xAxisMax = 7.0
         mRenderer!!.setShowGrid(true)
+        mRenderer!!.gridLineWidth = 5F
+
+    }
+
+    fun setData(){
 
     }
 
