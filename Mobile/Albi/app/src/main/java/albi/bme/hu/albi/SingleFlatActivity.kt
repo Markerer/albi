@@ -8,9 +8,28 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_single_flat.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+
+
+class Today {
+    init{
+        setToday()
+    }
+    private fun setToday(){
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        date = "$year.$month.$day"
+    }
+
+    private var date: String? = null
+
+}
 
 class SingleFlatActivity : AppCompatActivity() {
 
@@ -25,7 +44,6 @@ class SingleFlatActivity : AppCompatActivity() {
         owner = intent.getBooleanExtra("owner", false)
 
         val slidingImageAdapter = SlidingImageAdapter(applicationContext, flat.imageNames!!)
-
         pager.adapter = slidingImageAdapter
 
         setFormattedText()
@@ -33,32 +51,43 @@ class SingleFlatActivity : AppCompatActivity() {
 
         if (owner) {
             editAdvertisement.visibility = View.VISIBLE
+        } else {
+            sendView()
         }
 
-        editAdvertisement.setOnClickListener {
-            setElementsEditability(true)
-            editAdvertisement.visibility = View.INVISIBLE
-            saveAdvertisement.visibility = View.VISIBLE
-        }
+        editAdvertisement.setOnClickListener { editOnClick() }
+        saveAdvertisement.setOnClickListener { saveOnClick() }
 
-        saveAdvertisement.setOnClickListener {
-            if (everythingFilled()) {
-                setFlatValuesFromEdittexts()
-                sendNetworkRequestForUpdateFlat()
-                editAdvertisement.visibility = View.VISIBLE
-                saveAdvertisement.visibility = View.INVISIBLE
-                setElementsEditability(false)
-            }
-        }
     }
 
-    private fun setFlatValuesFromEdittexts(){
-        flat.numberOfRooms = etNumberOfRoomsSingle.text.toString()
-        flat.description = etDescriptionSingle.text.toString()
-        flat.price = etPriceSingle.text.toString()
-        flat.city = etCitySingle.text.toString()
-        flat.zipCode = etZipCodeSingle.text.toString()
-        flat.address = etAddressSingle.text.toString()
+
+    private fun sendView() {
+        val client = RestApiFactory.createFlatClient()
+        val call = client.addView(flat._id, Today())
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(this@SingleFlatActivity, "Couldn't send view", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            }
+        })
+    }
+
+    private fun editOnClick() {
+        setElementsEditability(true)
+        editAdvertisement.visibility = View.INVISIBLE
+        saveAdvertisement.visibility = View.VISIBLE
+    }
+    private fun saveOnClick() {
+        if (everythingFilled()) {
+            setFlatValuesFromEdittexts()
+            sendNetworkRequestForUpdateFlat()
+            editAdvertisement.visibility = View.VISIBLE
+            saveAdvertisement.visibility = View.INVISIBLE
+            setElementsEditability(false)
+        }
     }
 
     private fun sendNetworkRequestForUpdateFlat() {
@@ -67,7 +96,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(this@SingleFlatActivity, "Már megint szar van a levesben", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@SingleFlatActivity, "Couldn't update flat", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -76,6 +105,14 @@ class SingleFlatActivity : AppCompatActivity() {
         })
     }
 
+    private fun setFlatValuesFromEdittexts() {
+        flat.numberOfRooms = etNumberOfRoomsSingle.text.toString()
+        flat.description = etDescriptionSingle.text.toString()
+        flat.price = etPriceSingle.text.toString()
+        flat.city = etCitySingle.text.toString()
+        flat.zipCode = etZipCodeSingle.text.toString()
+        flat.address = etAddressSingle.text.toString()
+    }
     private fun everythingFilled(): Boolean {
         var filled = true
         if (etPriceSingle.text.isEmpty()) {
@@ -110,6 +147,21 @@ class SingleFlatActivity : AppCompatActivity() {
 
         return filled
     }
+    private fun setFormattedText() {
+        etEmailSingle.setText(getString(R.string.email_format, flat.email))
+        etPhoneNumberSingle.setText(getString(R.string.phone_number_format, flat.phone_number))
+        etPriceSingle.setText(getString(R.string.rent_price_format, flat.price))
+        etDescriptionSingle.setText(getString(R.string.description_format, flat.description))
+        etNumberOfRoomsSingle.setText(getString(R.string.number_of_rooms_format, flat.numberOfRooms))
+        etZipCodeSingle.setText(flat.zipCode)
+        etAddressSingle.setText(flat.address)
+        etCitySingle.setText(flat.city)
+    }
+    private fun setTextForEdit() {
+        etPriceSingle.setText(flat.price)
+        etDescriptionSingle.setText(flat.description)
+        etNumberOfRoomsSingle.setText(flat.numberOfRooms)
+    }
 
     private fun setElementsEditability(edit: Boolean) {
         etPriceSingle.isEnabled = edit
@@ -123,21 +175,5 @@ class SingleFlatActivity : AppCompatActivity() {
             setTextForEdit()
         else
             setFormattedText()
-    }
-
-    private fun setFormattedText(){
-        etEmailSingle.setText(getString(R.string.email_format, flat.email))
-        etPhoneNumberSingle.setText(getString(R.string.phone_number_format, flat.phone_number))
-        etPriceSingle.setText(getString(R.string.rent_price_format, flat.price))
-        etDescriptionSingle.setText(getString(R.string.description_format, flat.description))
-        etNumberOfRoomsSingle.setText(getString(R.string.number_of_rooms_format, flat.numberOfRooms))
-        etZipCodeSingle.setText(flat.zipCode)
-        etAddressSingle.setText(flat.address)
-        etCitySingle.setText(flat.city)
-    }
-    private fun setTextForEdit(){
-        etPriceSingle.setText(flat.price)
-        etDescriptionSingle.setText(flat.description)
-        etNumberOfRoomsSingle.setText(flat.numberOfRooms)
     }
 }

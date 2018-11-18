@@ -1,10 +1,9 @@
 package albi.bme.hu.albi.interfaces.main
 
+import albi.bme.hu.albi.Today
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.ImageDataResponse
-import albi.bme.hu.albi.network.ImageUploadResponse
-import com.bumptech.glide.load.engine.bitmap_recycle.IntegerArrayAdapter
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -33,6 +32,9 @@ interface FlatClient {
     @PUT("/flats")
     fun updateFlat(@Body flat: Flat): Call<String>
 
+
+    @POST("/date/{flatID}")
+    fun addView(@Path("flatID")flatID: String, @Body date: Today):Call<ResponseBody>
 
     @GET("/flats/{pageID}/{MaxPrice}?")
     fun getFlatsBySearch(@Path("pageID") pageID: Int,
