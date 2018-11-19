@@ -19,7 +19,7 @@ interface FlatClient {
     fun getMainFlatsByPage(@Path("page")page: Int): Call<FlatPageResponse>
 
     @Multipart
-    @POST("flat/upload/{flatID}")
+    @POST("/flat/upload/{flatID}")
     fun uploadPhoto(@Path("flatID") flatID: String,
                     @Part photo: MultipartBody.Part): Call<ResponseBody>
 

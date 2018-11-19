@@ -119,7 +119,7 @@ class AddFlatFragment : Fragment() {
             if (numberOfRoomsLayout.editText!!.text.isEmpty()) {
                 numberOfRoomsLayout.editText!!.error = "This field must be filled!"
             } else {
-                uploadFlat.numberOfRooms = numberOfRoomsLayout.editText!!.text.toString()//.toInt()
+                uploadFlat.numberOfRooms = numberOfRoomsLayout.editText!!.text.toString()
             }
 
             if (descriptionLayout.editText!!.text.isEmpty()) {
@@ -142,8 +142,6 @@ class AddFlatFragment : Fragment() {
                 sendNetworkRequestAdvertisement()
             }
         }
-
-
     }
 
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
