@@ -37,25 +37,27 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.house_detail_fragment, container, false)
-
-        pageNum = 1
-
         recyclerView = view.findViewById(R.id.rvHouseDetail)
+
+        initializeData()
         initializationRecycle()
 
         val swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         swipeContainer.setOnRefreshListener {
-            pageNum = 1
-            usersData.clear()
-            networkRequestForPaging()
+            initializeData()
             val handler = Handler()
             handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
         }
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
 
-
         return view
+    }
+
+    private fun initializeData(){
+        pageNum = 1
+        usersData.clear()
+        networkRequestForPaging()
     }
 
     private fun initializationRecycle() {
@@ -71,7 +73,6 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
                 }
             }
         })
-        networkRequestForPaging()
     }
 
     private fun networkRequestForPaging() {
