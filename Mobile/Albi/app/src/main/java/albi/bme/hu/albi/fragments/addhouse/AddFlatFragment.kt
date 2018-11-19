@@ -72,7 +72,6 @@ class AddFlatFragment : Fragment() {
     private lateinit var finalFile: File
 
 
-
     private lateinit var iv: ImageView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -109,7 +108,7 @@ class AddFlatFragment : Fragment() {
         return view
     }
 
-    private fun setButtonUpload(){
+    private fun setButtonUpload() {
         uploadButtonAdvert.setOnClickListener {
             if (priceLayout.editText!!.text.isEmpty()) {
                 priceLayout.editText!!.error = "This field must be filled!"
@@ -147,7 +146,7 @@ class AddFlatFragment : Fragment() {
 
     }
 
-    fun getImageUri(inContext: Context, inImage:Bitmap):Uri {
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
@@ -167,26 +166,26 @@ class AddFlatFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CAMERA_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-           try {
-               /*data?.also {
-                bitmap = it.extras?.get("data") as Bitmap
-            }*/
-               Log.i("data.data.path", data.data.path)
-               bitmapUri = data.data
-               bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
+            try {
+                /*data?.also {
+                 bitmap = it.extras?.get("data") as Bitmap
+             }*/
+                Log.i("data.data.path", data.data.path)
+                bitmapUri = data.data
+                bitmap = MediaStore.Images.Media.getBitmap(this.activity!!.contentResolver, data.data)
 
-               // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-               val tempUri: Uri = getImageUri(this.context!!, this.bitmap!!)
+                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                val tempUri: Uri = getImageUri(this.context!!, this.bitmap!!)
 
-               // CALL THIS METHOD TO GET THE ACTUAL PATH
-               finalFile = File(getRealPathFromURI(tempUri))
-               LogFinalFilePath()
+                // CALL THIS METHOD TO GET THE ACTUAL PATH
+                finalFile = File(getRealPathFromURI(tempUri))
+                LogFinalFilePath()
 
-               iv.setImageBitmap(bitmap)
-           } catch(e: IOException) {
-               e.printStackTrace()
-               Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
-           }
+                iv.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
+            }
         } else if (requestCode == PICK_IMAGE_FROM_GALERY_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             try {
                 /*data?.also {
@@ -202,7 +201,7 @@ class AddFlatFragment : Fragment() {
                 finalFile = File(getRealPathFromURI(tempUri))
 
                 iv.setImageBitmap(bitmap)
-            } catch(e: IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
             }
@@ -211,8 +210,8 @@ class AddFlatFragment : Fragment() {
     }
 
 
-    private fun sendNetworkUploadPhoto(flatID: String){
-        val client = RestApiFactory.createFlatClient()
+    private fun sendNetworkUploadPhoto(flatID: String) {
+        val client = RestApiFactory.createFlatClientPhoto()
         //val IMAGE_PATH = Environment.getExternalStorageDirectory().absolutePath
         //val FULL_PATH = IMAGE_PATH + bitmapUri?.path
         //val file = File(IMAGE_PATH)
@@ -227,14 +226,14 @@ class AddFlatFragment : Fragment() {
          * finalFile-ra
          */
         LogFinalFilePath()
-        val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181113_213409.jpg")
-        Log.i("absolutePath", tmpFile.absolutePath)
-        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), tmpFile) //finalFile
-        val body = MultipartBody.Part.createFormData("image", tmpFile.name, reqFile)
+        val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181119_123054.jpg")
+        Log.i("absolutePath", finalFile.absolutePath)
+        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), finalFile) //finalFile
+        val body = MultipartBody.Part.createFormData("image", "image", reqFile)
 
         val call = client.uploadPhoto(flatID, body)
 
-        call.enqueue(object: Callback<ResponseBody>{
+        call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(context, "Upload failed " + t.message, Toast.LENGTH_LONG).show()
             }
@@ -248,20 +247,22 @@ class AddFlatFragment : Fragment() {
     }
 
     private fun sendNetworkRequestAdvertisement() {
-        val client = RestApiFactory.createFlatClient()
-        val call = client.uploadFlat(user?._id!!, uploadFlat)
+        if (user != null) {
+            val client = RestApiFactory.createFlatClient()
+            val call = client.uploadFlat(user?._id!!, uploadFlat)
 
-        call.enqueue(object : Callback<Flat> {
-            override fun onResponse(call: retrofit2.Call<Flat>, response: Response<Flat>) {
-                sendNetworkUploadPhoto(response.body()!!._id)
-                Toast.makeText(context, "advertisement upload was successfull", Toast.LENGTH_LONG).show()
-            }
+            call.enqueue(object : Callback<Flat> {
+                override fun onResponse(call: retrofit2.Call<Flat>, response: Response<Flat>) {
+                    sendNetworkUploadPhoto(response.body()!!._id)
+                    Toast.makeText(context, "advertisement upload was successfull", Toast.LENGTH_LONG).show()
+                }
 
-            override fun onFailure(call: retrofit2.Call<Flat>?, t: Throwable?) {
-                t?.printStackTrace()
-                Toast.makeText(context, "error in uploading advertisement :(" + t?.message, Toast.LENGTH_LONG).show()
-            }
-        })
+                override fun onFailure(call: retrofit2.Call<Flat>?, t: Throwable?) {
+                    t?.printStackTrace()
+                    Toast.makeText(context, "error in uploading advertisement :(" + t?.message, Toast.LENGTH_LONG).show()
+                }
+            })
+        }
     }
 
     private fun requestNeededPermissionForWriteExternalStorage() {
@@ -314,6 +315,7 @@ class AddFlatFragment : Fragment() {
         } else {
             /**
              * https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
+             * https://stackoverflow.com/questions/32329461/how-to-get-path-of-picture-in-onactivityresult-intent-data-is-null
              */
             val builder = StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
@@ -347,11 +349,10 @@ class AddFlatFragment : Fragment() {
      * https://stackoverflow.com/questions/32329461/how-to-get-path-of-picture-in-onactivityresult-intent-data-is-null
      */
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    private fun getBitmap(path:String):Bitmap? {
+    private fun getBitmap(path: String): Bitmap? {
         val uri = Uri.fromFile(File(path))
         var inputStream: InputStream?
-        try
-        {
+        try {
             val IMAGE_MAX_SIZE = 1200000 // 1.2MP
             inputStream = context!!.contentResolver.openInputStream(uri)
             // Decode image size
@@ -360,15 +361,13 @@ class AddFlatFragment : Fragment() {
             BitmapFactory.decodeStream(inputStream, null, o)
             inputStream.close()
             var scale = 1
-            while (((o.outWidth * o.outHeight) * (1 / Math.pow(scale.toDouble(), 2.0)) > IMAGE_MAX_SIZE))
-            {
+            while (((o.outWidth * o.outHeight) * (1 / Math.pow(scale.toDouble(), 2.0)) > IMAGE_MAX_SIZE)) {
                 scale++
             }
             Log.d("", "scale = " + scale + ", orig-width: " + o.outWidth + ", orig-height: " + o.outHeight)
-            var b:Bitmap?
+            var b: Bitmap?
             inputStream = context!!.contentResolver.openInputStream(uri)
-            if (scale > 1)
-            {
+            if (scale > 1) {
                 scale--
                 // scale to max possible inSampleSize that still yields an image
                 // larger than target
@@ -386,24 +385,21 @@ class AddFlatFragment : Fragment() {
                 b.recycle()
                 b = scaledBitmap
                 System.gc()
-            }
-            else
-            {
+            } else {
                 b = BitmapFactory.decodeStream(inputStream)
             }
             inputStream.close()
             Log.d("", ("bitmap size - width: " + b.getWidth() + ", height: " +
                     b.getHeight()))
             return b
-        }
-        catch (e:IOException) {
+        } catch (e: IOException) {
             Log.e("", e.message, e)
             return null
         }
     }
 
-    private fun LogFinalFilePath(){
-        Log.i("finalFile.path" , finalFile.path)
+    private fun LogFinalFilePath() {
+        Log.i("finalFile.path", finalFile.path)
     }
 
 }

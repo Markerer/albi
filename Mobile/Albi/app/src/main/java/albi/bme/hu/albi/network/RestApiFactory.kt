@@ -32,6 +32,18 @@ class RestApiFactory {
             return retrofit.create(FlatClient::class.java)
         }
 
+        fun createFlatClientPhoto(): FlatClient {
+            val gson = GsonBuilder()
+                    .create()
+
+            val builder = Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+
+            val retrofit = builder.build()
+            return retrofit.create(FlatClient::class.java)
+        }
+
         fun createUserClient(): UserClient {
             val gson = GsonBuilder()
                     .setLenient()
