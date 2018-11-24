@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
-import { DataService } from '../data.service';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -23,7 +22,7 @@ export class ProfileComponent implements OnInit {
   successMessage: string;
 
 
-  constructor(private data: DataService, fb: FormBuilder, private router: Router, private userService: UserService) {
+  constructor(fb: FormBuilder, private router: Router, private userService: UserService) {
       this.updateForm = fb.group({
         'username': [this.user.username, null],
         'password': [this.user.password, null],
@@ -34,17 +33,20 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.currentData.subscribe(data => {
-      if (data === undefined || data === null) {
-        this.undefinedUser = true;
-        this.router.navigate(['']);
+
+    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+      var temp = JSON.parse(localStorage.getItem("user"));
+      this.user = temp;
+      console.log(this.user);
+      this.undefinedUser = false;
+    }
+    else {
+      this.undefinedUser = true;
+      this.router.navigate(['']);
+      if (this.userService.isLoggedOut()) {
+        this.userService.logout();
       }
-      else {
-        this.undefinedUser = false;
-        this.user = data;
-        console.log(this.user);
-      }
-    });
+    }
 
     //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
@@ -76,9 +78,9 @@ export class ProfileComponent implements OnInit {
     }
 
     this.userService.updateUser(this.user).subscribe(
-      user => {
-        console.log(`${user}`);
-        this.data.changeData(this.user);
+      response => {
+        console.log(`${response}`);
+        this.userService.setUser(this.user);
       });
 
     // 5 sec múlva main oldalra átírányítás

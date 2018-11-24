@@ -3,10 +3,10 @@ import { MainService } from '../main.service';
 import { Router } from '@angular/router';
 import { Flat } from '../flat';
 import { User } from '../user';
-import { DataService } from '../data.service';
 import { isNull, isUndefined } from 'util';
 import { ImageService } from '../image.service';
 import { Image } from '../image';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-myads',
@@ -20,23 +20,26 @@ export class MyadsComponent implements OnInit {
   undefinedUser: boolean;
 
 
-  constructor(private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService) {}
+  constructor(private mainService: MainService, private userService: UserService,
+    private router: Router, private imageService: ImageService) { }
   
 
-
   ngOnInit() {
-    this.data.currentData.subscribe(data => {
-      this.user = data;
+
+    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+      var temp = JSON.parse(localStorage.getItem("user"));
+      this.user = temp;
       console.log(this.user);
-      if (this.user === undefined || this.user === null) {
-        this.undefinedUser = true;
-        this.router.navigate(['']);
-      } else {
-        this.undefinedUser = false;
-        this.flats = [];
-        this.getFlats(this.user._id);
+      this.undefinedUser = false;
+      this.flats = [];
+      this.getFlats(this.user._id);
+    } else {
+      this.undefinedUser = true;
+      this.router.navigate(['']);
+      if (this.userService.isLoggedOut()) {
+        this.userService.logout();
       }
-    });
+    }
   }
 
 

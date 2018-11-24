@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MainService } from '../main.service';
 import { Flat } from '../flat';
-import { DataService } from '../data.service';
 import { User } from '../user';
 import { Router } from '@angular/router';
 import { isNull, isUndefined } from 'util';
 import { ImageService } from '../image.service';
 import { Image } from "../image";
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-main',
@@ -22,12 +22,14 @@ export class MainComponent implements OnInit {
   page: number = 1;
   previousPage: number;
   user: User;
+  token: String;
   undefinedUser: boolean;
   collapse: boolean = false;
 
   searchFlatForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private data: DataService, private mainService: MainService, private router: Router, private imageService: ImageService)
+  constructor(private fb: FormBuilder, private mainService: MainService,
+    private router: Router, private imageService: ImageService, private userService: UserService)
   {
       this.searchFlatForm = fb.group({
         "maxprice": ["", null],
@@ -39,18 +41,24 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.currentData.subscribe(data => {
-      if (data === undefined || data === null) {
-        this.undefinedUser = true;
-        this.router.navigate(['']);
-      } else {
-        this.user = data;
-        this.undefinedUser = false;
-        this.flats = [];
-        this.page = 1;
-        this.getFlatsByPage(this.page);
+
+
+    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+      var temp = JSON.parse(localStorage.getItem("user"));
+      this.user = temp;
+      console.log(this.user);
+      this.undefinedUser = false;
+      this.flats = [];
+      this.page = 1;
+      this.getFlatsByPage(this.page);
+
+    } else {
+      this.undefinedUser = true;
+      this.router.navigate(['']);
+      if (this.userService.isLoggedOut()) {
+        this.userService.logout();
       }
-    });
+    }
   }
 
   ngOnDestroy() {

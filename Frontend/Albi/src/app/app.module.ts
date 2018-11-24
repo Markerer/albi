@@ -9,7 +9,6 @@ import { MainComponent } from './main/main.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { MainService } from './main.service';
 import { AddAdvertisementComponent } from './add-advertisement/add-advertisement.component';
-import { DataService } from './data.service';
 import { IsSecureGuard } from './issecureguard.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -40,7 +39,7 @@ import { ImageService } from './image.service';
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [UserService, MainService, DataService, ImageService, IsSecureGuard],
+  providers: [UserService, MainService, ImageService, IsSecureGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

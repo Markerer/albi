@@ -1,6 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../data.service';
 import { MainService } from '../main.service';
 import { User } from '../user';
 import { Flat } from '../flat';
@@ -12,6 +11,7 @@ import { Image } from '../image';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Chart } from 'chart.js';
 import { ChartData } from '../chartdata';
+import { UserService } from '../user.service';
 
 declare var require: any;
 
@@ -47,25 +47,30 @@ export class FlatComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private data: DataService,
     private mainService: MainService,
     private fb: FormBuilder,
     private imageService: ImageService,
-    private modalService: NgbModal)
+    private modalService: NgbModal,
+    private userService: UserService)
   {  }
 
   ngOnInit() {
-    this.data.currentData.subscribe(data => {
-      if (data === undefined || data === null) {
-        this.undefinedUser = true;
-        this.router.navigate(['']);
-      } else {
-        this.user = data;
-        this.undefinedUser = false;
-        this.flat = new Flat();
-        this.getFlat();
+
+    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+      var temp = JSON.parse(localStorage.getItem("user"));
+      this.user = temp;
+      console.log(this.user);
+      this.undefinedUser = false;
+      this.flat = new Flat();
+      this.getFlat();
+    }
+    else {
+      this.undefinedUser = true;
+      this.router.navigate(['']);
+      if (this.userService.isLoggedOut()) {
+        this.userService.logout();
       }
-    });
+    }
 
     //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
-import { DataService } from '../data.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MainService } from '../main.service';
 import { Flat } from '../flat';
@@ -9,6 +8,7 @@ import { debounceTime } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ImageService } from '../image.service';
 import { Image } from '../image';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-add-advertisement',
@@ -29,7 +29,8 @@ export class AddAdvertisementComponent implements OnInit {
 
   createFlatForm: FormGroup;
 
-  constructor(private data: DataService, fb: FormBuilder, private router: Router, private mainService: MainService, private imageService: ImageService) {
+  constructor(fb: FormBuilder, private router: Router, private mainService: MainService,
+    private imageService: ImageService, private userService: UserService) {
     this.createFlatForm = fb.group({
       "price": ["", Validators.required],
       "numberOfRooms": ["", Validators.required],
@@ -44,16 +45,21 @@ export class AddAdvertisementComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.currentData.subscribe(data => {
-      if (data === undefined || data === null) {
-        this.undefinedUser = true;
-        this.router.navigate(['']);
-      } else {
-        this.undefinedUser = false;
-        this.user = data;
-        console.log(this.user);
+
+    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+      var temp = JSON.parse(localStorage.getItem("user"));
+      this.user = temp;
+      console.log(this.user);
+      this.undefinedUser = false;
+    }
+    else {
+      this.undefinedUser = true;
+      this.router.navigate(['']);
+      if (this.userService.isLoggedOut()) {
+        this.userService.logout();
       }
-    });
+    }
+    
     //A sikeres üzenet
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(

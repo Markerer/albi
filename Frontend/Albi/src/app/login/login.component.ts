@@ -3,7 +3,6 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService } from '../data.service';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators';
 
@@ -16,6 +15,7 @@ import { debounceTime } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
 
   user: User = new User();
+  token: string;
 
   private _success = new Subject<string>();
   successMessage: string;
@@ -34,7 +34,11 @@ export class LoginComponent implements OnInit {
   correctDatas: boolean = true;
   isTaken = false;
 
-  constructor(private userService: UserService, fb: FormBuilder, private router: Router, private data: DataService) {
+  constructor(private userService: UserService, fb: FormBuilder, private router: Router) {
+    // Amennyiben megvan még a token és érvényes a főoldalra irányítjuk
+    if (this.userService.isLoggedIn()) {
+      this.router.navigate(['main']);
+    }
     this.loginForm = fb.group({
       "usernameLogin": ["", Validators.required],
       "passwordLogin": ["", Validators.required]
@@ -126,8 +130,8 @@ export class LoginComponent implements OnInit {
       this.userService.getUser(usernameLogin).subscribe(loggedUser => {
         this.user = loggedUser;
         console.log(this.user);
-
-        this.data.changeData(this.user);
+        this.userService.setSession(this.token);
+        this.userService.setUser(this.user);
         this.router.navigate(['main']);
       });
     }
@@ -140,7 +144,19 @@ export class LoginComponent implements OnInit {
   login(usernameLogin: String, passwordLogin: String): void {
   
     this.userService.loginUser(usernameLogin, passwordLogin)
-      .subscribe(data => { this.userLogger(data, usernameLogin); console.log(data); });
+      .subscribe(data => {
+        var msg: String;
+        msg = data['message'];
+        if (msg === ('OK')) {
+          this.token = data['token'];
+          console.log(this.token);
+        } else {
+          console.log('nem egyezett');
+        }
+        this.userLogger(msg, usernameLogin);
+        console.log(data);
+        console.log(msg);
+      });
   }
 	
 
