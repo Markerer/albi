@@ -4,12 +4,14 @@ var Images = require('../models/image');
 var bodyParser = require('body-parser');
 const sharp = require('sharp');
 const fs = require('fs');
-
+const checkAuth = require('../middleware/check-auth');
+const jwt = require("jsonwebtoken");
 
 module.exports = function (app) {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
+    
 
 
 
@@ -31,7 +33,7 @@ module.exports = function (app) {
     });
 
     //update flats
-    app.put('/flats', function (req, res) {
+    app.put('/flats', checkAuth, function (req, res) {
 
         Flats.findByIdAndUpdate(req.body._id, {
             userID: req.body.userID,
@@ -81,14 +83,33 @@ module.exports = function (app) {
         })
 
         Users.findOne({ username: user.username }, function (err, tempUser) {
-            if (err) throw err;
+            if (err){
+                return res.status(401).json({
+                    message: "NOT OK"
+                  });
+            }
             if (tempUser && user.password === tempUser.password) {
-
-                res.send("OK");
+                console.log(tempUser.username);
+                console.log(tempUser._id);
+                const token = jwt.sign(
+                    {
+                      email: tempUser.email,
+                      userId: tempUser._id
+                    },
+                    "secret",
+                    {
+                        expiresIn: "1h"
+                    }
+                );
+                   return res.status(200).json({
+                    message: "OK",
+                    token: token
+                  });
+                
             }
-            else {
-                res.send("NOT OK");
-            }
+            res.status(401).json({
+                message: "NOT OK"
+              });
         });
 
 
@@ -133,7 +154,7 @@ module.exports = function (app) {
     }
 
     //Upload image
-    app.post('/flat/upload/:id', function (req, res) {
+    app.post('/flat/upload/:id', checkAuth, function (req, res) {
         var name;
         upload(req, res, (err) => {
             name = req.file.filename;
@@ -216,7 +237,7 @@ module.exports = function (app) {
 
     //delete image
 
-    app.delete('/image/:imageID', function (req, res) {
+    app.delete('/image/:imageID', checkAuth, function (req, res) {
 
         Images.findByIdAndRemove(req.params.imageID, function (err) {
             if (err) {
@@ -228,7 +249,7 @@ module.exports = function (app) {
 
     });
 
-    app.delete('/flat/:flatID', function (req, res) {
+    app.delete('/flat/:flatID', checkAuth, function (req, res) {
 
         Flats.findByIdAndRemove(req.params.flatID, function (err) {
             if (err) {
@@ -270,7 +291,7 @@ module.exports = function (app) {
 
 
     //user updater, create user
-    app.put('/api/user', function (req, res) {
+    app.put('/api/user', checkAuth, function (req, res) {
 
         Users.findByIdAndUpdate(req.body._id, { username: req.body.username, password: req.body.password, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function (err, user) {
             if (err) throw err;
@@ -281,7 +302,7 @@ module.exports = function (app) {
 
     });
 
-    app.post('/api/user', function (req, res) {
+    app.post('/api/user', checkAuth, function (req, res) {
         Users.count({ username: req.body.username }, function (err, count) {
             if (count > 0) {
                 res.send("The username is already taken.");
@@ -309,34 +330,8 @@ module.exports = function (app) {
 
     });
 
-    //update
-    app.post('/api/main', function (req, res) {
-
-        if (req.body.id) {
-
-            Flats.findByIdAndUpdate(
-                req.body.id, {
-                    flatname: req.body.flatname,
-                    username: req.body.username,
-                    email: req.body.email,
-                    phone_number: req.body.phone_number,
-                    zipCode: req.body.zipCode,
-                    city: req.body.city,
-                    address: req.body.address,
-                    forSale: req.body.forSale
-                }, function (err, user) {
-                    if (err) throw err;
-
-                    res.send('Success');
-                });
-
-
-        }
-
-    });
-
     //add flats  to user
-    app.post('/addflat/:userID', function (req, res) {
+    app.post('/addflat/:userID', checkAuth, function (req, res) {
         var newFlat = Flats({
             userID: req.params.userID,
             price: req.body.price,
@@ -441,7 +436,7 @@ module.exports = function (app) {
         });
     });
 
-    app.delete('/api/user', function (req, res) {
+    app.delete('/api/user', checkAuth, function (req, res) {
 
         Users.findByIdAndRemove(req.body.id, function (err) {
             if (err) throw err;
@@ -450,4 +445,5 @@ module.exports = function (app) {
 
     });
 
+   
 }
