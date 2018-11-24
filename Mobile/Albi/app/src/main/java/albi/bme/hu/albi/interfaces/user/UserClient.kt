@@ -2,6 +2,7 @@ package albi.bme.hu.albi.interfaces.user
 
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
+import albi.bme.hu.albi.network.LoginResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,14 +12,14 @@ interface UserClient {
     fun createUser(@Body user: User): Call<User>
 
     @PUT("/api/user/")
-    fun updateUser(@Body user: User): Call<String>
+    fun updateUser(@Body user: User, @Header("Authorization") token: String ): Call<String>
 
     /**
      * Send: JSON
      * Get: String
      */
     @POST("/api/login/")
-    fun loginUser(@Body user: User): Call<String>
+    fun loginUser(@Body user: User): Call<LoginResponse>
 
     /**
      * Send: String (the username)

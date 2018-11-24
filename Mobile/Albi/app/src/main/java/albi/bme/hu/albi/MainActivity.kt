@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var addFlatFragment: AddFlatFragment? = null
     private var myAdvertisementsFragment: MyAdvertisementsFragment? = null
     var user: User? = null
-    var contextOfApplication: Context? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -68,8 +67,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        contextOfApplication = applicationContext
 
         user = intent.getSerializableExtra("user") as? User
 

@@ -47,7 +47,7 @@ class ProfileUpdateDialogFragment : DialogFragment() {
 
     private fun networkRequestForProfileUpdate() {
         val client = RestApiFactory.createUserClient()
-        val call = client.updateUser(user!!)
+        val call = client.updateUser(user!!, User.token!!)
 
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {

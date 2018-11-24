@@ -14,7 +14,6 @@ import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Environment.DIRECTORY_DCIM
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
@@ -28,6 +27,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import android.widget.ToggleButton
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -65,6 +65,7 @@ class AddFlatFragment : Fragment() {
     private lateinit var addressLayout: TextInputLayout
     private lateinit var uploadButtonAdvert: Button
     private lateinit var takePhotoButton: Button
+    private lateinit var forSale: ToggleButton
     private var bitmapUri: Uri? = null
     private var bitmap: Bitmap? = null
     private var imageFile = File(Environment.getExternalStorageDirectory().absolutePath.toString())
@@ -83,6 +84,7 @@ class AddFlatFragment : Fragment() {
         addressLayout = view.findViewById(R.id.address_upload)
         uploadButtonAdvert = view.findViewById(R.id.addhouse)
         takePhotoButton = view.findViewById(R.id.takephoto)
+        forSale = view.findViewById(R.id.toggleForRent)
 
         iv = view.findViewById(R.id.imageView2)
 
@@ -134,12 +136,13 @@ class AddFlatFragment : Fragment() {
             }
             uploadFlat.phone_number = user!!.phone_number
             uploadFlat.email = user!!.email
+            uploadFlat.forSale = forSale.isChecked
 
             if (!priceLayout.editText!!.text.isEmpty() &&
                     !numberOfRoomsLayout.editText!!.text.isEmpty() &&
                     !descriptionLayout.editText!!.text.isEmpty() &&
                     !addressLayout.editText!!.text.isEmpty()) {
-                sendNetworkRequestAdvertisement()
+                sendNetworkUploadAdvertisement()
             }
         }
     }
@@ -229,7 +232,7 @@ class AddFlatFragment : Fragment() {
         val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), finalFile) //finalFile
         val body = MultipartBody.Part.createFormData("image", "image", reqFile)
 
-        val call = client.uploadPhoto(flatID, body)
+        val call = client.uploadPhoto(flatID, body, User.token!!)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -244,10 +247,10 @@ class AddFlatFragment : Fragment() {
 
     }
 
-    private fun sendNetworkRequestAdvertisement() {
+    private fun sendNetworkUploadAdvertisement() {
         if (user != null) {
             val client = RestApiFactory.createFlatClient()
-            val call = client.uploadFlat(user?._id!!, uploadFlat)
+            val call = client.uploadFlat(user?._id!!, uploadFlat, User.token!!)
 
             call.enqueue(object : Callback<Flat> {
                 override fun onResponse(call: retrofit2.Call<Flat>, response: Response<Flat>) {

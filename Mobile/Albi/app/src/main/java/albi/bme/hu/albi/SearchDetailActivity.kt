@@ -75,12 +75,19 @@ class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
                 val newData = flatResponse.docs as ArrayList<Flat>
 
                 for (i in newData.indices) {
-                    restApiList.networkRequestForImagesIDs(newData[i])
+                    if (newData[i].forSale == searchResult.forSale) {
+                        restApiList.networkRequestForImagesIDs(newData[i])
+                        usersData.add(newData[i])
+                    }
                 }
 
-                usersData.addAll(newData)
                 pageNum++
-                if (pageNum > flatResponse.pages!!){
+
+                if (usersData.size == 0 && pageNum <= flatResponse.pages!!){
+                    sendNetworkRequestSearch()
+                }
+
+                if (pageNum > flatResponse.pages!!) {
                     pageNum = -1
                 }
 

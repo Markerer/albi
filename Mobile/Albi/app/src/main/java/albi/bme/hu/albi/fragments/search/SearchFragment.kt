@@ -14,7 +14,7 @@ import java.io.Serializable
 
 
 
-data class SearchResult(var price: Int, var numberOfRooms: Int?, var address: String?) : Serializable
+data class SearchResult(var price: Int, var numberOfRooms: Int?, var address: String?, var forSale: Boolean) : Serializable
 
 
 
@@ -27,6 +27,7 @@ class SearchFragment: Fragment(){
     private var roomsLayout: TextInputLayout? = null
     private var searchButton: Button? = null
     private var priceValueText: TextView? = null
+    private lateinit var forSale: ToggleButton
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,6 +37,7 @@ class SearchFragment: Fragment(){
         roomsLayout = view.findViewById(R.id.search_number_of_rooms)
         searchButton = view.findViewById(R.id.search_button)
         priceValueText = view.findViewById(R.id.search_price_value)
+        forSale = view.findViewById(R.id.toggleForRentSearch)
 
         searchButton!!.setOnClickListener {
             var numberOfRooms: Int? = null
@@ -51,7 +53,7 @@ class SearchFragment: Fragment(){
             val intent = Intent(activity!!, SearchDetailActivity::class.java)
 
             val bundle = Bundle()
-            bundle.putSerializable("result", SearchResult(priceSeekBarValue, numberOfRooms, address))
+            bundle.putSerializable("result", SearchResult(priceSeekBarValue, numberOfRooms, address, forSale.isChecked))
             intent.putExtras(bundle)
 
             startActivity(intent)

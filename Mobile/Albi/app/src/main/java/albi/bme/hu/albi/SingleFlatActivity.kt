@@ -1,7 +1,9 @@
 package albi.bme.hu.albi
 
 import albi.bme.hu.albi.adapter.recycleviewadapter.SlidingImageAdapter
+import albi.bme.hu.albi.helpers.Today
 import albi.bme.hu.albi.model.Flat
+import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.FlatDateResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Intent
@@ -16,22 +18,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import kotlin.collections.HashMap
-
-class Today {
-    init{
-        setToday()
-    }
-    private fun setToday(){
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        date = "$year.$month.$day"
-    }
-
-    private var date: String? = null
-
-}
 
 class SingleFlatActivity : AppCompatActivity() {
 
@@ -70,7 +56,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
     private fun sendView() {
         val client = RestApiFactory.createFlatClient()
-        val call = client.addView(flat._id, Today())
+        val call = client.addView(flat._id, Today(), User.token!!)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -150,7 +136,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
     private fun sendNetworkRequestForUpdateFlat() {
         val client = RestApiFactory.createFlatClient()
-        val call = client.updateFlat(flat)
+        val call = client.updateFlat(flat, User.token!!)
 
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {

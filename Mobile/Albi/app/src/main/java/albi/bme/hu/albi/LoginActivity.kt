@@ -1,6 +1,7 @@
 package albi.bme.hu.albi
 
 import albi.bme.hu.albi.model.User
+import albi.bme.hu.albi.network.LoginResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -23,12 +24,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        btnLogin.setOnClickListener (::loginOnClickListener)
-        btnRegister.setOnClickListener (::registerOnClickListener)
+        btnLogin.setOnClickListener(::loginOnClickListener)
+        btnRegister.setOnClickListener(::registerOnClickListener)
 
     }
 
-    private fun loginOnClickListener(view: View){
+    private fun loginOnClickListener(view: View) {
         val user: User?
         if (etUsername.text.toString().isEmpty()) {
             etUsername.requestFocus()
@@ -45,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerOnClickListener(view: View){
+    private fun registerOnClickListener(view: View) {
         val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
         startActivity(intent)
         finish()
@@ -72,12 +73,13 @@ class LoginActivity : AppCompatActivity() {
         val client = RestApiFactory.createUserClient()
         val call = client.loginUser(user)
 
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
-                if (response.body().toString() == "OK") {
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: retrofit2.Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.body()?.message == "OK") {
                     getEveryDetailOfUser(user.username)
                     val handler = Handler()
                     handler.postDelayed({
+                        User.token = "Bearer " + response.body()?.token
                         startMain(loggedUser)
                     }, DELAY_IN_MILLIS)
                 } else {
@@ -86,14 +88,14 @@ class LoginActivity : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: retrofit2.Call<String>, t: Throwable) {
+            override fun onFailure(call: retrofit2.Call<LoginResponse>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@LoginActivity, "error in login:(" + t.message, Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    private fun startMain(user: User?){
+    private fun startMain(user: User?) {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         intent.putExtra("user", user)
         startActivity(intent)

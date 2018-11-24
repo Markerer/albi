@@ -94,12 +94,12 @@
         android:id="@+id/addhouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/upload_advertisement"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/toggleForRent"
         app:layout_constraintTop_toBottomOf="@+id/address_upload" />
 
     <Button
@@ -128,5 +128,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addhouse" />
 
+    <ToggleButton
+        android:id="@+id/toggleForRent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:showText="true"
+        android:textOff="@string/for_rent"
+        android:textOn="@string/for_sale"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address_upload" />
 
 </android.support.constraint.ConstraintLayout>
