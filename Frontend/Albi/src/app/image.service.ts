@@ -4,22 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { Image } from './image';
 
 
-var token: string = "Bearer ";
-
-const httpAuth = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': token
-  })
-}
-
-const httpAuthIMG = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': token
-  })
-}
-
 @Injectable()
 export class ImageService {
 
@@ -47,12 +31,24 @@ export class ImageService {
 
   // Kép feltöltése az adott hirdetéshez
   uploadImage(uploadData: FormData, flatID: String): Observable<Object> {
-    return this.http.post(this.apiRoot + 'flat/upload/' + flatID, uploadData, httpAuthIMG);
+    return this.http.post(this.apiRoot + 'flat/upload/' + flatID, uploadData,
+      {
+        headers: {
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem("token")
+          //'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
   }
 
   // Adott kép törlése
   deleteImage(imgID: String): Observable<Object> {
-    token += localStorage.getItem("token");
-    return this.http.delete(this.apiRoot + 'image/' + imgID, httpAuth);
+    return this.http.delete(this.apiRoot + 'image/' + imgID,
+      {
+        responseType: 'text',
+        headers: {
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+        }
+      });
   }
 }
