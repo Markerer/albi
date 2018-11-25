@@ -6,6 +6,7 @@ import albi.bme.hu.albi.network.FlatDateResponse
 import albi.bme.hu.albi.network.FlatPageResponse
 import albi.bme.hu.albi.network.ImageDataResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -21,7 +22,7 @@ interface FlatClient {
     @Multipart
     @POST("/flat/upload/{flatID}")
     fun uploadPhoto(@Path("flatID") flatID: String,
-                    @Part photo: MultipartBody.Part,
+                    @PartMap params: Map<String, @JvmSuppressWildcards RequestBody>,
                     @Header("Authorization") token: String): Call<ResponseBody>
 
     @POST("/addflat/{userid}")

@@ -209,10 +209,14 @@ class AddFlatFragment : Fragment() {
          */
         val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181119_123054.jpg")
         Log.i("absolutePath", finalFile.absolutePath)
-        val reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), finalFile) //finalFile
+        val reqFile = RequestBody.create(MediaType.parse("image/jpeg"), finalFile) //finalFile, multipart/form-data"
         val body = MultipartBody.Part.createFormData("image", "image", reqFile)
+        val nameParam = RequestBody.create(okhttp3.MultipartBody.FORM, finalFile.name)
+        var map = HashMap<String, RequestBody>()
+        map.put("image", reqFile)
 
-        val call = client.uploadPhoto(flatID, body, User.token!!)
+
+        val call = client.uploadPhoto(flatID, map, User.token!!)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
