@@ -247,8 +247,10 @@ export class FlatComponent implements OnInit {
     for (let i of this.flat.images) {
       this.imageService.deleteImage(i._id).subscribe(response => console.log(response));
     }
-    this.mainService.deleteFlat(this.flat._id).subscribe(response => console.log(response));
-    this.navigateToMyAds();
+    this.mainService.deleteFlat(this.flat._id).subscribe(response => {
+      console.log(response);
+      this.navigateToMyAds();
+    });
   }
 
   // A modal ablak kódja

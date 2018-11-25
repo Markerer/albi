@@ -4,20 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import * as moment from "moment";
+import 'rxjs/add/operator/catch';
 
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
     })
-}
-
-var token: string = "Bearer ";
-
-const httpAuth = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': token
-  })
 }
 
 @Injectable()
@@ -44,8 +36,6 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<Object> {
-    token += localStorage.getItem("token");
-    console.log(token);
     return this.http.put(this.apiRoot + 'user/',
       {
         "_id": `${user._id}`,
@@ -54,7 +44,13 @@ export class UserService {
         "email": `${user.email}`,
         "phone_number": `${user.phone_number}`,
         "address": `${user.address}`
-      }, httpAuth);
+      }, {
+        responseType: 'text',
+        headers: {
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+        }
+      });
   }
 
   loginUser(username: String, pw: String): Observable<Object> {
@@ -63,7 +59,13 @@ export class UserService {
         "username": `${username}`,
         "password": `${pw}`
       },
-      httpOptions);
+      httpOptions).catch(e => {
+        console.log("before 401");
+        if (e.status === 401) {
+          console.log("unathservice");
+          return Observable.throw('Unauthorized');
+        }
+      });
   }
 
   public setSession(token: string) {

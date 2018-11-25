@@ -11,15 +11,6 @@ const httpOptions = {
   })
 }
 
-var token: string = "Bearer ";
-
-const httpAuth = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': token
-  })
-}
-
 @Injectable()
 export class MainService {
 
@@ -44,13 +35,16 @@ export class MainService {
 
   // Egy hirdetés megtekintési számának növelése
   addViewingToAdvertisement(flatID: String, date: String): Observable<ChartData>{
-    console.log("add" + flatID);
-    token += localStorage.getItem("token");
     return this.http.post<ChartData>(this.apiRoot + 'date/' + flatID,
     {
       "date": `${date}`
     },
-    httpAuth);
+      {
+        headers: {
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+        }
+      });
   }
 
   
@@ -61,7 +55,6 @@ export class MainService {
 
   // Új hirdetés feladása
   addAdvertisement(flat: Flat): Observable<Flat> {
-    token += localStorage.getItem("token");
     return this.http.post<Flat>(this.apiRoot + 'addflat/' + flat.userID,
       {
         "userID": `${flat.userID}`,
@@ -75,12 +68,16 @@ export class MainService {
         "address": `${flat.address}`,
         "forSale": `${flat.forSale}`
       },
-      httpAuth);
+      {
+        headers: {
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+        }
+      });
   }
 
   // Lakás adatainak módosítása
   updateFlat(flat: Flat): Observable<Object> {
-    token += localStorage.getItem("token");
     return this.http.put(this.apiRoot + 'flats/',
       {
         "_id": `${flat._id}`,
@@ -95,12 +92,22 @@ export class MainService {
         "address": `${flat.address}`,
         "forSale": `${flat.forSale}`
       },
-      httpAuth);
+      {
+        responseType: 'text',
+        headers: {
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+        }
+      });
   }
   
   deleteFlat(flatID: String): Observable<Object> {
-    token += localStorage.getItem("token");
-    return this.http.delete(this.apiRoot + 'flat/' + flatID, httpAuth);
+    return this.http.delete(this.apiRoot + 'flat/' + flatID, {
+      responseType: 'text',
+      headers: {
+        'Authorization': 'Bearer' + ' ' + localStorage.getItem("token")
+      }
+    });
   }
 
 

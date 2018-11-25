@@ -1,6 +1,7 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Backend",
     "\\Frontend",
     "\\Frontend\\Albi",
     "\\Frontend\\Albi\\src",
@@ -8,9 +9,8 @@
     "\\Frontend\\Albi\\src\\app\\add-advertisement",
     "\\Frontend\\Albi\\src\\app\\flat",
     "\\Frontend\\Albi\\src\\app\\login",
-    "\\Frontend\\Albi\\src\\app\\myads",
-    "\\Frontend\\Albi\\src\\app\\profile"
+    "\\Frontend\\Albi\\src\\app\\main"
   ],
-  "SelectedNode": "\\Frontend\\Albi\\src\\app\\main.service.ts",
+  "SelectedNode": "\\Frontend\\Albi\\src\\app\\login\\login.component.ts",
   "PreviewInSolutionExplorer": false
 }
