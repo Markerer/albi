@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { User } from '../user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MainService } from '../main.service';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ImageService } from '../image.service';
 import { Image } from '../image';
 import { UserService } from '../user.service';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'app-add-advertisement',

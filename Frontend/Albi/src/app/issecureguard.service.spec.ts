@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { IssecureguardService } from './issecureguard.service';
+import { IsSecureGuard } from './issecureguard.service';
 
-describe('IssecureguardService', () => {
+describe('IssecureGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [IssecureguardService]
+      providers: [IsSecureGuard]
     });
   });
 
-  it('should be created', inject([IssecureguardService], (service: IssecureguardService) => {
+  it('should be created', inject([IsSecureGuard], (service: IsSecureGuard) => {
     expect(service).toBeTruthy();
   }));
 });
