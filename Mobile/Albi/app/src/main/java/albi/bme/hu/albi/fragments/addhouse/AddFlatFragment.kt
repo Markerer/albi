@@ -6,17 +6,14 @@ import albi.bme.hu.albi.model.User
 import albi.bme.hu.albi.network.RestApiFactory
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
-import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
@@ -30,7 +27,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.add_house_fragment.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -39,10 +35,14 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 
 class AddFlatFragment : Fragment() {
 
@@ -190,7 +190,8 @@ class AddFlatFragment : Fragment() {
                 Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
             }
         }
-        sendNetworkUploadPhoto("5be82cefdcba3e22b8bb0411")
+        //sendNetworkUploadPhoto("5be82cefdcba3e22b8bb0411")
+        tryWithAutHerokuapp()
     }
 
 
@@ -243,7 +244,7 @@ class AddFlatFragment : Fragment() {
 
                 override fun onFailure(call: retrofit2.Call<Flat>?, t: Throwable?) {
                     t?.printStackTrace()
-                    Toast.makeText(context, "error in uploading advertisement :(" + t?.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "error in uploading advertisement: " + t?.message, Toast.LENGTH_LONG).show()
                 }
             })
         }
@@ -336,5 +337,62 @@ class AddFlatFragment : Fragment() {
         }
     }
 
+
+    fun tryWithAutHerokuapp() {
+        val MULTIPART_FORM_DATA = "multipart/form-data"
+        val PHOTO_MULTIPART_KEY_IMG = "image"
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181118_013510.jpg")
+
+        val requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file)
+        val body = MultipartBody.Part.createFormData(PHOTO_MULTIPART_KEY_IMG, file.name, requestFile)
+
+        val nameParam = RequestBody.create(okhttp3.MultipartBody.FORM, "name")
+        val descriptionParam = RequestBody.create(okhttp3.MultipartBody.FORM, "description")
+
+        val client = GalleryInteractor.createSomething()
+        val call = client.uploadImage(body, nameParam, descriptionParam)
+
+        call.enqueue(object : Callback<ResponseBody>{
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(context, "Nem jóság van itten", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            }
+        })
+    }
 }
 
+
+class GalleryInteractor {
+
+    companion object {
+
+        fun createSomething(): GalleryAPI {
+            val retrofit = Retrofit.Builder()
+                    .baseUrl(GalleryAPI.ENDPOINT_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+
+            return retrofit.create(GalleryAPI::class.java)
+        }
+    }
+}
+
+interface GalleryAPI {
+
+    companion object {
+        const val ENDPOINT_URL = "https://aut-android-gallery.herokuapp.com/api/"
+
+    }
+
+    @GET("images")
+    fun getImages(): Call<List<Image>>
+
+    @Multipart
+    @POST("upload")
+    fun uploadImage(@Part file: MultipartBody.Part,
+                    @Part("name") name: RequestBody,
+                    @Part("description") description: RequestBody): Call<ResponseBody>
+
+}
