@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request headers you wish to allow
+   
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,responseType');
 
     // Set to true if you need the website to include cookies in the requests sent
@@ -27,9 +27,10 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
 
     res.header("Access-Control-Allow-Origin", "*");
+     // Request headers you wish to allow
     res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        "Origin, X-Requested-With, Content-Type, responseType, Accept, Authorization"
       );
       
       if (req.method === "OPTIONS") {
