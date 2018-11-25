@@ -89,8 +89,7 @@ module.exports = function (app) {
                   });
             }
             if (tempUser && user.password === tempUser.password) {
-                console.log(tempUser.username);
-                console.log(tempUser._id);
+            
                 const token = jwt.sign(
                     {
                       email: tempUser.email,
@@ -302,7 +301,7 @@ module.exports = function (app) {
 
     });
 
-    app.post('/api/user', checkAuth, function (req, res) {
+    app.post('/api/user', function (req, res) {
         Users.count({ username: req.body.username }, function (err, count) {
             if (count > 0) {
                 res.send("The username is already taken.");
