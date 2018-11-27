@@ -1,0 +1,905 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Albi",
+    "description": "TODO: Add Description",
+    "contact": {}
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "http://localhost:3000",
+      "scopes": {}
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "summary": "/api/login",
+        "operationId": "ApiLoginPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/loginRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/addflat/5bba6fea9fa6ff2c84df9c4c": {
+      "post": {
+        "summary": "/addflat/:userID",
+        "operationId": "Addflat5bba6fea9fa6ff2c84df9c4cPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/userIDRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/api/user/": {
+      "post": {
+        "summary": "/api/user/(createuser)",
+        "operationId": "ApiUserPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/createuserRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "/api/user/",
+        "operationId": "ApiUserDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Request"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "/api/user/(updateuserbyid)",
+        "operationId": "ApiUserPut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/updateuserbyidRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flat/upload/5be60d3c2be1db3bc01c2184": {
+      "post": {
+        "summary": "/flat/:flatID(uploadimageforaflat)",
+        "operationId": "FlatUpload5be60d3c2be1db3bc01c2184Post",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "formData",
+            "required": true,
+            "type": "file",
+            "format": "file",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/date/5be60fc92be1db3bc01c2189": {
+      "post": {
+        "summary": "addnewdate",
+        "operationId": "Date5be60fc92be1db3bc01c2189Post",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/addnewdateRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/date/5bf0332202a63904b4c5789b": {
+      "delete": {
+        "summary": "deletedate(alldateonthatday)",
+        "operationId": "Date5bf0332202a63904b4c5789bDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "getadate",
+        "operationId": "Date5bf0332202a63904b4c5789bGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/image/5bca581a43bc752f807e9096": {
+      "delete": {
+        "summary": "/image/:imageID(deleteimage)",
+        "operationId": "Image5bca581a43bc752f807e9096Delete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flats/": {
+      "put": {
+        "summary": "flats/(updateflat)",
+        "operationId": "FlatsPut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/updateflatRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "/api/users(getalluser)",
+        "operationId": "ApiUsersGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/api/user/5bdb432c4c3f742f700b3887": {
+      "get": {
+        "summary": "api/user/:userId(getauser)",
+        "operationId": "ApiUser5bdb432c4c3f742f700b3887Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/api/main/1": {
+      "get": {
+        "summary": "/api/main/:pageid(getapage(1-last))",
+        "operationId": "ApiMain1Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/user/flats/5be60aed2be1db3bc01c2181": {
+      "get": {
+        "summary": "/user/flats/:userID(allflatsforauser)",
+        "operationId": "UserFlats5be60aed2be1db3bc01c2181Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flat/5be60d3c2be1db3bc01c2184": {
+      "get": {
+        "summary": "/flat/:flatID(getoneflat)",
+        "operationId": "Flat5be60d3c2be1db3bc01c2184Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flat/images/5be60d3c2be1db3bc01c2184": {
+      "get": {
+        "summary": "/flat/images/:flatID(getimagesid)",
+        "operationId": "FlatImages5be60d3c2be1db3bc01c2184Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/image/5be60d872be1db3bc01c2187": {
+      "get": {
+        "summary": "/image/:imageID(getimagename,resizeit)",
+        "operationId": "Image5be60d872be1db3bc01c2187Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flats/1/2111116": {
+      "get": {
+        "summary": "flats/:pageID/:MaxPrice?numberOfRooms=10&address=ad(maxár/queryexample)",
+        "operationId": "Flats12111116Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "numberOfRooms",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flats/1": {
+      "get": {
+        "summary": "/flats/:pageID?price=666&numberOfRooms=666(querymaxárnélkül)",
+        "operationId": "Flats1Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "price",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          },
+          {
+            "name": "numberOfRooms",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/api/user": {
+      "get": {
+        "summary": "/api/user?username=mark&phone_number=6667832(user?query)",
+        "operationId": "ApiUserGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "phone_number",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/image-1542401983461.jpg": {
+      "get": {
+        "summary": "LoadImage",
+        "operationId": "Image1542401983461JpgGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    },
+    "/flat/dates/5be60d3c2be1db3bc01c2184": {
+      "get": {
+        "summary": "getalldatesforaflat",
+        "operationId": "FlatDates5be60d3c2be1db3bc01c2184Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "loginRequest": {
+      "title": "/api/loginRequest",
+      "example": {
+        "username": "mark",
+        "password": "mark"
+      },
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "userIDRequest": {
+      "title": "/addflat/:userIDRequest",
+      "example": {
+        "price": "100",
+        "numberOfRooms": "10",
+        "description": "asd",
+        "email": "asd",
+        "phone_number": "asd",
+        "zipCode": "2030",
+        "city": "Érd",
+        "address": "String",
+        "forSale": false
+      },
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "string"
+        },
+        "numberOfRooms": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "forSale": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "price",
+        "numberOfRooms",
+        "description",
+        "email",
+        "phone_number",
+        "zipCode",
+        "city",
+        "address",
+        "forSale"
+      ]
+    },
+    "createuserRequest": {
+      "title": "/api/user/(createuser)Request",
+      "example": {
+        "username": "joska",
+        "password": "123456",
+        "email": "test@gmail.com",
+        "phone_number": "111111",
+        "address": "test utca"
+      },
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password",
+        "email",
+        "phone_number",
+        "address"
+      ]
+    },
+    "addnewdateRequest": {
+      "title": "addnewdateRequest",
+      "example": {
+        "date": "2018.11.15"
+      },
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "date"
+      ]
+    },
+    "Request": {
+      "title": "/api/user/Request",
+      "example": {
+        "id": "5bb9de2c247b76471862e0c6"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "updateuserbyidRequest": {
+      "title": "/api/user/updateuserbyidRequest",
+      "example": {
+        "_id": "5bc59cd08e917d0c7021b7d2",
+        "username": "updated",
+        "password": "123456",
+        "email": "test@gmail.com",
+        "phone_number": "222222",
+        "address": "test utca"
+      },
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "username",
+        "password",
+        "email",
+        "phone_number",
+        "address"
+      ]
+    },
+    "updateflatRequest": {
+      "title": "flats/(updateflat)Request",
+      "example": {
+        "_id": "5bca576143bc752f807e9094",
+        "userID": "5bb9defc3df96e14b077f500",
+        "price": "666",
+        "numberOfRooms": "666",
+        "description": "putos flat",
+        "email": "String",
+        "phone_number": "String",
+        "zipCode": "2030",
+        "city": "Érd",
+        "address": "String",
+        "forSale": false
+      },
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "numberOfRooms": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "forSale": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "_id",
+        "userID",
+        "price",
+        "numberOfRooms",
+        "description",
+        "email",
+        "phone_number",
+        "zipCode",
+        "city",
+        "address",
+        "forSale"
+      ]
+    }
+  },
+  "tags": []
+}
