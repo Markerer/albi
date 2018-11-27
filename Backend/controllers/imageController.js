@@ -1,7 +1,8 @@
 var Images = require('../models/image');
-const sharp = require('sharp');
-const fs = require('fs');
+//const sharp = require('sharp');
+//const fs = require('fs');
 const checkAuth = require('../middleware/check-auth');
+var Jimp = require('jimp');
 
 
 module.exports = function (app) {
@@ -45,7 +46,7 @@ module.exports = function (app) {
     }
 
     //Upload image
-    app.post('/flat/upload/:id', checkAuth, function (req, res) {
+    app.post('/flat/upload/:id',  checkAuth, function (req, res) {
         var name;
         upload(req, res, function(err) {
             name = req.file.filename;
@@ -76,12 +77,20 @@ module.exports = function (app) {
 
                 }
                 
-                sharp('./public/uploads/' + name).resize({ width: 600 }).toBuffer(function (err, buffer) {
+                /*sharp('./public/uploads/' + name).resize({ width: 600 }).toBuffer(function (err, buffer) {
                     // 100 pixels wide, auto-scaled height
                     fs.writeFile('./public/uploads/' + name, buffer, function (e) {
 
                     });
-                });
+                });*/
+                Jimp.read('./public/uploads/' + name, (err, lenna) => {
+                    if (err) throw err;
+                    lenna
+                      .resize(600, Jimp.AUTO) // resize
+                      .quality(60) // set JPEG quality
+                      .greyscale() // set greyscale
+                      .write('./public/uploads/' + name); // save
+                  });
             }
         });
 
