@@ -3,6 +3,7 @@ var Flats = require('../models/flatModel');
 var bodyParser = require('body-parser');
 const checkAuth = require('../middleware/check-auth');
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 module.exports = function (app) {
 
@@ -82,31 +83,47 @@ module.exports = function (app) {
         Users.findOne({ username: user.username }, function (err, tempUser) {
             if (err) {
                 return res.status(401).json({
-                    message: "NOT OK"
+                    message: "NOT OKS"
                 });
             }
-            if (tempUser && user.password === tempUser.password) {
-
-                const token = jwt.sign(
-                    {
-                        email: tempUser.email,
-                        userId: tempUser._id
-                    },
-                    "secret",
-                    {
-                        expiresIn: "1h"
+                
+            if (tempUser) {
+                
+                bcrypt.compare(user.password, tempUser.password, (err, result) => {
+                    console.log(tempUser.username);
+                    if (err) {
+                        return res.status(401).json({
+                            message: "Auth failed"
+                        });
                     }
-                );
-                return res.status(200).json({
-                    message: "OK",
-                    token: token
+                    if (result) {
+                        const token = jwt.sign(
+                            {
+                                email: tempUser.email,
+                                userId: tempUser._id
+                            },
+                            "secret",
+                            {
+                                expiresIn: "1h"
+                            }
+                        );
+                        return res.status(200).json({
+                            message: "OK",
+                            token: token
+                        });
+                    }
+                    res.status(401).json({
+                        message: "NOT OK"
+                    });
                 });
-
             }
-            res.status(401).json({
-                message: "NOT OK"
+
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
             });
-        });
+          });
 
 
     })
@@ -170,21 +187,29 @@ module.exports = function (app) {
                 res.send("The username is already taken.");
             }
             else {
-                var newUser = Users({
-                    username: req.body.username,
-                    password: req.body.password,
-                    email: req.body.email,
-                    phone_number: req.body.phone_number,
-                    address: req.body.address
+                var password = req.body.password
+                bcrypt.hash(password, 10, (err, hash) => {
+                    if (err) {
+                        return res.status(500).json({
+                            error: err
+                        });
+                    } else {
+                        var newUser = Users({
+                            username: req.body.username,
+                            password: hash,
+                            email: req.body.email,
+                            phone_number: req.body.phone_number,
+                            address: req.body.address
+                        });
+
+                        Users.create(newUser, function (err, results) {
+                            if (err) throw err;
+
+                            res.send(results);
+
+                        });
+                    }
                 });
-
-                Users.create(newUser, function (err, results) {
-                    if (err) throw err;
-
-                    res.send(results);
-
-                });
-
             }
         });
 

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
-
+const bcrypt = require("bcrypt");
 var Schema = mongoose.Schema;
 
 
