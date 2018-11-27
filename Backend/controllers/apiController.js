@@ -86,15 +86,17 @@ module.exports = function (app) {
                     message: "NOT OKS"
                 });
             }
-                
+              
             if (tempUser) {
                 
+
                 bcrypt.compare(user.password, tempUser.password, (err, result) => {
                     console.log(tempUser.username);
                     if (err) {
                         return res.status(401).json({
                             message: "Auth failed"
                         });
+
                     }
                     if (result) {
                         const token = jwt.sign(
@@ -112,6 +114,7 @@ module.exports = function (app) {
                             token: token
                         });
                     }
+
                     res.status(401).json({
                         message: "NOT OK"
                     });
@@ -121,6 +124,7 @@ module.exports = function (app) {
         }).catch(err => {
             console.log(err);
             res.status(500).json({
+
               error: err
             });
           });
@@ -171,13 +175,20 @@ module.exports = function (app) {
 
     //user updater, create user
     app.put('/api/user', checkAuth, function (req, res) {
+        bcrypt.hash(req.body.password, 10, (err, hash) => {
+            if (err) {
+                return res.status(500).json({
+                    error: err
+                });
+            } else {
 
-        Users.findByIdAndUpdate(req.body._id, { username: req.body.username, password: req.body.password, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function (err, user) {
-            if (err) throw err;
+                Users.findByIdAndUpdate(req.body._id, { username: req.body.username, password: hash, email: req.body.email, phone_number: req.body.phone_number, address: req.body.address }, function (err, user) {
+                    if (err) throw err;
 
-            res.send('Success');
+                    res.send('Success');
+                });
+            }
         });
-
 
     });
 
