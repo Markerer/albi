@@ -6,6 +6,7 @@ var config = require('./config');
 var setupController = require('./controllers/setupController');
 var apiController = require('./controllers/apiController');
 var dateController = require('./controllers/dateController');
+var imageController = require('./controllers/imageController');;
 
 var port = process.env.PORT || 3000;
 
@@ -47,6 +48,7 @@ app.use(express.static('./public/uploads'));
 mongoose.connect(config.getDbConnectionString());
 setupController(app);
 apiController(app);
+imageController(app);
 dateController(app);
 
 app.listen(port);
