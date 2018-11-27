@@ -88,7 +88,6 @@ module.exports = function (app) {
                     lenna
                       .resize(600, Jimp.AUTO) // resize
                       .quality(60) // set JPEG quality
-                      .greyscale() // set greyscale
                       .write('./public/uploads/' + name); // save
                   });
             }
