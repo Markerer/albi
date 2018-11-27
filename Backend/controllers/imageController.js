@@ -1,5 +1,5 @@
 var Images = require('../models/image');
-//const sharp = require('sharp');
+const sharp = require('sharp');
 const fs = require('fs');
 const checkAuth = require('../middleware/check-auth');
 
@@ -75,13 +75,13 @@ module.exports = function (app) {
                     });
 
                 }
-               /* console.log(name);
+                
                 sharp('./public/uploads/' + name).resize({ width: 600 }).toBuffer(function (err, buffer) {
                     // 100 pixels wide, auto-scaled height
                     fs.writeFile('./public/uploads/' + name, buffer, function (e) {
 
                     });
-                });*/
+                });
             }
         });
 
