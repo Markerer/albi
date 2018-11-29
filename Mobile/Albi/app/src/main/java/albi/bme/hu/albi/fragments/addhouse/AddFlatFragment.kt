@@ -183,7 +183,7 @@ class AddFlatFragment : Fragment() {
                         .load(Uri.fromFile(File(IMAGE_PATH)))
                         .into(imageView2)
 
-                finalFile = File(IMAGE_PATH)
+                finalFile = File(data.data.path)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -209,14 +209,10 @@ class AddFlatFragment : Fragment() {
          * finalFile-ra
          */
         val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181129_151450.jpg")
-        val reqFile = RequestBody.create(MediaType.parse("image/jpeg"), tmpFile) //finalFile, multipart/form-data"
-        val body = MultipartBody.Part.createFormData("image", "image", reqFile)
-        val nameParam = RequestBody.create(okhttp3.MultipartBody.FORM, finalFile.name)
-        var map = HashMap<String, RequestBody>()
-        map.put("image", reqFile)
+        val reqFile = RequestBody.create(MediaType.parse("image/png"), finalFile) //finalFile, multipart/form-data"
+        val body = MultipartBody.Part.createFormData("image", finalFile.name, reqFile)
 
-
-        val call = client.uploadPhoto(flatID, map, User.token!!)
+        val call = client.uploadPhoto(flatID, body, User.token!!)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -335,63 +331,5 @@ class AddFlatFragment : Fragment() {
             }
         }
     }
-
-
-    fun tryWithAutHerokuapp() {
-        val MULTIPART_FORM_DATA = "multipart/form-data"
-        val PHOTO_MULTIPART_KEY_IMG = "image"
-        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181118_013510.jpg")
-
-        val requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file)
-        val body = MultipartBody.Part.createFormData(PHOTO_MULTIPART_KEY_IMG, file.name, requestFile)
-
-        val nameParam = RequestBody.create(okhttp3.MultipartBody.FORM, "name")
-        val descriptionParam = RequestBody.create(okhttp3.MultipartBody.FORM, "description")
-
-        val client = GalleryInteractor.createSomething()
-        val call = client.uploadImage(body, nameParam, descriptionParam)
-
-        call.enqueue(object : Callback<ResponseBody>{
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, "Nem jóság van itten", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-            }
-        })
-    }
-}
-
-
-class GalleryInteractor {
-
-    companion object {
-
-        fun createSomething(): GalleryAPI {
-            val retrofit = Retrofit.Builder()
-                    .baseUrl(GalleryAPI.ENDPOINT_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-
-            return retrofit.create(GalleryAPI::class.java)
-        }
-    }
-}
-
-interface GalleryAPI {
-
-    companion object {
-        const val ENDPOINT_URL = "https://aut-android-gallery.herokuapp.com/api/"
-
-    }
-
-    @GET("images")
-    fun getImages(): Call<List<Image>>
-
-    @Multipart
-    @POST("upload")
-    fun uploadImage(@Part file: MultipartBody.Part,
-                    @Part("name") name: RequestBody,
-                    @Part("description") description: RequestBody): Call<ResponseBody>
 
 }

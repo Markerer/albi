@@ -22,7 +22,7 @@ interface FlatClient {
     @Multipart
     @POST("/flat/upload/{flatID}")
     fun uploadPhoto(@Path("flatID") flatID: String,
-                    @PartMap params: Map<String, @JvmSuppressWildcards RequestBody>,
+                    @Part file: MultipartBody.Part,
                     @Header("Authorization") token: String): Call<ResponseBody>
 
     @POST("/addflat/{userid}")
