@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.concurrent.thread
 
 class LoginActivity : AppCompatActivity() {
 
@@ -76,7 +77,6 @@ class LoginActivity : AppCompatActivity() {
                 t.printStackTrace()
                 Toast.makeText(this@LoginActivity, "error in finding user:(" + t.message, Toast.LENGTH_LONG).show()
             }
-
         })
     }
 
@@ -88,12 +88,22 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: retrofit2.Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.body()?.message == "OK") {
                     getEveryDetailOfUser(user.username)
+                    /**
+                     * "időzített" késleltetés, hogy a másik szálból
+                     * legyen ideje visszatérni az adatokkal
+                     */
+                    thread(start = true) {
+                        while (!done){
+                            Thread.sleep(1000)
+                            done = true
+                        }
+                    }.join()
                     val handler = Handler()
                     handler.postDelayed({
                         User.token = "Bearer " + response.body()?.token
-                        loggedUser = user
                         startMain(loggedUser)
                     }, DELAY_IN_MILLIS)
+
                 } else {
                     Toast.makeText(this@LoginActivity, "Username or password is wrong!", Toast.LENGTH_SHORT).show()
                 }
