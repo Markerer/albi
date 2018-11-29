@@ -31,6 +31,7 @@ class StatisticsActivity : AppCompatActivity() {
         /**
          * https://github.com/Backelite/AChartEngine/blob/master/achartengine/src/org/achartengine/ChartFactory.java
          * https://stackoverflow.com/questions/48805646/android-studio-3-x-update-and-lost-connection-with-achartengine-cant-find-symb
+         * https://www.survivingwithandroid.com/2014/06/android-chart-tutorial-achartengine.html
          */
         mAChartEngine.mChart = ChartFactory.getLineChartView(this, mAChartEngine.mDataSet, mAChartEngine.mRenderer)
         chartLayout.addView(mAChartEngine.mChart)

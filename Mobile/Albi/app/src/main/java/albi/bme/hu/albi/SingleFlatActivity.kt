@@ -71,7 +71,7 @@ class SingleFlatActivity : AppCompatActivity() {
 
     private fun getAllDates(){
         val client = RestApiFactory.createFlatClient()
-        val call = client.getAllDatesForFlat("5be60d3c2be1db3bc01c2184") // flat._id
+        val call = client.getAllDatesForFlat(flat._id) // flat._id 5be60d3c2be1db3bc01c2184
 
         call.enqueue(object : Callback<List<FlatDateResponse>>{
             /**
