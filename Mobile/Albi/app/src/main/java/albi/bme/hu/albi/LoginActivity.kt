@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private val DELAY_IN_MILLIS: Long = 250
 
     var loggedUser: User? = null
+    var done = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +57,19 @@ class LoginActivity : AppCompatActivity() {
         val client = RestApiFactory.createUserClient()
         val call = client.getUserByUserName(name)
 
+        /**
+         * meg kell oldani a következő problémát:
+         * amikor lekérjük a user további adatait (details)
+         * az új szálban indul el, emiatt a
+         * getEveryDetailOfUser(user.username) utáni sorban lévő
+         * Handler még nem kap semmiféle konkrét visszatérési értéket
+         * szóval meg kell oldani, hogy az addig ne tudjon elindulni, még ez
+         * be nem fejezte a lekérést.
+         */
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 loggedUser = response.body()
+                done = true
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
@@ -80,6 +91,7 @@ class LoginActivity : AppCompatActivity() {
                     val handler = Handler()
                     handler.postDelayed({
                         User.token = "Bearer " + response.body()?.token
+                        loggedUser = user
                         startMain(loggedUser)
                     }, DELAY_IN_MILLIS)
                 } else {
