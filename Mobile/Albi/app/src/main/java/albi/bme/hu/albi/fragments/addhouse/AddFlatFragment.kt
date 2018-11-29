@@ -190,8 +190,8 @@ class AddFlatFragment : Fragment() {
                 Toast.makeText(context, "Photo error: " + e.printStackTrace(), Toast.LENGTH_LONG).show()
             }
         }
-        //sendNetworkUploadPhoto("5be82cefdcba3e22b8bb0411")
-        tryWithAutHerokuapp()
+        sendNetworkUploadPhoto("5be60d3c2be1db3bc01c2184")
+        //tryWithAutHerokuapp()
     }
 
 
@@ -208,9 +208,8 @@ class AddFlatFragment : Fragment() {
          * kamera feltöltéshez vissza kell állítani a paramétert
          * finalFile-ra
          */
-        val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181119_123054.jpg")
-        Log.i("absolutePath", finalFile.absolutePath)
-        val reqFile = RequestBody.create(MediaType.parse("image/jpeg"), finalFile) //finalFile, multipart/form-data"
+        val tmpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath + "/" + "Camera" + "/" + "IMG_20181129_151450.jpg")
+        val reqFile = RequestBody.create(MediaType.parse("image/jpeg"), tmpFile) //finalFile, multipart/form-data"
         val body = MultipartBody.Part.createFormData("image", "image", reqFile)
         val nameParam = RequestBody.create(okhttp3.MultipartBody.FORM, finalFile.name)
         var map = HashMap<String, RequestBody>()

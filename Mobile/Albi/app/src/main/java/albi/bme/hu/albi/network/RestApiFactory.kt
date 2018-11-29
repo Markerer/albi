@@ -42,7 +42,7 @@ class RestApiFactory {
 
             val builder = Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(GsonConverterFactory.create(/*gson*/))
 
             val retrofit = builder.build()
             return retrofit.create(FlatClient::class.java)
