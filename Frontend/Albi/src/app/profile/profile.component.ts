@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   constructor(fb: FormBuilder, private router: Router, private userService: UserService) {
       this.updateForm = fb.group({
         'username': [this.user.username, null],
-        'password': [this.user.password, null],
+        'password': ['', null],
         'email': [this.user.email, null],
         'phone_number': [this.user.phone_number, null],
         'address': [this.user.address, null]
@@ -34,10 +34,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
 
-    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
+      // this.router.navigate(['']);
+      // this.router.navigate(['myprofile']);
       var temp = JSON.parse(localStorage.getItem("user"));
       this.user = temp;
-      console.log(this.user);
+     // console.log(this.user);
       this.undefinedUser = false;
     }
     else {
@@ -79,7 +81,7 @@ export class ProfileComponent implements OnInit {
 
     this.userService.updateUser(this.user).subscribe(
       response => {
-        console.log(`${response}`);
+       // console.log(`${response}`);
         this.userService.setUser(this.user);
       });
 
