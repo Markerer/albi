@@ -31,14 +31,6 @@
             </div>
             <div class="input-group form-group-no-border input-lg">
 
-              <input type="password"
-                     class="form-control"
-                     placeholder="Password"
-                     [(ngModel)]="password"
-                     [formControl]="updateForm.get('password')">
-            </div>
-            <div class="input-group form-group-no-border input-lg">
-
               <input type="text"
                      class="form-control"
                      value={{user.email}}
@@ -64,16 +56,24 @@
                      [(ngModel)]="phone_number"
                      [formControl]="updateForm.get('phone_number')">
             </div>
-              <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
-                {{ successMessage }}
-              </div>
-              <div class="input-group form-group-no-border input-lg">
+            <div class="input-group form-group-no-border input-lg">
+
+              <input type="password"
+                     class="form-control"
+                     placeholder="Password"
+                     [(ngModel)]="password"
+                     [formControl]="updateForm.get('password')">
+            </div>
+            <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
+              {{ successMessage }}
+            </div>
+            <div class="input-group form-group-no-border input-lg">
               <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block marginbottom"
                       [disabled]="!updateForm.valid">
                 Update data
               </button>
-              </div>
             </div>
+          </div>
         </form>
           </div>
       </div>

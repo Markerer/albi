@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   constructor(fb: FormBuilder, private router: Router, private userService: UserService) {
       this.updateForm = fb.group({
         'username': [this.user.username, null],
-        'password': ['', null],
+        'password': ['', Validators.required],
         'email': [this.user.email, null],
         'phone_number': [this.user.phone_number, null],
         'address': [this.user.address, null]
