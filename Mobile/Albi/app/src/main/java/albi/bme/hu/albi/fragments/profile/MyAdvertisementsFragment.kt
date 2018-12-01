@@ -4,7 +4,6 @@ import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
-import albi.bme.hu.albi.network.ImageDataResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import albi.bme.hu.albi.network.RestApiList
 import android.os.Bundle

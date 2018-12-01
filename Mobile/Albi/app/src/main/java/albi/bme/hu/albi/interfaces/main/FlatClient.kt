@@ -2,11 +2,10 @@ package albi.bme.hu.albi.interfaces.main
 
 import albi.bme.hu.albi.helpers.Today
 import albi.bme.hu.albi.model.Flat
-import albi.bme.hu.albi.network.FlatDateResponse
-import albi.bme.hu.albi.network.FlatPageResponse
-import albi.bme.hu.albi.network.ImageDataResponse
+import albi.bme.hu.albi.network.responses.FlatDateResponse
+import albi.bme.hu.albi.network.responses.FlatPageResponse
+import albi.bme.hu.albi.network.responses.ImageDataResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*

@@ -48,6 +48,8 @@
     <string name="show_statistics">Show statistics</string>
     <string name="for_sale">For sale</string>
     <string name="for_rent">For Rent</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="city">City</string>
 
     <string-array name="districts_array_name">
         <item>I. kerület</item>

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <Button
         android:id="@+id/uploadimagebutton"
         android:layout_width="match_parent"
@@ -73,22 +72,39 @@
             android:hint="@string/add_description" />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/address_upload"
+    <LinearLayout
+        android:id="@+id/llAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:weightSum="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_upload">
 
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/address" />
-    </android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/etZipCodeAdd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="@string/zip_code"/>
+
+        <EditText
+            android:id="@+id/etCityAdd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="@string/city"/>
+
+        <EditText
+            android:id="@+id/etAddressAdd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="@string/address"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/addhouse"
@@ -100,7 +116,7 @@
         android:text="@string/upload_advertisement"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/toggleForRent"
-        app:layout_constraintTop_toBottomOf="@+id/address_upload" />
+        app:layout_constraintTop_toBottomOf="@+id/llAddress" />
 
     <Button
         android:id="@+id/takephoto"
@@ -139,6 +155,6 @@
         android:textOff="@string/for_rent"
         android:textOn="@string/for_sale"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_upload" />
+        app:layout_constraintTop_toBottomOf="@+id/llAddress" />
 
 </android.support.constraint.ConstraintLayout>

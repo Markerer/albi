@@ -3,8 +3,7 @@ package albi.bme.hu.albi.fragments
 import albi.bme.hu.albi.R
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.model.Flat
-import albi.bme.hu.albi.network.FlatPageResponse
-import albi.bme.hu.albi.network.ImageDataResponse
+import albi.bme.hu.albi.network.responses.FlatPageResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import albi.bme.hu.albi.network.RestApiList
 import android.os.Bundle
@@ -48,8 +47,8 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
             val handler = Handler()
             handler.postDelayed({ swipeContainer.isRefreshing = false }, 1000)
         }
-
         swipeContainer.setColorSchemeResources(android.R.color.holo_green_light)
+
 
         return view
     }
@@ -78,6 +77,7 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
     private fun networkRequestForPaging() {
         if (pageNum == -1)
             return
+
         val client = RestApiFactory.createFlatClient()
         val call = client.getMainFlatsByPage(pageNum)
 

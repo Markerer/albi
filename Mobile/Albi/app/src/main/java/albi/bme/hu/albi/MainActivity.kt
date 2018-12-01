@@ -14,9 +14,6 @@ import android.view.MenuItem
 import albi.bme.hu.albi.fragments.profile.MyAdvertisementsFragment
 import albi.bme.hu.albi.fragments.profile.ProfileFragment
 import albi.bme.hu.albi.fragments.search.SearchFragment
-import android.content.Context
-import android.content.Intent
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*

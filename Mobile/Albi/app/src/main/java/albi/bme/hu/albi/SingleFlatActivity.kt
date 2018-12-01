@@ -4,7 +4,7 @@ import albi.bme.hu.albi.adapter.recycleviewadapter.SlidingImageAdapter
 import albi.bme.hu.albi.helpers.Today
 import albi.bme.hu.albi.model.Flat
 import albi.bme.hu.albi.model.User
-import albi.bme.hu.albi.network.FlatDateResponse
+import albi.bme.hu.albi.network.responses.FlatDateResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -16,7 +16,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.HashMap
 
 class SingleFlatActivity : AppCompatActivity() {
@@ -32,13 +31,14 @@ class SingleFlatActivity : AppCompatActivity() {
         flat = intent.getSerializableExtra("flat") as Flat
         owner = intent.getBooleanExtra("owner", false)
 
-        val slidingImageAdapter = SlidingImageAdapter(applicationContext, flat.imageNames!!)
+        val slidingImageAdapter = SlidingImageAdapter(applicationContext, flat.imageNames)
         pager.adapter = slidingImageAdapter
 
         setFormattedText()
 
         if (owner) {
             editAdvertisement.visibility = View.VISIBLE
+            showStatistics.visibility = View.VISIBLE
         } else {
             sendView()
         }
@@ -71,33 +71,17 @@ class SingleFlatActivity : AppCompatActivity() {
 
     private fun getAllDates(){
         val client = RestApiFactory.createFlatClient()
-        val call = client.getAllDatesForFlat(flat._id) // flat._id 5be60d3c2be1db3bc01c2184
+        val call = client.getAllDatesForFlat(flat._id)
 
         call.enqueue(object : Callback<List<FlatDateResponse>>{
-            /**
-             * azt kell, hogy eltároljuk, egy hashmap-be
-             * ha az adott dátumhoz még nincs megtekintés,
-             * akkor ott pl lehetne 0
-             * egyébként ha meg már tartalmazza azt a dátumot
-             * akkor ha találunk még egy ugyan olyan dátumot
-             * akkor annak a counterjét hozzáadjuk a már benne lévő dátumhoz
-             *
-             * dateFormat: "date": "2018.11.17",
-             */
             override fun onResponse(call: Call<List<FlatDateResponse>>, response: Response<List<FlatDateResponse>>) {
                 val datesResponse = response.body()
                 if (datesResponse != null) {
                     for(i in datesResponse.indices)
-                    /**
-                     * ha még nem tartalmazza a dátumot, akkor beletesszük
-                     */
+
                     if(!statisticData.contains(datesResponse[i].date)){
                         statisticData[datesResponse[i].date!!] = datesResponse[i].counter!!
                     }
-                    /**
-                     * egyébként meg megkeressük azt a dátumot,
-                     * és hozzáadjuk a countert pluszba
-                     */
                     else {
                         val totalView = statisticData[datesResponse[i].date]
                         statisticData[datesResponse[i].date!!] = datesResponse[i].counter!! + totalView!!
@@ -113,13 +97,13 @@ class SingleFlatActivity : AppCompatActivity() {
 
     private fun showStatistics(){
         val intent = Intent(this@SingleFlatActivity, StatisticsActivity::class.java)
-        // https://stackoverflow.com/questions/7578236/how-to-send-hashmap-value-to-another-activity-using-an-intent
         intent.putExtra("statisticData", statisticData)
         startActivity(intent)
     }
 
     private fun editOnClick() {
         setElementsEditability(true)
+        showStatistics.visibility = View.INVISIBLE
         editAdvertisement.visibility = View.INVISIBLE
         saveAdvertisement.visibility = View.VISIBLE
     }
@@ -130,6 +114,7 @@ class SingleFlatActivity : AppCompatActivity() {
             sendNetworkRequestForUpdateFlat()
             editAdvertisement.visibility = View.VISIBLE
             saveAdvertisement.visibility = View.INVISIBLE
+            showStatistics.visibility = View.VISIBLE
             setElementsEditability(false)
         }
     }

@@ -3,7 +3,7 @@ package albi.bme.hu.albi
 import albi.bme.hu.albi.adapter.recycleviewadapter.RecyclerAdapter
 import albi.bme.hu.albi.fragments.search.SearchResult
 import albi.bme.hu.albi.model.Flat
-import albi.bme.hu.albi.network.FlatPageResponse
+import albi.bme.hu.albi.network.responses.FlatPageResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import albi.bme.hu.albi.network.RestApiList
 import android.support.v7.app.AppCompatActivity
@@ -33,6 +33,8 @@ class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_detail)
 
+        pageNum = 1
+
         val bundle = intent.extras!!
         searchResult = bundle.getSerializable("result") as SearchResult
 
@@ -51,7 +53,6 @@ class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
         })
 
         sendNetworkRequestSearch()
-
     }
 
     private fun sendNetworkRequestSearch() {
@@ -59,7 +60,8 @@ class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
             return
 
         val client = RestApiFactory.createFlatClient()
-        val call = client.getFlatsBySearch(pageNum,
+        val call = client.getFlatsBySearch(
+                pageNum,
                 searchResult.price,
                 searchResult.numberOfRooms,
                 searchResult.address)
@@ -83,16 +85,10 @@ class SearchDetailActivity : AppCompatActivity(), RestApiList.ListInterface {
 
                 pageNum++
 
-                if (usersData.size == 0 && pageNum <= flatResponse.pages!!){
-                    sendNetworkRequestSearch()
-                }
-
                 if (pageNum > flatResponse.pages!!) {
                     pageNum = -1
                 }
-
             }
         })
     }
-
 }

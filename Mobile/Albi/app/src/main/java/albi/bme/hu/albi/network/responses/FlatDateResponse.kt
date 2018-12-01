@@ -1,4 +1,4 @@
-package albi.bme.hu.albi.network
+package albi.bme.hu.albi.network.responses
 
 import java.util.*
 

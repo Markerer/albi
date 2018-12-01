@@ -21,10 +21,7 @@ class RecyclerAdapter(private val flatList: ArrayList<Flat>, private val context
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return flatList.size
-    }
-
+    override fun getItemCount(): Int = flatList.size
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val flat: Flat = flatList[position]

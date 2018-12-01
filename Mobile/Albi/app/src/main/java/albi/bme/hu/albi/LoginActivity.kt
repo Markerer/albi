@@ -1,16 +1,14 @@
 package albi.bme.hu.albi
 
 import albi.bme.hu.albi.model.User
-import albi.bme.hu.albi.network.LoginResponse
+import albi.bme.hu.albi.network.responses.LoginResponse
 import albi.bme.hu.albi.network.RestApiFactory
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
-import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.concurrent.thread
@@ -58,17 +56,6 @@ class LoginActivity : AppCompatActivity() {
         val call = client.getUserByUserName(name)
 
         loggedUser = call.execute().body()
-
-        /*call.enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                loggedUser = response.body()
-            }
-
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@LoginActivity, "error in finding user:(" + t.message, Toast.LENGTH_LONG).show()
-            }
-        })*/
     }
 
     private fun sendNetworkRequestLogin(user: User) {

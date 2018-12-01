@@ -18,7 +18,7 @@ class StatisticsActivity : AppCompatActivity() {
 
         chartLayout = findViewById(R.id.chart)
 
-        var intent = intent
+        val intent = intent
         data = intent.getSerializableExtra("statisticData") as (HashMap<String, Int>)
     }
 
