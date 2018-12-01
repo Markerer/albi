@@ -3,7 +3,7 @@
 <body class="bod">
   <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
-    <div class="col-md-3">
+    <div class="col-md-auto">
       <div class="card card-login card-plain text-center" style="padding-top:40px">
         <h1 style="color:white">Albi</h1>
         <h6 style="color:white">A flat-sharing application</h6>
@@ -101,7 +101,7 @@
             <div *ngIf="alertTakenMessage" type="danger" class="alert alert-danger" (close)="alertTakenMessage = null">
               {{ alertTakenMessage }}
             </div>
-            <div class="input-group form-group-no-border input-lg">
+            <div>
               <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!createForm.valid">
                 Create user
