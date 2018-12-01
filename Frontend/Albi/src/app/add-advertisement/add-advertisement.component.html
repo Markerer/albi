@@ -1,5 +1,5 @@
 <html>
-<body>
+<body class="bod">
 
   <div>
     <app-navbar></app-navbar>
@@ -16,7 +16,7 @@
           <!--d-flex kell, mert akkor lesz flexbox, aztán a justify horizontálisan középre, align pedig vertikálisan-->
           <div class="card-body align-items-center d-flex justify-content-center">
             <div class="text-center">
-              <a class="btn btn-primary btn-round btn-lg center justify-content-center" style="color:white" (click)="deleteImage(myimage._id)">Delete image</a>
+              <a class="btn btn-primary btn-round btn-lg center middlebtn" style="color:white" (click)="deleteImage(myimage._id)">Delete image</a>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@
   </div>
 
   <div class="container toppadding align-items-center justify-content-center d-flex" *ngIf="!advertisementCreated">
-    <div class="col-md-4 content-center" id="centeralign">
+    <div class="col-md-4 content-center">
       <div class="card card-login card-plain">
         <form [formGroup]="createFlatForm"
               (ngSubmit)="createFlat(
@@ -147,19 +147,19 @@
             <div class="input-group form-group-no-border input-lg">
               <div class="form-check form-check-radio">
                 <label class="form-check-label" for="gridRadios1">
-                  For Underlease
-                </label>
                 <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="createFlatForm.get('type')" name="gridRadios" id="gridRadios1" value="underlease">
+                For Underlease
                 <span class="form-check-sign"></span>
+                </label>
               </div>
             </div>
             <div class="input-group form-group-no-border input-lg">
               <div class="form-check form-check-radio">
                 <label class="form-check-label" for="gridRadios2">
-                  For Sale
-                </label>
                 <input class="form-check-input" type="radio" [(ngModel)]="type" [formControl]="createFlatForm.get('type')" name="gridRadios" id="gridRadios2" value="sale">
+                For Sale
                 <span class="form-check-sign"></span>
+                </label>
               </div>
             </div>
 

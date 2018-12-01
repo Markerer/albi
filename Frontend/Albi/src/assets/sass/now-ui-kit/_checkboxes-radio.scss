@@ -16,7 +16,7 @@
   transition: color 0.3s linear;
 }
 .radio .form-check-sign{
-    padding-left: 28px;
+    padding-left: 0px;
 }
 
 .form-check .form-check-sign::before,
@@ -30,8 +30,8 @@
   cursor: pointer;
   border-radius: 3px;
   top: 0;
-  background-color: transparent;
-  border: 1px solid $light-gray;
+  background-color:  rgba(#ffffff, 0.3);
+  border: 2px solid $light-gray;
   -webkit-transition: opacity 0.3s linear;
   -moz-transition: opacity 0.3s linear;
   -o-transition: opacity 0.3s linear;
@@ -43,7 +43,7 @@
   font-family: 'Nucleo Outline';
   content: "\ea22";
   top: 0px;
-  text-align: center;
+  text-align: left;
   font-size: 14px;
   opacity: 0;
   color: $dark-background;

@@ -1,5 +1,5 @@
 <html>
-<body>
+<body class="bod">
   <div>
     <app-navbar></app-navbar>
   </div>
@@ -35,7 +35,7 @@
           <!--d-flex kell, mert akkor lesz flexbox, aztán a justify horizontálisan középre, align pedig vertikálisan-->
           <div class="card-body align-items-center d-flex justify-content-center">
             <div class="text-center">
-              <a class="btn btn-primary btn-round btn-lg center justify-content-center" style="color:white" (click)="deleteImage(myimage._id)">Delete image</a>
+              <a class="btn btn-primary btn-round btn-lg center middlebtn" style="color:white" (click)="deleteImage(myimage._id)">Delete image</a>
             </div>
           </div>
         </div>
@@ -233,6 +233,13 @@
             <ngb-carousel class="carousel centering" *ngIf="!flat.noImageFound">
               <ng-template ngbSlide *ngFor="let myimage of flat.images;">
                 <img class="d-block item" src="{{myimage.filename}}" alt="First slide">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+              </ng-template>
+            </ngb-carousel>
+            <ngb-carousel class="carousel centering" *ngIf="flat.noImageFound">
+              <ng-template ngbSlide>
+                <img class="d-block item" src="assets/img/download.png" alt="basicIMG">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
               </ng-template>

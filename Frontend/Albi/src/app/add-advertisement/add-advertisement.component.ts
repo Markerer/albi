@@ -10,6 +10,7 @@ import { ImageService } from '../image.service';
 import { Image } from '../image';
 import { UserService } from '../user.service';
 import { EventEmitter } from 'events';
+import { AppSettings } from '../appsettings';
 
 @Component({
   selector: 'app-add-advertisement',
@@ -47,10 +48,10 @@ export class AddAdvertisementComponent implements OnInit {
 
   ngOnInit() {
 
-    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       var temp = JSON.parse(localStorage.getItem("user"));
       this.user = temp;
-      console.log(this.user);
+     // console.log(this.user);
       this.undefinedUser = false;
     }
     else {
@@ -82,16 +83,16 @@ export class AddAdvertisementComponent implements OnInit {
     this.createdFlat.zipCode = zipCode.toString();
     this.createdFlat.city = city;
     this.createdFlat.address = address;
-    console.log(type);
+   // console.log(type);
     if (type === "underlease") {
       this.createdFlat.forSale = false;
     } else if (type === "sale") {
       this.createdFlat.forSale = true;
     }
-    console.log(this.createdFlat);
+   // console.log(this.createdFlat);
     //A belépett user továbbadása
     this.mainService.addAdvertisement(this.createdFlat).subscribe(addedFlat => {
-      console.log(addedFlat);
+   //   console.log(addedFlat);
       this.createdFlat = addedFlat;
       this.advertisementCreated = true;
     });
@@ -112,7 +113,7 @@ export class AddAdvertisementComponent implements OnInit {
       const uploadData = new FormData();
       uploadData.append('image', this.selectedFile, this.selectedFile.name);
       this.imageService.uploadImage(uploadData, this.createdFlat._id).subscribe(object => {
-        console.log(object);
+     //   console.log(object);
         this.changeSuccessUploadMsg();
         this.getImages();
       });
@@ -122,7 +123,7 @@ export class AddAdvertisementComponent implements OnInit {
   // Adott kép törlése
   deleteImage(imageID: String): void {
     this.imageService.deleteImage(imageID).subscribe(response => {
-      console.log(response);
+     // console.log(response);
       this.getImages();
     });
   }
@@ -141,7 +142,7 @@ export class AddAdvertisementComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         var temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = AppSettings.API_ROOT + data[i].filename;
         flat.images.push(temp);
       }
       flat.firstImage = new Image();

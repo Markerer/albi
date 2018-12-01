@@ -1,11 +1,12 @@
+<!DOCTYPE html>
 <html>
-<body style="background:url(assets/img/bg6.jpg); background-repeat:no-repeat; background-size:100vw 100vh;
-   height: 100vh; background-attachment:fixed">
+<body style="background:url(assets/img/bg6.jpg);  background-repeat:no-repeat;
+background-attachment:fixed;
+background-size: 100vw 100vh;" class="bod">
   <div class="container align-items-center justify-content-center d-flex">
 
-    <div class="col-md-4 content-center">
+    <div class="col-md-4">
       <div class="card card-login card-plain align-items-center justify-content-center d-flex" style="padding-top:40px">
-
         <h1 style="color:white">Albi</h1>
         <h6 style="color:white">A flat-sharing application</h6>
       </div>
@@ -99,8 +100,11 @@
             <div *ngIf="successMessage" type="success" class="alert alert-success" (close)="successMessage = null">
               {{ successMessage }}
             </div>
+            <div *ngIf="alertTakenMessage" type="danger" class="alert alert-danger" (close)="alertTakenMessage = null">
+              {{ alertTakenMessage }}
+            </div>
             <div class="input-group form-group-no-border input-lg">
-              <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block"
+              <button type="submit" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!createForm.valid">
                 Create user
               </button>

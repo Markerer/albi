@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Flat } from './flat';
 import { ChartData } from './chartdata';
+import { AppSettings } from './appsettings';
 
 
 const httpOptions = {
@@ -14,28 +15,26 @@ const httpOptions = {
 @Injectable()
 export class MainService {
 
-  apiRoot: string = 'http://localhost:3000/';
-
   constructor(private http: HttpClient) { }
 
   // Fő oldalon megjelenő hirdetések lekérése
   getMainScreen(page: number): Observable<Object[]> {
-    return this.http.get<Object[]>(this.apiRoot + 'api/' + 'main/' + page);
+    return this.http.get<Object[]>(AppSettings.API_ROOT + 'api/' + 'main/' + page);
   }
 
   // Egy lakás lekérése
   getFlatByID(flatID: String): Observable<Flat> {
-    return this.http.get<Flat>(this.apiRoot + 'flat/' + flatID);
+    return this.http.get<Flat>(AppSettings.API_ROOT + 'flat/' + flatID);
   }
   
   // Egy hirdetéshez tartozó megtekintési adatok lekérése
   getAdvertisementStats(flatID: String): Observable<ChartData[]> {
-    return this.http.get<ChartData[]>(this.apiRoot + 'flat/' + 'dates/' + flatID);
+    return this.http.get<ChartData[]>(AppSettings.API_ROOT + 'flat/' + 'dates/' + flatID);
   }
 
   // Egy hirdetés megtekintési számának növelése
   addViewingToAdvertisement(flatID: String, date: String): Observable<ChartData>{
-    return this.http.post<ChartData>(this.apiRoot + 'date/' + flatID,
+    return this.http.post<ChartData>(AppSettings.API_ROOT + 'date/' + flatID,
     {
       "date": `${date}`
     },
@@ -50,12 +49,12 @@ export class MainService {
   
   // Egy felhasználó minden lakásának lekérése
   getUserFlats(userID: String): Observable<Flat[]> {
-    return this.http.get<Flat[]>(this.apiRoot + 'user/flats/' + userID);
+    return this.http.get<Flat[]>(AppSettings.API_ROOT + 'user/flats/' + userID);
   }
 
   // Új hirdetés feladása
   addAdvertisement(flat: Flat): Observable<Flat> {
-    return this.http.post<Flat>(this.apiRoot + 'addflat/' + flat.userID,
+    return this.http.post<Flat>(AppSettings.API_ROOT + 'addflat/' + flat.userID,
       {
         "userID": `${flat.userID}`,
         "price": `${flat.price}`,
@@ -78,7 +77,7 @@ export class MainService {
 
   // Lakás adatainak módosítása
   updateFlat(flat: Flat): Observable<Object> {
-    return this.http.put(this.apiRoot + 'flats/',
+    return this.http.put(AppSettings.API_ROOT + 'flats/',
       {
         "_id": `${flat._id}`,
         "userID": `${flat.userID}`,
@@ -102,7 +101,7 @@ export class MainService {
   }
   
   deleteFlat(flatID: String): Observable<Object> {
-    return this.http.delete(this.apiRoot + 'flat/' + flatID, {
+    return this.http.delete(AppSettings.API_ROOT + 'flat/' + flatID, {
       responseType: 'text',
       headers: {
         'Authorization': 'Bearer' + ' ' + localStorage.getItem("token")
@@ -173,9 +172,9 @@ export class MainService {
     if (last === maxprice) {
       maxprice = this.minusLastChar(maxprice);
     }
-    console.log(this.apiRoot + 'flats/' + page + maxprice + numberOfRooms + zipCode + city + forSale);
+    //console.log(this.apiRoot + 'flats/' + page + maxprice + numberOfRooms + zipCode + city + forSale);
 
-      return this.http.get<Object[]>(this.apiRoot + 'flats/' + page + maxprice + numberOfRooms + zipCode + city + forSale);
+    return this.http.get<Object[]>(AppSettings.API_ROOT + 'flats/' + page + maxprice + numberOfRooms + zipCode + city + forSale);
   }
 
 }

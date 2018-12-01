@@ -107,11 +107,11 @@ export class LoginComponent implements OnInit {
       this.user.phone_number = phone_number;
     this.userService.createUser(this.user).subscribe(
       response => {
-        if (response === 'The username is already taken.') {
+        console.log(response);
+        if (response === "The username is already taken.") {
           this.isTaken = true;
           this.changeAlertTakenMessage();
-        }
-        else {
+        } else {
           // 5 sec múlva belépés ezzel az accounttal
           this.changeSuccessMessage();
           this.isTaken = false;
@@ -125,11 +125,11 @@ export class LoginComponent implements OnInit {
 
   userLogger(response: String, usernameLogin: String): void {
 
-    console.log(response);
+   // console.log(response);
     if (response === "OK") {
       this.userService.getUser(usernameLogin).subscribe(loggedUser => {
         this.user = loggedUser;
-        console.log(this.user);
+       // console.log(this.user);
         this.userService.setSession(this.token);
         this.userService.setUser(this.user);
         this.router.navigate(['main']);
@@ -149,17 +149,17 @@ export class LoginComponent implements OnInit {
         msg = data['message'];
         if (msg === ('OK')) {
           this.token = data['token'];
-          console.log(this.token);
+         // console.log(this.token);
         } else {
-          console.log('nem egyezett');
+         // console.log('nem egyezett');
         }
         this.userLogger(msg, usernameLogin);
-        console.log(data);
-        console.log(msg);
+       // console.log(data);
+       // console.log(msg);
       }, (err) => {
           this.correctDatas = false;
           this.changeAlertMessage();
-          console.log("loginunath");
+        //  console.log("loginunath");
       });
   }
 	

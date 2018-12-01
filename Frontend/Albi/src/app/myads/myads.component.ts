@@ -7,6 +7,7 @@ import { isNull, isUndefined } from 'util';
 import { ImageService } from '../image.service';
 import { Image } from '../image';
 import { UserService } from '../user.service';
+import { AppSettings } from '../appsettings';
 
 @Component({
   selector: 'app-myads',
@@ -26,10 +27,10 @@ export class MyadsComponent implements OnInit {
 
   ngOnInit() {
 
-    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       var temp = JSON.parse(localStorage.getItem("user"));
       this.user = temp;
-      console.log(this.user);
+      //console.log(this.user);
       this.undefinedUser = false;
       this.flats = [];
       this.getFlats(this.user._id);
@@ -64,7 +65,7 @@ export class MyadsComponent implements OnInit {
         this.flats.push(temp);
 
       }
-      console.log(this.flats);
+    //  console.log(this.flats);
     });
   }
 
@@ -76,7 +77,7 @@ export class MyadsComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         var temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = AppSettings.API_ROOT + data[i].filename;
         flat.images.push(temp);
       }
       flat.firstImage = new Image();

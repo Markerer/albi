@@ -12,6 +12,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Chart } from 'chart.js';
 import { ChartData } from '../chartdata';
 import { UserService } from '../user.service';
+import { AppSettings } from '../appsettings';
 
 declare var require: any;
 
@@ -56,10 +57,10 @@ export class FlatComponent implements OnInit {
 
   ngOnInit() {
 
-    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       var temp = JSON.parse(localStorage.getItem("user"));
       this.user = temp;
-      console.log(this.user);
+     // console.log(this.user);
       this.undefinedUser = false;
       this.flat = new Flat();
       this.getFlat();
@@ -90,7 +91,7 @@ export class FlatComponent implements OnInit {
       var today: ChartData = new ChartData();
       today.setTodayDate();
       var _id = this.flat._id;
-      console.log(_id);
+     // console.log(_id);
       this.mainService.addViewingToAdvertisement(_id, today.date).subscribe(response => console.log(response));
     }
   }
@@ -115,14 +116,14 @@ export class FlatComponent implements OnInit {
   getFlat(): void {
     //Az id kinyerése az URL címből.
     var id: String = this.activatedRoute.snapshot.paramMap.get('_id');
-    console.log(id);
+   // console.log(id);
     this.mainService.getFlatByID(id).subscribe(data => {
       this.flat = new Flat();
       this.flat = data;
       this.flat.images = [];
       this.flat.firstImage = new Image();
       this.getImageUrls(this.flat._id, this.flat);
-      console.log(this.flat);
+     // console.log(this.flat);
       // Megnézzük, hogy saját hirdetésünk-e
       if (this.flat.userID === this.user._id) {
         this.owner = true;
@@ -176,7 +177,7 @@ export class FlatComponent implements OnInit {
       this.flat.forSale = true;
     }
 
-    console.log(this.flat);
+   // console.log(this.flat);
 
 
     this.mainService.updateFlat(this.flat).subscribe(
@@ -192,7 +193,7 @@ export class FlatComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         var temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = AppSettings.API_ROOT + data[i].filename;
         flat.images.push(temp);
       }
       flat.firstImage = new Image();
@@ -216,7 +217,7 @@ export class FlatComponent implements OnInit {
       const uploadData = new FormData();
       uploadData.append('image', this.selectedFile, this.selectedFile.name);
       this.imageService.uploadImage(uploadData, this.flat._id).subscribe(object => {
-        console.log(object);
+      //  console.log(object);
         this.changeSuccessUploadMsg();
         this.getFlat();
       });
@@ -225,7 +226,7 @@ export class FlatComponent implements OnInit {
 
   deleteImage(imageID: String): void {
     this.imageService.deleteImage(imageID).subscribe(response => {
-      console.log(response);
+    //  console.log(response);
       this.getFlat();
     });
   }
@@ -248,7 +249,7 @@ export class FlatComponent implements OnInit {
       this.imageService.deleteImage(i._id).subscribe(response => console.log(response));
     }
     this.mainService.deleteFlat(this.flat._id).subscribe(response => {
-      console.log(response);
+     // console.log(response);
       this.navigateToMyAds();
     });
   }
@@ -266,7 +267,7 @@ export class FlatComponent implements OnInit {
       this.modalService.open(content).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
         if (`${result}` === 'Delete') {
-          console.log('delete');
+          //console.log('delete');
           this.deleteAdvertisement();
         }
       }, (reason) => {

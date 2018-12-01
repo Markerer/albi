@@ -8,6 +8,7 @@ import { ImageService } from '../image.service';
 import { Image } from "../image";
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { UserService } from '../user.service';
+import { AppSettings } from '../appsettings';
 
 @Component({
   selector: 'app-main',
@@ -43,10 +44,10 @@ export class MainComponent implements OnInit {
   ngOnInit() {
 
 
-    if (localStorage.getItem("user") && this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       var temp = JSON.parse(localStorage.getItem("user"));
       this.user = temp;
-      console.log(this.user);
+     // console.log(this.user);
       this.undefinedUser = false;
       this.flats = [];
       this.page = 1;
@@ -91,7 +92,7 @@ export class MainComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         var temp = new Image();
         temp = data[i];
-        temp.filename = "http://localhost:3000/" + data[i].filename;
+        temp.filename = AppSettings.API_ROOT + data[i].filename;
         //console.log(temp);
         flat.images.push(temp);
       }
@@ -125,7 +126,7 @@ export class MainComponent implements OnInit {
         this.getImageUrls(temp._id, temp);
         this.flats.push(temp);
       }
-      console.log(this.flats);
+      //console.log(this.flats);
     });
   }
 
@@ -133,7 +134,7 @@ export class MainComponent implements OnInit {
   getFlatsBySearch(page: number): void {
     this.removeItems();
     this.mainService.searchFlat(this.search, page).subscribe(data => {
-      console.log(data);
+     // console.log(data);
       var objects: Flat[];
       var num: number;
       objects = data["docs"];
@@ -146,7 +147,7 @@ export class MainComponent implements OnInit {
         this.getImageUrls(i._id, i);
         this.flats.push(i);
       }
-      console.log(this.flats);
+     // console.log(this.flats);
     });
   }
 
@@ -176,13 +177,13 @@ export class MainComponent implements OnInit {
       this.search.city = city;
     }
     if (type === "underlease") {
-      console.log("albérlet");
+    //  console.log("albérlet");
       this.search.forSale = false;
     } else if (type === "sale") {
-      console.log("eladó");
+    //  console.log("eladó");
       this.search.forSale = true;
     }
-    console.log(this.search);
+   // console.log(this.search);
     this.page = 1;
     this.getFlatsBySearch(this.page);
   }

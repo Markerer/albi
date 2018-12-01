@@ -50,3 +50,20 @@
   }
 
 }
+.bod{
+  background:url(../../assets/img/blurred-image-1.jpg);
+  background-repeat:no-repeat; 
+  background-size:100% 100%;
+  height: 100%;
+  background-attachment:fixed;
+}
+
+.middlebtn{
+  text-align: center;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+#carousel{
+  background-color: rgba(0, 0, 0, 0);
+}

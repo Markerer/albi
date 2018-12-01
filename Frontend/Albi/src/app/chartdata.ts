@@ -13,13 +13,14 @@ export class ChartData {
     this.date += date.getMonth.toString();
     this.date += ".";
     this.date += date.getDay.toString();
-    console.log(this.date);
+   //
+   // .log(this.date);
   }
 
   public setTodayDate(): void {
     var dateFormat = require('dateformat');
     var today = new Date();
     this.date = dateFormat(today, "yyyy.mm.dd").toString();
-    console.log(this.date);
+    //console.log(this.date);
   }
 }

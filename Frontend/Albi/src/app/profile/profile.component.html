@@ -1,13 +1,12 @@
 <html>
-<body style="background:url(assets/img/blurred-image-1.jpg); background-repeat:no-repeat; background-size:100vw 100vh;
-   height: 100vh; background-attachment:fixed">
+<body class="bod">
 
   <div>
     <app-navbar></app-navbar>
   </div>
 
   <div class="container toppadding align-items-center justify-content-center d-flex">
-    <div class="col-md-4 content-center" id="centeralign">
+    <div class="col-md-4">
       <div class="card card-login card-plain">
 
         <form [formGroup]="updateForm"
@@ -68,14 +67,14 @@
               {{ successMessage }}
             </div>
             <div class="input-group form-group-no-border input-lg">
-              <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block marginbottom"
+              <button type="submit" (click)="changeSuccessMessage()" class="btn btn-primary btn-round btn-lg btn-block"
                       [disabled]="!updateForm.valid">
                 Update data
               </button>
             </div>
           </div>
         </form>
-          </div>
+       </div>
       </div>
     </div>
 </body>

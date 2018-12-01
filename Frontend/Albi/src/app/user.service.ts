@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import * as moment from "moment";
 import 'rxjs/add/operator/catch';
+import { AppSettings } from './appsettings';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,12 +16,10 @@ const httpOptions = {
 @Injectable()
 export class UserService {
 
-  apiRoot: string = 'http://localhost:3000/api/';
-
   constructor(private http: HttpClient) { }
   
-  createUser(user: User): Observable<String> {
-    return this.http.post(this.apiRoot + 'user',
+  createUser(user: User): Observable<string> {
+    return this.http.post(AppSettings.API_ROOT + 'api/' + 'user',
       {
         "username": `${user.username}`,
         "password": `${user.password}`,
@@ -32,11 +31,11 @@ export class UserService {
   }
 
   getUser(username: String): Observable<User> {
-    return this.http.get<User>(this.apiRoot + 'users/' + username);
+    return this.http.get<User>(AppSettings.API_ROOT + 'api/' + 'users/' + username);
   }
 
   updateUser(user: User): Observable<Object> {
-    return this.http.put(this.apiRoot + 'user/',
+    return this.http.put(AppSettings.API_ROOT + 'api/' + 'user/',
       {
         "_id": `${user._id}`,
         "username": `${user.username}`,
@@ -54,15 +53,15 @@ export class UserService {
   }
 
   loginUser(username: String, pw: String): Observable<Object> {
-    return this.http.post(this.apiRoot + 'login',
+    return this.http.post(AppSettings.API_ROOT + 'api/' + 'login',
       {
         "username": `${username}`,
         "password": `${pw}`
       },
       httpOptions).catch(e => {
-        console.log("before 401");
+        //console.log("before 401");
         if (e.status === 401) {
-          console.log("unathservice");
+         // console.log("unathservice");
           return Observable.throw('Unauthorized');
         }
       });

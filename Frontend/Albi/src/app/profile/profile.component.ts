@@ -35,8 +35,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
 
     if (this.userService.isLoggedIn()) {
-      // this.router.navigate(['']);
-      // this.router.navigate(['myprofile']);
       var temp = JSON.parse(localStorage.getItem("user"));
       this.user = temp;
      // console.log(this.user);
