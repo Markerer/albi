@@ -20,7 +20,6 @@ class LoginActivity : AppCompatActivity() {
     private val DELAY_IN_MILLIS: Long = 250
 
     var loggedUser: User? = null
-    var done = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,26 +57,18 @@ class LoginActivity : AppCompatActivity() {
         val client = RestApiFactory.createUserClient()
         val call = client.getUserByUserName(name)
 
-        /**
-         * meg kell oldani a következő problémát:
-         * amikor lekérjük a user további adatait (details)
-         * az új szálban indul el, emiatt a
-         * getEveryDetailOfUser(user.username) utáni sorban lévő
-         * Handler még nem kap semmiféle konkrét visszatérési értéket
-         * szóval meg kell oldani, hogy az addig ne tudjon elindulni, még ez
-         * be nem fejezte a lekérést.
-         */
-        call.enqueue(object : Callback<User> {
+        loggedUser = call.execute().body()
+
+        /*call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 loggedUser = response.body()
-                done = true
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@LoginActivity, "error in finding user:(" + t.message, Toast.LENGTH_LONG).show()
             }
-        })
+        })*/
     }
 
     private fun sendNetworkRequestLogin(user: User) {
@@ -87,23 +78,14 @@ class LoginActivity : AppCompatActivity() {
         call.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: retrofit2.Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.body()?.message == "OK") {
-                    getEveryDetailOfUser(user.username)
-                    /**
-                     * "időzített" késleltetés, hogy a másik szálból
-                     * legyen ideje visszatérni az adatokkal
-                     */
                     thread(start = true) {
-                        while (!done){
-                            Thread.sleep(1000)
-                            done = true
+                        getEveryDetailOfUser(user.username)
+                        while (loggedUser == null) {
+                            Thread.sleep(100)
                         }
                     }.join()
-                    val handler = Handler()
-                    handler.postDelayed({
-                        User.token = "Bearer " + response.body()?.token
-                        startMain(loggedUser)
-                    }, DELAY_IN_MILLIS)
-
+                    User.token = "Bearer " + response.body()?.token
+                    startMain(loggedUser)
                 } else {
                     Toast.makeText(this@LoginActivity, "Username or password is wrong!", Toast.LENGTH_SHORT).show()
                 }

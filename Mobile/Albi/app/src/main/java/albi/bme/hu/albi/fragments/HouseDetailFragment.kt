@@ -84,7 +84,6 @@ class HouseDetailFragment : Fragment(), RestApiList.ListInterface {
         call.enqueue(object : Callback<FlatPageResponse> {
             override fun onFailure(call: Call<FlatPageResponse>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(context, "Server not responding", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<FlatPageResponse>, response: Response<FlatPageResponse>) {

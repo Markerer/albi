@@ -21,9 +21,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-const val PREF_NAME: String = "AlbiSettings"
-const val CURRENT_USER_KEY = "currentUser"
-
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var houseDetail: HouseDetailFragment? = null
